@@ -1,0 +1,71 @@
+[
+  {
+    "id": "normal_unequal_batch",
+    "name": "Normal Scenario: Unequal Sequence Batch",
+    "scenario_type": "normal",
+    "input_facts": {
+      "sequence_ids": [
+        [101, 2054, 2003, 102],
+        [101, 7592, 102]
+      ],
+      "max_model_length": 512
+    },
+    "expected_decision": "PAD_AND_MASK",
+    "rationale": "Unequal lengths require rectangular padding and attention masking so self-attention ignores pad tokens."
+  },
+  {
+    "id": "boundary_smallest_valid",
+    "name": "Boundary Scenario: Smallest Valid Input (Minimal Boundary)",
+    "scenario_type": "boundary_minimal",
+    "input_facts": {
+      "sequence_ids": [[101]],
+      "max_model_length": 512
+    },
+    "expected_decision": "VALID_DIRECT_INFERENCE",
+    "rationale": "Minimal valid input: single token sequence in 2D batch [1, 1]. All sequences are equal length (1) within limit (512); no padding needed."
+  },
+  {
+    "id": "missing_information",
+    "name": "Missing-Information Scenario: None Input",
+    "scenario_type": "missing_information",
+    "input_facts": {
+      "sequence_ids": null,
+      "max_model_length": 512
+    },
+    "expected_decision": "REJECT_MISSING_INPUT",
+    "rationale": "Missing sequence tokens cannot form an input tensor for model forward pass."
+  },
+  {
+    "id": "boundary_unbatched_1d",
+    "name": "Boundary Scenario: Unbatched 1D Sequence (Dimension Boundary)",
+    "scenario_type": "boundary_dimension",
+    "input_facts": {
+      "sequence_ids": [101, 2054, 102],
+      "max_model_length": 512
+    },
+    "expected_decision": "REJECT_UNBATCHED",
+    "rationale": "Unbatched 1D list triggers dimension mismatch because Transformer models expect a 2D tensor [batch_size, seq_len]."
+  },
+  {
+    "id": "boundary_exact_max_context",
+    "name": "Boundary Scenario: Exact Maximum Model Context (Upper Boundary)",
+    "scenario_type": "boundary_upper_exact",
+    "input_facts": {
+      "sequence_ids": "512_tokens",
+      "max_model_length": 512
+    },
+    "expected_decision": "VALID_DIRECT_INFERENCE",
+    "rationale": "Sequence fits exactly within the 512 token context window."
+  },
+  {
+    "id": "boundary_exceeding_max_context",
+    "name": "Boundary Scenario: Exceeding Maximum Model Context (Upper Boundary + 1)",
+    "scenario_type": "boundary_upper_exceeded",
+    "input_facts": {
+      "sequence_ids": "513_tokens",
+      "max_model_length": 512
+    },
+    "expected_decision": "REJECT_EXCEEDS_MAX_LENGTH",
+    "rationale": "Exceeding max context window (513 > 512) violates position embedding limits."
+  }
+]
