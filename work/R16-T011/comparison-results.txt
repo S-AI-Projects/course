@@ -1,0 +1,46 @@
+Assignment: R16-T011
+Comparison: Expected vs Actual Results
+==================================================
+
+Scenario: normal (Standard sentence with duplicate words)
+Input: 'red red apple'
+Expected: {'word_count': 3, 'unique_count': 2}
+Actual:   {'word_count': 3, 'unique_count': 2}
+Status: PASS
+
+Scenario: boundary_empty (Empty string returns zeros)
+Input: ''
+Expected: {'word_count': 0, 'unique_count': 0}
+Actual:   {'word_count': 0, 'unique_count': 0}
+Status: PASS
+
+Scenario: boundary_whitespace (Whitespace-only string returns zeros)
+Input: '   \n\t  '
+Expected: {'word_count': 0, 'unique_count': 0}
+Actual:   {'word_count': 0, 'unique_count': 0}
+Status: PASS
+
+Scenario: failure_none (Non-string None input rejected)
+Input: None
+Expected Exception: TypeError
+Actual Exception: TypeError (Input must be a string, got NoneType)
+Status: PASS
+
+Scenario: failure_integer (Non-string integer input rejected)
+Input: 123
+Expected Exception: TypeError
+Actual Exception: TypeError (Input must be a string, got int)
+Status: PASS
+
+Scenario: failure_list (Non-string list input rejected)
+Input: ['red', 'red', 'apple']
+Expected Exception: TypeError
+Actual Exception: TypeError (Input must be a string, got list)
+Status: PASS
+
+==================================================
+Deliberate Wrong Result Test Demonstration:
+Deliberate wrong assertion (expected {'word_count': 999, 'unique_count': 999} vs actual {'word_count': 3, 'unique_count': 2}) correctly detects mismatch: PASS (mismatch caught)
+
+==================================================
+Final Validation Status: ALL CHECKS PASSED
