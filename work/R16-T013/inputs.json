@@ -1,0 +1,47 @@
+[
+  {
+    "id": "model_hub_integrity",
+    "name": "Scenario 1: Model Hub Checkpoint Integrity",
+    "scenario_type": "complete_matching",
+    "fields": {
+      "asset": "Pretrained RoBERTa model weights repository on Hugging Face Hub",
+      "threat": "Unauthorized weight tampering or model supply-chain poisoning",
+      "control": "Cryptographic hash verification and commit signature enforcement on model weights",
+      "residual_risk": "A compromised maintainer token could sign poisoned weights before hash publication."
+    },
+    "expected_completeness": "PASS",
+    "expected_control_verdict": "MATCH",
+    "expected_direct": ["PASS", "MATCH"],
+    "expected_reference": ["PASS", "MATCH"]
+  },
+  {
+    "id": "dataset_demographic_bias",
+    "name": "Scenario 2: Pretraining Dataset Bias (Missing Asset)",
+    "scenario_type": "missing_asset",
+    "fields": {
+      "asset": "",
+      "threat": "Demographic bias in training dataset skewing classification outcomes",
+      "control": "Dataset demographic auditing and representation filtering",
+      "residual_risk": "Latent proxy variables in uncurated web text may still induce subtle biases."
+    },
+    "expected_completeness": "FAIL",
+    "expected_control_verdict": "MATCH",
+    "expected_direct": ["FAIL", "MATCH"],
+    "expected_reference": ["FAIL", "MATCH"]
+  },
+  {
+    "id": "inference_pipeline_ddos",
+    "name": "Scenario 3: Pipeline Inference Service (Unrelated Control)",
+    "scenario_type": "unrelated_control",
+    "fields": {
+      "asset": "Production NER pipeline inference API endpoint",
+      "threat": "DDoS volumetric request flooding saturating transformer inference queue",
+      "control": "Enforcing code comment indentation and docstring formatting standards",
+      "residual_risk": "Inference server remains completely vulnerable to traffic saturation."
+    },
+    "expected_completeness": "PASS",
+    "expected_control_verdict": "REVIEW",
+    "expected_direct": ["PASS", "REVIEW"],
+    "expected_reference": ["PASS", "REVIEW"]
+  }
+]
