@@ -1,0 +1,46 @@
+Assignment: R16-T012
+Comparison: Expected vs Actual Decisions (Published Table)
+============================================================
+
+Scenario: normal_unequal_batch (Normal Scenario: Unequal Sequence Batch)
+Expected Decision: PAD_AND_MASK
+Actual Decision:   PAD_AND_MASK
+Status: PASS
+Rationale: Recaps Chapter 2 Section 5 ('Handling multiple sequences'): Transformer models require rectangular input tensors. When batching sequences of different lengths (4 and 3), the shorter sequence must be padded to the batch max length with pad token ID, and an attention mask (1s for real tokens, 0s for pad tokens) must be provided so self-attention layers ignore padding.
+
+Scenario: boundary_smallest_valid (Boundary Scenario: Smallest Valid Input (Minimal Boundary))
+Expected Decision: VALID_DIRECT_INFERENCE
+Actual Decision:   VALID_DIRECT_INFERENCE
+Status: PASS
+Rationale: Illustrates the minimal valid boundary case: A single token sequence enclosed in a 2D batch [1, 1]. All sequences in the batch have uniform length (1), sequence length is >= 1, and length is <= max_model_length (512). The tensor is already rectangular and valid for direct forward pass; no padding or pad-masking is necessary.
+
+Scenario: missing_information (Missing-Information Scenario: None or Empty Input)
+Expected Decision: REJECT_MISSING_INPUT
+Actual Decision:   REJECT_MISSING_INPUT
+Status: PASS
+Rationale: Illustrates invalid missing information: Tokenization pipeline requires at least one token sequence to construct input tensors. A null or empty input provides no tokens from which to construct a 2D tensor.
+
+Scenario: boundary_unbatched_1d (Boundary Scenario: Unbatched 1D Sequence (Dimension Boundary))
+Expected Decision: REJECT_UNBATCHED
+Actual Decision:   REJECT_UNBATCHED
+Status: PASS
+Rationale: Directly reflects the IndexError demonstrated in Section 5 ('Models expect a batch of inputs'). Passing a 1D tensor [seq_len] instead of a 2D tensor [batch_size, seq_len] causes dimension out of range.
+
+Scenario: boundary_exact_max_context (Boundary Scenario: Exact Maximum Model Context (Upper Boundary))
+Expected Decision: VALID_DIRECT_INFERENCE
+Actual Decision:   VALID_DIRECT_INFERENCE
+Status: PASS
+Rationale: Exact boundary decision: At length exactly equal to max_model_length (512), the sequence fits within the context window and can be processed without truncation.
+
+Scenario: boundary_exceeding_max_context (Boundary Scenario: Exceeding Maximum Model Context (Upper Boundary + 1))
+Expected Decision: REJECT_EXCEEDS_MAX_LENGTH
+Actual Decision:   REJECT_EXCEEDS_MAX_LENGTH
+Status: PASS
+Rationale: Upper boundary failure: Exceeding max_model_length by even 1 token (513 > 512) violates positional embedding limits and requires truncation before model input.
+
+============================================================
+Deliberate Wrong Result Test Demonstration:
+Deliberate wrong decision on scenario normal_unequal_batch (expected VALID_DIRECT_INFERENCE vs actual PAD_AND_MASK) correctly triggers failure: PASS (mismatch detected)
+
+============================================================
+Final Validation Status: ALL CHECKS PASSED

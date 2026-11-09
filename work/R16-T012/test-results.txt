@@ -1,0 +1,25 @@
+test_all_published_scenarios_pass_checker (test_example.TestWorkedDecisionExample.test_all_published_scenarios_pass_checker)
+Verify that every entry in SCENARIOS matches its expected decision. ... ok
+test_boundary_exact_max_context_length (test_example.TestWorkedDecisionExample.test_boundary_exact_max_context_length)
+Boundary scenario: sequence exactly at max_model_length (512) is valid. ... ok
+test_boundary_exceeding_max_context_length (test_example.TestWorkedDecisionExample.test_boundary_exceeding_max_context_length)
+Boundary scenario: sequence exceeding max_model_length (513 > 512) is rejected. ... ok
+test_boundary_smallest_valid_input (test_example.TestWorkedDecisionExample.test_boundary_smallest_valid_input)
+Boundary scenario: smallest valid input [[101]] is rectangular and proceeds directly. ... ok
+test_boundary_unbatched_1d_sequence (test_example.TestWorkedDecisionExample.test_boundary_unbatched_1d_sequence)
+Boundary scenario: unbatched 1D sequence triggers rejection to prevent IndexError. ... ok
+test_deliberate_wrong_assertion_raises_error (test_example.TestWorkedDecisionExample.test_deliberate_wrong_assertion_raises_error)
+Verify an intentional wrong assertion raises an AssertionError. ... ok
+test_deliberate_wrong_decision_makes_checker_fail (test_example.TestWorkedDecisionExample.test_deliberate_wrong_decision_makes_checker_fail)
+Verify the checker flags failure when an expected decision is deliberately corrupted. ... ok
+test_missing_information_empty_batch (test_example.TestWorkedDecisionExample.test_missing_information_empty_batch)
+Missing-information scenario: empty list or empty sequence is rejected. ... ok
+test_missing_information_scenario_none (test_example.TestWorkedDecisionExample.test_missing_information_scenario_none)
+Missing-information scenario: None sequence_ids is rejected. ... ok
+test_normal_scenario_unequal_batch (test_example.TestWorkedDecisionExample.test_normal_scenario_unequal_batch)
+Normal scenario: batches with unequal lengths require padding and attention mask. ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.000s
+
+OK

@@ -16,3 +16,58 @@ Great job following the course up to here! To recap, in this chapter you:
 - Played around with versatile and configurable tokenizer methods.
 
 From now on, you should be able to freely navigate the 🤗 Transformers docs: the vocabulary will sound familiar, and you've already seen the methods that you'll use the majority of the time.
+
+## Applied Lab: Worked Decision Example for Model Input Validation
+
+### Related Concept: Transformer Preprocessing Decisions and Boundary Constraints
+
+Throughout Chapter 2, preparing inputs for a Transformer model involves key structural rules:
+1. **Batch Dimensions**: Models require a 2D tensor `[batch_size, sequence_length]`. Passing a 1D tensor triggers a dimension error (Section 5).
+2. **Rectangular Tensors & Attention Masks**: Sequences of varying lengths must be padded to equal length with pad token IDs, accompanied by an attention mask to prevent pad tokens from contaminating self-attention (Section 5).
+3. **Context Length Limits**: Sequences cannot exceed the model's maximum position embeddings without truncation (Section 5).
+
+The applied lab in [applied-labs/r16-t012/example.py](applied-labs/r16-t012/example.py) (with tests in [applied-labs/r16-t012/test_example.py](applied-labs/r16-t012/test_example.py) and documentation in [applied-labs/r16-t012/README.md](applied-labs/r16-t012/README.md)) implements a deterministic decision engine and checker evaluating candidate input facts.
+
+### Invocation, Scenarios, and Expected Decisions
+
+```python
+from example import evaluate_scenario, PAD_AND_MASK, VALID_DIRECT_INFERENCE, REJECT_MISSING_INPUT
+
+# 1. Normal scenario: unequal sequence lengths in a batch require padding and attention mask
+decision_normal = evaluate_scenario({
+    "sequence_ids": [[101, 2054, 2003, 102], [101, 7592, 102]],
+    "max_model_length": 512,
+})
+# Expected: "PAD_AND_MASK"
+
+# 2. Boundary scenario (smallest valid input): single token in batch of 1 [1, 1]
+decision_boundary = evaluate_scenario({
+    "sequence_ids": [[101]],
+    "max_model_length": 512,
+})
+# Expected: "VALID_DIRECT_INFERENCE"
+
+# 3. Missing-information scenario: missing input facts are rejected
+decision_missing = evaluate_scenario({"sequence_ids": None})
+# Expected: "REJECT_MISSING_INPUT"
+```
+
+### Running the Lab Locally
+
+Prerequisites: Python 3 standard library only (no external packages, GPUs, or model downloads required).
+
+Run the decision table verification:
+```bash
+python3 chapters/en/chapter2/applied-labs/r16-t012/example.py
+```
+
+Run automated tests:
+```bash
+python3 -m unittest discover -s chapters/en/chapter2/applied-labs/r16-t012 -p "test_*.py" -v
+```
+
+### Simulation Scope & Limitations
+- **Structural Simulation**: This lab models the input validation logic and tensor constraints described in Chapter 2 without requiring PyTorch or heavy model downloads.
+- **Deterministic Rules**: Evaluates input shape, batch dimensions, and token boundaries deterministically.
+- **Hardware Agnostic**: Makes no claims regarding real-world model prediction accuracy or cloud inference hardware performance.
+
