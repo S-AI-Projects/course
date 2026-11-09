@@ -1,0 +1,59 @@
+[
+  {
+    "scenario": "normal",
+    "description": "Standard sentence with duplicate words",
+    "input": "red red apple",
+    "input_type": "str",
+    "expected_output": {
+      "word_count": 3,
+      "unique_count": 2
+    },
+    "expected_exception": null
+  },
+  {
+    "scenario": "boundary_empty",
+    "description": "Empty string returns zeros",
+    "input": "",
+    "input_type": "str",
+    "expected_output": {
+      "word_count": 0,
+      "unique_count": 0
+    },
+    "expected_exception": null
+  },
+  {
+    "scenario": "boundary_whitespace",
+    "description": "Whitespace-only string returns zeros",
+    "input": "   \n\t  ",
+    "input_type": "str",
+    "expected_output": {
+      "word_count": 0,
+      "unique_count": 0
+    },
+    "expected_exception": null
+  },
+  {
+    "scenario": "failure_none",
+    "description": "Non-string None input rejected",
+    "input": null,
+    "input_type": "NoneType",
+    "expected_output": null,
+    "expected_exception": "TypeError"
+  },
+  {
+    "scenario": "failure_integer",
+    "description": "Non-string integer input rejected",
+    "input": 123,
+    "input_type": "int",
+    "expected_output": null,
+    "expected_exception": "TypeError"
+  },
+  {
+    "scenario": "failure_list",
+    "description": "Non-string list input rejected",
+    "input": ["red", "red", "apple"],
+    "input_type": "list",
+    "expected_output": null,
+    "expected_exception": "TypeError"
+  }
+]

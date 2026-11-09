@@ -34,3 +34,51 @@ This chapter is broken down into sections which include both _concepts_ and _app
 
 > [!TIP]
 > 👀 Check out <a href="https://huggingface.co/spaces" target="_blank">Hugging Face Spaces</a> to see many recent examples of machine learning demos built by the machine learning community!
+
+## Applied Lab: UI Callback Contract (Text Analysis)
+
+### Related Concept: Callback Function Contracts and Schema Validation
+
+Every Gradio application connects input components (such as `gr.Textbox`) to output components (such as `gr.Number` or `gr.JSON`) through a Python callback function (`fn`). Before coupling this function to a live web server or browser UI, validating its contract independently verifies that input handling, edge cases, and output schemas behave correctly.
+
+The applied lab in [applied-labs/r16-t011/example.py](applied-labs/r16-t011/example.py) (accompanied by tests in [applied-labs/r16-t011/test_example.py](applied-labs/r16-t011/test_example.py) and documentation in [applied-labs/r16-t011/README.md](applied-labs/r16-t011/README.md)) implements a minimal, deterministic callback for text analysis.
+
+### Invocation, Fixtures, and Expected Output
+
+```python
+from example import analyze_text
+
+# Normal case fixture: returns word count and unique word count
+result = analyze_text("red red apple")
+# Expected output: {"word_count": 3, "unique_count": 2}
+
+# Boundary case fixture: empty text returns zeros
+result_empty = analyze_text("")
+# Expected output: {"word_count": 0, "unique_count": 0}
+
+# Failure scenario: non-string input is rejected
+try:
+    analyze_text(123)
+except TypeError as e:
+    # Expected: TypeError ("Input must be a string...")
+    pass
+```
+
+### Running the Lab Locally
+
+Prerequisites: Python 3 standard library only (no external packages or GPUs required).
+
+Run the standalone callback:
+```bash
+python3 chapters/en/chapter9/applied-labs/r16-t011/example.py
+```
+
+Run automated tests:
+```bash
+python3 -m unittest discover -s chapters/en/chapter9/applied-labs/r16-t011 -p "test_*.py" -v
+```
+
+### Simulation Scope & Limitations
+- **Pure Local Simulation**: This lab simulates the backend callback contract of a Gradio UI component pipeline in pure Python. It does not spin up a web server or browser interface.
+- **Model Decoupling**: Word and unique token counts are computed deterministically via standard library string splitting rather than a trained neural language model.
+- **Hardware & Cloud Independence**: No GPU, paid cloud service, API key, or real-time network access is required or evaluated.

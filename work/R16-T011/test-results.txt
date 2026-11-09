@@ -1,0 +1,23 @@
+test_callback_alias (test_example.TestTextAnalysisCallback.test_callback_alias)
+Verify text_analysis_callback alias behaves identically. ... ok
+test_deliberate_wrong_result_fails (test_example.TestTextAnalysisCallback.test_deliberate_wrong_result_fails)
+Demonstrate that an intentional incorrect expectation triggers an assertion failure. ... ok
+test_empty_string_returns_zeros (test_example.TestTextAnalysisCallback.test_empty_string_returns_zeros)
+Empty text returns zeros. ... ok
+test_nonstring_input_rejected_collection (test_example.TestTextAnalysisCallback.test_nonstring_input_rejected_collection)
+Non-string list/dict input is rejected with TypeError. ... ok
+test_nonstring_input_rejected_none (test_example.TestTextAnalysisCallback.test_nonstring_input_rejected_none)
+Non-string None input is rejected with TypeError. ... ok
+test_nonstring_input_rejected_number (test_example.TestTextAnalysisCallback.test_nonstring_input_rejected_number)
+Non-string integer/float input is rejected with TypeError. ... ok
+test_normal_input_red_red_apple (test_example.TestTextAnalysisCallback.test_normal_input_red_red_apple)
+Input 'red red apple' returns word_count=3 and unique_count=2. ... ok
+test_output_schema_keys_and_types (test_example.TestTextAnalysisCallback.test_output_schema_keys_and_types)
+Ensure schema keys are exactly 'word_count' and 'unique_count' (int). ... ok
+test_whitespace_string_returns_zeros (test_example.TestTextAnalysisCallback.test_whitespace_string_returns_zeros)
+Whitespace-only string returns zeros. ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.000s
+
+OK
