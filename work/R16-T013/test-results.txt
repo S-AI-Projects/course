@@ -1,0 +1,19 @@
+test_both_approaches_agree_across_all_fixtures (test_example.TestSecurityScenarioRubric.test_both_approaches_agree_across_all_fixtures)
+Verify that direct rule evaluation matches the independent reference table. ... ok
+test_complete_scenario_passes (test_example.TestSecurityScenarioRubric.test_complete_scenario_passes)
+One complete scenario with matching control passes both completeness and relevance. ... ok
+test_deliberate_corrupted_reference_fails_comparison (test_example.TestSecurityScenarioRubric.test_deliberate_corrupted_reference_fails_comparison)
+Demonstrate that an intentional divergence between direct and reference fails comparison. ... ok
+test_deliberate_wrong_assertion_raises_error (test_example.TestSecurityScenarioRubric.test_deliberate_wrong_assertion_raises_error)
+Verify intentional wrong expectation raises an AssertionError. ... ok
+test_missing_asset_scenario_fails (test_example.TestSecurityScenarioRubric.test_missing_asset_scenario_fails)
+A scenario without an asset fails the structural completeness rubric. ... ok
+test_missing_other_required_fields (test_example.TestSecurityScenarioRubric.test_missing_other_required_fields)
+Ensure omitting threat, control, or residual_risk triggers FAIL. ... ok
+test_unrelated_control_flagged_for_review (test_example.TestSecurityScenarioRubric.test_unrelated_control_flagged_for_review)
+A control unrelated to the named threat is flagged as REVIEW for human judgment. ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.000s
+
+OK

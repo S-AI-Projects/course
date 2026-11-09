@@ -255,3 +255,55 @@ result = classifier("This is a course about the Transformers library")
 		}
 	]}
 />
+
+## Applied Lab: Security Scenario Rubric and Dual-Approach Evaluation
+
+### Related Concept: Scenario Evidence, Controls, and Automated Rubrics
+
+Evaluating real-world applications of Transformer models—such as deploying checkpoints from the Hugging Face Hub, serving inference pipelines, or mitigating dataset biases—requires structured risk analysis. A valid security scenario must specify an **asset**, a **threat**, a **control**, and the **residual risk**.
+
+While automated checkers can enforce structural completeness and keyword relevance heuristics, human review is essential to judge the qualitative explanation.
+
+The applied lab in [applied-labs/r16-t013/example.py](applied-labs/r16-t013/example.py) (with tests in [applied-labs/r16-t013/test_example.py](applied-labs/r16-t013/test_example.py) and documentation in [applied-labs/r16-t013/README.md](applied-labs/r16-t013/README.md)) evaluates three fictional scenarios and compares a direct rule-based implementation with an independent reference lookup table.
+
+### Invocation, Scenarios, and Expected Verdicts
+
+```python
+from example import evaluate_direct, compare_both_approaches, SCENARIOS
+
+# 1. Complete scenario passes both completeness and control relevance
+res_1 = evaluate_direct(SCENARIOS[0])
+# Expected: ("PASS", "MATCH")
+
+# 2. Scenario missing an asset fails structural completeness
+res_2 = evaluate_direct(SCENARIOS[1])
+# Expected: ("FAIL", "MATCH")
+
+# 3. Scenario with unrelated control is flagged for human review
+res_3 = evaluate_direct(SCENARIOS[2])
+# Expected: ("PASS", "REVIEW")
+
+# Dual-approach agreement check
+all_agreed, audit = compare_both_approaches(SCENARIOS)
+# Expected: all_agreed is True across identical inputs
+```
+
+### Running the Lab Locally
+
+Prerequisites: Python 3 standard library only (no external packages, GPUs, or model downloads required).
+
+Run the scenario evaluation and approach comparison:
+```bash
+python3 chapters/en/chapter1/applied-labs/r16-t013/example.py
+```
+
+Run automated tests:
+```bash
+python3 -m unittest discover -s chapters/en/chapter1/applied-labs/r16-t013 -p "test_*.py" -v
+```
+
+### Simulation Scope & Limitations
+- **Educational Simulation**: Evaluates fictional risk scenarios and rule heuristics using the Python standard library.
+- **Automated Grading Scope**: The automated rubric evaluates structural completeness and keyword relevance; qualitative assessment requires human domain review.
+- **Hardware & Cloud Agnostic**: Makes no claims regarding live network intrusion detection, model weight accuracy, or production security infrastructure.
+
