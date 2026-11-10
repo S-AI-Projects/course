@@ -1,0 +1,43 @@
+Assignment: R16-T014
+Comparison: Expected vs Actual Results
+============================================================
+
+Scenario: span_0_0
+Input: span(0, 0), context='Ada wrote notes'
+Expected answer: 'Ada'
+Actual answer:   'Ada'
+char range: [0, 3)
+Status: PASS
+
+Scenario: span_1_2
+Input: span(1, 2), context='Ada wrote notes'
+Expected answer: 'wrote notes'
+Actual answer:   'wrote notes'
+char range: [4, 15)
+Status: PASS
+
+Scenario: span_2_2
+Input: span(2, 2), context='Ada wrote notes'
+Expected answer: 'notes'
+Actual answer:   'notes'
+char range: [10, 15)
+Status: PASS
+
+Scenario: invalid_end_before_start
+Input: span(2, 0), context='Ada wrote notes'
+Expected Exception: ValueError
+Actual Exception: ValueError: Invalid span: end (0) is before start (2). In extractive QA, span end must be >= start.
+Status: PASS
+
+Scenario: out_of_bounds
+Input: span(0, 99), context='Ada wrote notes'
+Expected Exception: IndexError
+Actual Exception: IndexError: end index 99 is out of range [0, 2]
+Status: PASS
+
+============================================================
+Deliberate Wrong Result Demonstration:
+Wrong expected 'wrote' vs actual 'Ada': mismatch correctly detected — PASS
+
+============================================================
+Final Status: ALL CHECKS PASSED

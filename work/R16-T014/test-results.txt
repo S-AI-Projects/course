@@ -1,0 +1,31 @@
+test_deliberate_wrong_result_fails (test_example.TestAnswerSpanExtraction.test_deliberate_wrong_result_fails)
+Deliberate wrong expected answer triggers AssertionError. ... ok
+test_end_before_start_is_rejected (test_example.TestAnswerSpanExtraction.test_end_before_start_is_rejected)
+End token index before start raises ValueError. ... ok
+test_invariant_answer_matches_context_slice (test_example.TestAnswerSpanExtraction.test_invariant_answer_matches_context_slice)
+Invariant: answer == context[char_start:char_end] for all valid spans. ... ok
+test_invariant_char_end_gt_char_start (test_example.TestAnswerSpanExtraction.test_invariant_char_end_gt_char_start)
+Invariant: char_end > char_start holds for all valid non-empty spans. ... ok
+test_non_integer_index_raises_type_error (test_example.TestAnswerSpanExtraction.test_non_integer_index_raises_type_error)
+Non-integer token indices raise TypeError. ... ok
+test_out_of_bounds_raises_index_error (test_example.TestAnswerSpanExtraction.test_out_of_bounds_raises_index_error)
+Out-of-range token indices raise IndexError. ... ok
+test_span_0_0_returns_ada (test_example.TestAnswerSpanExtraction.test_span_0_0_returns_ada)
+Token span 0..0 on 'Ada wrote notes' returns 'Ada'. ... ok
+test_span_1_2_returns_wrote_notes (test_example.TestAnswerSpanExtraction.test_span_1_2_returns_wrote_notes)
+Token span 1..2 returns 'wrote notes'. ... ok
+test_span_2_2_returns_notes (test_example.TestAnswerSpanExtraction.test_span_2_2_returns_notes)
+Token span 2..2 returns 'notes' (last word boundary). ... ok
+test_state_not_validated_on_invalid_span (test_example.TestAnswerSpanExtraction.test_state_not_validated_on_invalid_span)
+State 'validated' field remains False when span is invalid. ... ok
+test_state_trace_completeness (test_example.TestAnswerSpanExtraction.test_state_trace_completeness)
+Returned state dict contains all intermediate pipeline fields. ... ok
+test_token_offset_build (test_example.TestAnswerSpanExtraction.test_token_offset_build)
+build_token_sequence correctly maps words to char offsets. ... ok
+test_validate_span_equal_indices_accepted (test_example.TestAnswerSpanExtraction.test_validate_span_equal_indices_accepted)
+Equal start and end (single-token span) is valid. ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.000s
+
+OK
