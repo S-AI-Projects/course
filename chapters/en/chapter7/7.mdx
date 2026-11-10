@@ -1189,3 +1189,61 @@ question_answerer(question=question, context=context)
 ```
 
 Great! Our model is working as well as the default one for this pipeline!
+
+
+## Applied Lab: Answer-Span Extraction — Invariant and State Trace
+
+### Related Concept: Span Indices, Offset Mapping, and Invalid Span Rejection
+
+In extractive QA (Section 7), the model outputs `start_logits` and `end_logits` for each token position. Converting these to an answer requires:
+1. Validating the token indices: `start <= end` (inverted spans must be rejected).
+2. Mapping token indices to character offsets using the tokenizer's `offset_mapping`.
+3. Recovering the answer substring via `context[char_start:char_end]`.
+
+The applied lab in [applied-labs/r16-t014/example.py](applied-labs/r16-t014/example.py) (with tests in [applied-labs/r16-t014/test_example.py](applied-labs/r16-t014/test_example.py) and documentation in [applied-labs/r16-t014/README.md](applied-labs/r16-t014/README.md)) implements this pipeline on a fixed context, recording intermediate state after each step and asserting the invariant linking state to the final answer.
+
+### Fixed Context and Word Spans
+
+```
+Context: "Ada wrote notes"
+Token 0: "Ada"   → chars [0, 3)
+Token 1: "wrote" → chars [4, 9)
+Token 2: "notes" → chars [10, 15)
+```
+
+### Invocation, Fixtures, and Expected Output
+
+```python
+from example import extract_span, CONTEXT, TOKEN_OFFSETS
+
+# Normal case: token span 0..0 returns "Ada"
+state = extract_span(CONTEXT, 0, 0, token_offsets=TOKEN_OFFSETS)
+# state["answer"]     == "Ada"
+# state["char_start"] == 0
+# state["char_end"]   == 3
+# state["validated"]  == True
+
+# Span 1..2 returns "wrote notes"
+state = extract_span(CONTEXT, 1, 2, token_offsets=TOKEN_OFFSETS)
+# state["answer"] == "wrote notes"
+
+# Invalid span: end before start is rejected
+try:
+    extract_span(CONTEXT, 2, 0, token_offsets=TOKEN_OFFSETS)
+except ValueError as e:
+    pass  # Expected: ValueError("Invalid span: end (0) is before start (2)")
+```
+
+### Running the Lab Locally
+
+Prerequisites: Python 3 standard library only (no external packages, GPUs, or model downloads required).
+
+```bash
+python3 chapters/en/chapter7/applied-labs/r16-t014/example.py
+python3 -m unittest discover -s chapters/en/chapter7/applied-labs/r16-t014 -p "test_*.py" -v
+```
+
+### Simulation Scope & Limitations
+- **Local Simulation**: Models the token-index-to-char-offset mapping pipeline step without loading a BERT model or the SQuAD dataset.
+- **Whitespace Tokenization**: Uses Python `.split()` as a simplified tokenizer; real HuggingFace tokenizers produce subword tokens and richer `offset_mapping`.
+- **Hardware Agnostic**: Makes no claims about GPU inference speed, model accuracy, or cloud prediction quality.
