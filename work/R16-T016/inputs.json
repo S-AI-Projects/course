@@ -1,0 +1,92 @@
+{
+  "task": "R16-T016",
+  "description": "Token-budget preflight — refactor the teaching example",
+  "chapter_file": "chapters/en/chapter2/4.mdx",
+  "lab_dir": "chapters/en/chapter2/applied-labs/r16-t016",
+  "fixtures": {
+    "budget_3_with_4_tokens": {
+      "description": "Standard scenario: Budget 3 with 'one two three four' retains [one,two,three] and reports one removed token",
+      "input": {
+        "text": "one two three four",
+        "budget": 3
+      },
+      "expected": {
+        "retained_tokens": ["one", "two", "three"],
+        "removed_tokens": ["four"],
+        "removed_count": 1,
+        "total_tokens": 4,
+        "truncated": true
+      }
+    },
+    "empty_input": {
+      "description": "Boundary scenario: empty input retains none",
+      "input": {
+        "text": "",
+        "budget": 3
+      },
+      "expected": {
+        "retained_tokens": [],
+        "removed_tokens": [],
+        "removed_count": 0,
+        "total_tokens": 0,
+        "truncated": false
+      }
+    },
+    "whitespace_only_input": {
+      "description": "Boundary scenario: whitespace-only string retains none",
+      "input": {
+        "text": "   \t\n  ",
+        "budget": 3
+      },
+      "expected": {
+        "retained_tokens": [],
+        "removed_tokens": [],
+        "removed_count": 0,
+        "total_tokens": 0,
+        "truncated": false
+      }
+    },
+    "exact_budget_match": {
+      "description": "Boundary scenario: exact match between prompt length and budget",
+      "input": {
+        "text": "one two three",
+        "budget": 3
+      },
+      "expected": {
+        "retained_tokens": ["one", "two", "three"],
+        "removed_tokens": [],
+        "removed_count": 0,
+        "total_tokens": 3,
+        "truncated": false
+      }
+    },
+    "budget_exceeds_token_count": {
+      "description": "Boundary scenario: budget exceeds token count",
+      "input": {
+        "text": "one two",
+        "budget": 5
+      },
+      "expected": {
+        "retained_tokens": ["one", "two"],
+        "removed_tokens": [],
+        "removed_count": 0,
+        "total_tokens": 2,
+        "truncated": false
+      }
+    },
+    "zero_budget": {
+      "description": "Boundary scenario: zero budget removes all tokens",
+      "input": {
+        "text": "alpha beta gamma",
+        "budget": 0
+      },
+      "expected": {
+        "retained_tokens": [],
+        "removed_tokens": ["alpha", "beta", "gamma"],
+        "removed_count": 3,
+        "total_tokens": 3,
+        "truncated": true
+      }
+    }
+  }
+}

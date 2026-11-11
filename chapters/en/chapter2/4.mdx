@@ -216,3 +216,59 @@ print(decoded_string)
 Note that the `decode` method not only converts the indices back to tokens, but also groups together the tokens that were part of the same words to produce a readable sentence. This behavior will be extremely useful when we use models that predict new text (either text generated from a prompt, or for sequence-to-sequence problems like translation or summarization).
 
 By now you should understand the atomic operations a tokenizer can handle: tokenization, conversion to IDs, and converting IDs back to a string. However, we've just scraped the tip of the iceberg. In the following section, we'll take our approach to its limits and take a look at how to overcome them.
+
+## Applied Lab: Token-Budget Preflight — Refactored Teaching Example[[applied-lab-token-budget-preflight]]
+
+### Lesson connection
+
+In the sections above, we saw how tokenizers split sentences into discrete tokens and prepare them for model consumption. In production applications, models operate with a strict context length limit (token budget). Before sending raw strings to a transformer model or inference endpoint, practical pipelines perform a *preflight check* to evaluate token counts against budget constraints, explicitly accounting for any truncation.
+
+The applied lab below provides a deterministic offline demonstration of this preflight process using only the Python 3 standard library.
+
+### What this example does
+
+The example implements a preflight check (`token_budget_preflight`) that verifies prompt length against a configured token budget:
+
+| Scenario | Input | Expected Output |
+|---|---|---|
+| **Budget 3 with 4 tokens** | `text="one two three four"`, `budget=3` | Retains `['one', 'two', 'three']`, reports `1` removed token (`['four']`), `truncated=True` |
+| **Empty input** | `text=""`, `budget=3` | Retains `[]`, reports `0` removed tokens, `truncated=False` |
+| **Exact fit** | `text="one two three"`, `budget=3` | Retains `['one', 'two', 'three']`, reports `0` removed tokens, `truncated=False` |
+| **Generous budget** | `text="one two"`, `budget=5` | Retains `['one', 'two']`, reports `0` removed tokens, `truncated=False` |
+| **Zero budget** | `text="alpha beta gamma"`, `budget=0` | Retains `[]`, reports `3` removed tokens, `truncated=True` |
+| **Negative budget** | `text="sample"`, `budget=-1` | Rejects with `ValueError` |
+
+### Refactoring: Extracting a named responsibility
+
+The codebase demonstrates software refactoring by moving from a monolithic baseline (`token_budget_preflight_baseline`) to modular components:
+1. `WhitespaceTokenizer`: Handles the tokenization boundary.
+2. `TokenBudgetEnforcer`: Extracted named responsibility dedicated to budget clamping and truncation reporting.
+3. `token_budget_preflight`: Public interface maintaining verified before/after behavioral equivalence.
+
+### Running the example
+
+```bash
+# Run the demonstration:
+python3 chapters/en/chapter2/applied-labs/r16-t016/example.py
+
+# Run the automated unit tests:
+python3 -m unittest discover -s chapters/en/chapter2/applied-labs/r16-t016 -p "test_*.py" -v
+```
+
+**Expected output:**
+
+```text
+[Budget 3 with 'one two three four']
+  Input text     : 'one two three four'
+  Budget         : 3
+  Total tokens   : 4
+  Retained tokens: ['one', 'two', 'three']
+  Removed count  : 1 (removed: ['four'])
+  Truncated      : True
+```
+
+> [!WARNING]
+> **SIMULATION NOTE**: The tokenizer in this lab is a **teaching approximation** (whitespace-based), NOT the model's real subword tokenizer (BPE/WordPiece). It does not assign token IDs, generate vocabulary embeddings, or simulate GPU memory consumption or cloud inference latency. For actual model inference, use pretrained tokenizers as shown in this chapter.
+
+See the full source and test suite in [`applied-labs/r16-t016/`](applied-labs/r16-t016/) ([README](applied-labs/r16-t016/README.md)).
+

@@ -1,0 +1,35 @@
+test_budget_exceeds_token_count (test_example.TestBoundaryAndEdgeCases.test_budget_exceeds_token_count)
+Budget larger than token count retains all tokens without truncation. ... ok
+test_exact_budget_match (test_example.TestBoundaryAndEdgeCases.test_exact_budget_match)
+Prompt length exactly equal to budget should retain all with zero truncation. ... ok
+test_multiple_whitespace_separators (test_example.TestBoundaryAndEdgeCases.test_multiple_whitespace_separators)
+Consecutive spaces, tabs, and newlines do not produce empty tokens. ... ok
+test_zero_budget (test_example.TestBoundaryAndEdgeCases.test_zero_budget)
+Budget of 0 removes all tokens and retains an empty list. ... ok
+test_corrupted_result_fails_contract_assertion (test_example.TestDeliberateFailure.test_corrupted_result_fails_contract_assertion)
+Injecting a wrong retained token list or count triggers an assertion error. ... ok
+test_baseline_and_refactored_equivalence (test_example.TestRefactoringAndEquivalence.test_baseline_and_refactored_equivalence)
+Compare baseline and refactored implementation across diverse inputs. ... ok
+test_baseline_error_equivalence (test_example.TestRefactoringAndEquivalence.test_baseline_error_equivalence)
+Compare error handling equivalence between baseline and refactored. ... ok
+test_budget_three_with_four_tokens (test_example.TestRequiredContract.test_budget_three_with_four_tokens)
+Budget 3 with 'one two three four' retains [one, two, three] and reports 1 removed token. ... ok
+test_empty_input_retains_none (test_example.TestRequiredContract.test_empty_input_retains_none)
+Empty input retains no tokens and reports zero removed tokens. ... ok
+test_reject_negative_budget (test_example.TestRequiredContract.test_reject_negative_budget)
+A negative budget must raise a ValueError. ... ok
+test_teaching_approximation_flag (test_example.TestRequiredContract.test_teaching_approximation_flag)
+Verify the tokenizer is explicitly tagged as a teaching approximation. ... ok
+test_whitespace_only_input_retains_none (test_example.TestRequiredContract.test_whitespace_only_input_retains_none)
+Whitespace-only input is treated as empty. ... ok
+test_enforcer_invalid_tokens_type (test_example.TestTypeValidation.test_enforcer_invalid_tokens_type)
+TokenBudgetEnforcer.enforce must reject non-list input. ... ok
+test_invalid_budget_type (test_example.TestTypeValidation.test_invalid_budget_type)
+Non-integer budgets (or bool) must raise TypeError. ... ok
+test_invalid_text_type (test_example.TestTypeValidation.test_invalid_text_type)
+Non-string inputs must raise TypeError. ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.000s
+
+OK
