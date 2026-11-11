@@ -1,0 +1,58 @@
+Assignment: R16-T016
+Description: Token-budget preflight — refactor the teaching example
+======================================================================
+Fixture Evaluation & Baseline Equivalence Verification
+======================================================================
+
+[Fixture: budget_3_with_4_tokens] (Standard scenario: Budget 3 with 'one two three four' retains [one,two,three] and reports one removed token)
+  Input       : text='one two three four', budget=3
+  Expected    : {'retained_tokens': ['one', 'two', 'three'], 'removed_tokens': ['four'], 'removed_count': 1, 'total_tokens': 4, 'truncated': True}
+  Actual      : {'retained_tokens': ['one', 'two', 'three'], 'removed_tokens': ['four'], 'removed_count': 1, 'total_tokens': 4, 'truncated': True}
+  Equivalence : baseline == refactored -> True
+  Status      : PASS
+
+[Fixture: empty_input] (Boundary scenario: empty input retains none)
+  Input       : text='', budget=3
+  Expected    : {'retained_tokens': [], 'removed_tokens': [], 'removed_count': 0, 'total_tokens': 0, 'truncated': False}
+  Actual      : {'retained_tokens': [], 'removed_tokens': [], 'removed_count': 0, 'total_tokens': 0, 'truncated': False}
+  Equivalence : baseline == refactored -> True
+  Status      : PASS
+
+[Fixture: whitespace_only_input] (Boundary scenario: whitespace-only string retains none)
+  Input       : text='   \t\n  ', budget=3
+  Expected    : {'retained_tokens': [], 'removed_tokens': [], 'removed_count': 0, 'total_tokens': 0, 'truncated': False}
+  Actual      : {'retained_tokens': [], 'removed_tokens': [], 'removed_count': 0, 'total_tokens': 0, 'truncated': False}
+  Equivalence : baseline == refactored -> True
+  Status      : PASS
+
+[Fixture: exact_budget_match] (Boundary scenario: exact match between prompt length and budget)
+  Input       : text='one two three', budget=3
+  Expected    : {'retained_tokens': ['one', 'two', 'three'], 'removed_tokens': [], 'removed_count': 0, 'total_tokens': 3, 'truncated': False}
+  Actual      : {'retained_tokens': ['one', 'two', 'three'], 'removed_tokens': [], 'removed_count': 0, 'total_tokens': 3, 'truncated': False}
+  Equivalence : baseline == refactored -> True
+  Status      : PASS
+
+[Fixture: budget_exceeds_token_count] (Boundary scenario: budget exceeds token count)
+  Input       : text='one two', budget=5
+  Expected    : {'retained_tokens': ['one', 'two'], 'removed_tokens': [], 'removed_count': 0, 'total_tokens': 2, 'truncated': False}
+  Actual      : {'retained_tokens': ['one', 'two'], 'removed_tokens': [], 'removed_count': 0, 'total_tokens': 2, 'truncated': False}
+  Equivalence : baseline == refactored -> True
+  Status      : PASS
+
+[Fixture: zero_budget] (Boundary scenario: zero budget removes all tokens)
+  Input       : text='alpha beta gamma', budget=0
+  Expected    : {'retained_tokens': [], 'removed_tokens': ['alpha', 'beta', 'gamma'], 'removed_count': 3, 'total_tokens': 3, 'truncated': True}
+  Actual      : {'retained_tokens': [], 'removed_tokens': ['alpha', 'beta', 'gamma'], 'removed_count': 3, 'total_tokens': 3, 'truncated': True}
+  Equivalence : baseline == refactored -> True
+  Status      : PASS
+
+======================================================================
+Negative Budget Rejection:
+  Negative budget (-1) correctly raised ValueError (budget cannot be negative, got -1): PASS
+
+======================================================================
+Deliberate Wrong Result Test Demonstration:
+  Deliberate corrupted result correctly detected as mismatch: PASS
+
+======================================================================
+Final Status: ALL CHECKS PASSED

@@ -1,0 +1,10 @@
+Assignment: R16-T016
+Student: Janhavi Sharma
+Working Branch: student/e26b07f0816/R06-T006
+Platform: macOS-26.6.2-arm64-arm-64bit-Mach-O
+Python Version: 3.14.5 (v3.14.5:5607950ef23, May 10 2026, 07:38:09) [Clang 21.0.0 (clang-2100.0.123.102)]
+Git Version: git version 2.54.0 (Apple Git-157)
+Automated Check Command:
+  python3 -m unittest discover -s chapters/en/chapter2/applied-labs/r16-t016 -p 'test_*.py'
+Evidence Check Command:
+  python3 work/R16-T016/check.py
