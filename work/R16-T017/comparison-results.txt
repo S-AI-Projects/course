@@ -1,0 +1,40 @@
+Assignment: R16-T017
+Comparison: Expected vs Actual Decisions (Published Table)
+======================================================================
+
+Scenario ID: normal_scratch_domain_shift (Normal Scenario: Pretraining from Scratch on Python Code)
+  Expected Decision: TRAIN_NEW_TOKENIZER
+  Actual Decision:   TRAIN_NEW_TOKENIZER
+  Status:            PASS
+  Rationale:         Directly implements Chapter 6, Section 1 ('Introduction'): When pretraining a model from scratch on a corpus from another domain or language (such as Python code or Japanese), using a tokenizer pretrained on standard English is suboptimal because whitespace, indentation, and syntax symbols have completely different semantics. The pipeline must train a brand new tokenizer on the target corpus.
+
+Scenario ID: boundary_minimal_single_sample (Boundary Scenario: Minimal Valid Single-Sample Corpus)
+  Expected Decision: TRAIN_NEW_TOKENIZER
+  Actual Decision:   TRAIN_NEW_TOKENIZER
+  Status:            PASS
+  Rationale:         Illustrates the minimal valid boundary case: A corpus containing exactly one non-empty string. While minimal in size, it meets the structural requirement of a valid text iterator for tokenizer training without raising missing-data or empty-iterator exceptions.
+
+Scenario ID: missing_information_null_corpus (Missing-Information Scenario: Null Corpus Iterator)
+  Expected Decision: REJECT_MISSING_CORPUS
+  Actual Decision:   REJECT_MISSING_CORPUS
+  Status:            PASS
+  Rationale:         Illustrates missing-information failure: Tokenizer training algorithms require text data to compute subword frequencies and discover vocabulary merges. A null or missing corpus provides no text, so the preflight checker must reject the request before invoking tokenizer training routines.
+
+Scenario ID: boundary_matching_domain_fine_tune (Boundary Scenario: Standard Fine-Tuning on Matching Domain)
+  Expected Decision: REUSE_PRETRAINED_TOKENIZER
+  Actual Decision:   REUSE_PRETRAINED_TOKENIZER
+  Status:            PASS
+  Rationale:         Recaps the distinction highlighted in Chapter 6 Section 1: In standard fine-tuning where the downstream task uses the same language as the pretrained checkpoint, reusing the model's pretrained tokenizer is necessary to retain learned token embeddings and model architecture compatibility.
+
+Scenario ID: missing_information_empty_corpus (Missing-Information Scenario: Empty List Corpus)
+  Expected Decision: REJECT_EMPTY_CORPUS
+  Actual Decision:   REJECT_EMPTY_CORPUS
+  Status:            PASS
+  Rationale:         An empty list contains 0 text samples, providing zero vocabulary information. The checker rejects empty corpora before training.
+
+======================================================================
+Deliberate Wrong Decision Demonstration:
+Deliberate wrong decision on scenario normal_scratch_domain_shift (expected REUSE_PRETRAINED_TOKENIZER vs actual TRAIN_NEW_TOKENIZER) correctly triggers failure: PASS (mismatch detected)
+
+======================================================================
+Final Validation Status: ALL CHECKS PASSED
