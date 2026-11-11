@@ -1,0 +1,22 @@
+test_wrong_ok_value_fails (test_example.TestDeliberateFailure.test_wrong_ok_value_fails)
+Asserting ok=True on an invalid manifest must fail. ... ok
+test_duplicate_id_across_splits (test_example.TestDuplicateIDErrors.test_duplicate_id_across_splits) ... ok
+test_duplicate_id_mentions_both_splits (test_example.TestDuplicateIDErrors.test_duplicate_id_mentions_both_splits) ... ok
+test_no_duplicate_different_ids (test_example.TestDuplicateIDErrors.test_no_duplicate_different_ids) ... ok
+test_same_id_within_one_split_no_cross_error (test_example.TestDuplicateIDErrors.test_same_id_within_one_split_no_cross_error) ... ok
+test_parse_valid_jsonl (test_example.TestLoadJsonlFixture.test_parse_valid_jsonl) ... ok
+test_skip_blank_lines (test_example.TestLoadJsonlFixture.test_skip_blank_lines) ... ok
+test_error_contains_split_name (test_example.TestMissingFieldErrors.test_error_contains_split_name) ... ok
+test_missing_all_fields (test_example.TestMissingFieldErrors.test_missing_all_fields) ... ok
+test_missing_id_field (test_example.TestMissingFieldErrors.test_missing_id_field) ... ok
+test_missing_label_line2 (test_example.TestMissingFieldErrors.test_missing_label_line2) ... ok
+test_missing_text_field (test_example.TestMissingFieldErrors.test_missing_text_field) ... ok
+test_empty_manifest_passes (test_example.TestValidManifest.test_empty_manifest_passes) ... ok
+test_result_type (test_example.TestValidManifest.test_result_type) ... ok
+test_valid_manifest_no_errors (test_example.TestValidManifest.test_valid_manifest_no_errors) ... ok
+test_valid_manifest_ok (test_example.TestValidManifest.test_valid_manifest_ok) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.000s
+
+OK
