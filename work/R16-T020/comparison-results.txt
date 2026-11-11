@@ -1,0 +1,33 @@
+Assignment: R16-T020
+Description: Token-budget preflight — scenario assessment
+======================================================================
+Core Contract Verification: Token-Budget Preflight
+======================================================================
+Input Text:      'one two three four'
+Budget:          3
+Expected:        {'retained_tokens': ['one', 'two', 'three'], 'removed_tokens': ['four'], 'removed_count': 1, 'total_tokens': 4, 'truncated': True}
+Actual:          {'retained_tokens': ['one', 'two', 'three'], 'removed_tokens': ['four'], 'removed_count': 1, 'total_tokens': 4, 'truncated': True}
+Core Status:     PASS
+
+======================================================================
+Applied Scenario Assessment Questions:
+======================================================================
+
+[Q1_predict_output] Predict an output
+  Status:    PASS
+  Rationale: In causal language model preflight checks, prefix prompt tokens are preserved in sequence order up to the configured context budget. The remaining token ('loss') is truncated and explicitly reported as 1 removed token so callers can log or reject over-budget generation requests.
+
+[Q2_diagnose_failure] Diagnose a failure
+  Status:    PASS
+  Rationale: A negative budget is mathematically invalid for causal sequence context windows and indicates a caller configuration error. Non-string inputs cannot undergo text tokenization. Raising explicit exceptions immediately prevents silent data corruption or downstream PyTorch tensor dimension errors.
+
+[Q3_boundary_policy] Choose a boundary policy
+  Status:    PASS
+  Rationale: When token count is less than or equal to the budget, zero truncation occurs. For empty input text, no tokens are generated, so zero tokens are retained and zero removed, without raising false-positive truncation warnings.
+
+======================================================================
+Deliberate Wrong Result Demonstration:
+  Deliberate wrong result correctly triggers mismatch: PASS
+
+======================================================================
+Final Validation Status: ALL CHECKS PASSED

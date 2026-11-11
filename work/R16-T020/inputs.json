@@ -1,0 +1,44 @@
+{
+  "task": "R16-T020",
+  "description": "Token-budget preflight — scenario assessment",
+  "chapter_file": "chapters/en/chapter7/6.mdx",
+  "lab_dir": "chapters/en/chapter7/applied-labs/r16-t020",
+  "core_contract": {
+    "text": "one two three four",
+    "budget": 3,
+    "expected": {
+      "retained_tokens": ["one", "two", "three"],
+      "removed_tokens": ["four"],
+      "removed_count": 1,
+      "total_tokens": 4,
+      "truncated": true
+    }
+  },
+  "questions": {
+    "Q1_predict_output": {
+      "topic": "Predict an output",
+      "prompt": "def calculate_loss(predictions, targets): return loss",
+      "budget": 4,
+      "expected_retained": ["def", "calculate_loss(predictions,", "targets):", "return"],
+      "expected_removed": ["loss"],
+      "expected_removed_count": 1,
+      "expected_truncated": true
+    },
+    "Q2_diagnose_failure": {
+      "topic": "Diagnose a failure",
+      "expected_negative_budget_error": "budget cannot be negative",
+      "expected_invalid_text_error": "text must be a str"
+    },
+    "Q3_boundary_policy": {
+      "topic": "Choose a boundary policy",
+      "exact_match_prompt": "one two three",
+      "exact_match_budget": 3,
+      "expected_exact_truncated": false,
+      "expected_exact_removed_count": 0,
+      "empty_prompt": "",
+      "empty_budget": 5,
+      "expected_empty_retained": [],
+      "expected_empty_truncated": false
+    }
+  }
+}
