@@ -1,0 +1,31 @@
+test_all_decisions_valid (test_example.TestBoundaryAndEdgeCases.test_all_decisions_valid)
+Ensure all returned decisions belong to the VALID_DECISIONS set. ... ok
+test_empty_corpus_list_rejected (test_example.TestBoundaryAndEdgeCases.test_empty_corpus_list_rejected)
+Empty list of texts is rejected as REJECT_EMPTY_CORPUS. ... ok
+test_invalid_training_mode_rejected (test_example.TestBoundaryAndEdgeCases.test_invalid_training_mode_rejected)
+Unknown or missing training_mode is rejected as REJECT_INVALID_MODE. ... ok
+test_matching_domain_fine_tune_reuses_tokenizer (test_example.TestBoundaryAndEdgeCases.test_matching_domain_fine_tune_reuses_tokenizer)
+Standard fine-tuning on matching domain decides REUSE_PRETRAINED_TOKENIZER. ... ok
+test_none_facts_rejected (test_example.TestBoundaryAndEdgeCases.test_none_facts_rejected)
+Passing None or non-dict facts returns REJECT_MISSING_CORPUS. ... ok
+test_whitespace_only_corpus_rejected (test_example.TestBoundaryAndEdgeCases.test_whitespace_only_corpus_rejected)
+Corpus containing only whitespace strings is rejected as REJECT_EMPTY_CORPUS. ... ok
+test_check_decision_table_all_pass (test_example.TestDecisionTableChecker.test_check_decision_table_all_pass)
+The checker passes when validating the published SCENARIOS table. ... ok
+test_regression_test_runner (test_example.TestDecisionTableChecker.test_regression_test_runner)
+Every individual published scenario passes the exact regression test. ... ok
+test_deliberate_wrong_decision_fails_checker (test_example.TestDeliberateFailure.test_deliberate_wrong_decision_fails_checker)
+Deliberately changing an expected decision makes check_decision_table return False. ... ok
+test_deliberate_wrong_regression_fails (test_example.TestDeliberateFailure.test_deliberate_wrong_regression_fails)
+Deliberately corrupted regression test expectation returns False. ... ok
+test_boundary_scenario_minimal_corpus (test_example.TestRequiredContract.test_boundary_scenario_minimal_corpus)
+Boundary scenario: Smallest valid single-sample corpus decides TRAIN_NEW_TOKENIZER. ... ok
+test_missing_information_null_corpus (test_example.TestRequiredContract.test_missing_information_null_corpus)
+Missing-information scenario: Null corpus iterator decides REJECT_MISSING_CORPUS. ... ok
+test_normal_scenario_train_new_tokenizer (test_example.TestRequiredContract.test_normal_scenario_train_new_tokenizer)
+Normal scenario: Pretraining from scratch on domain corpus decides TRAIN_NEW_TOKENIZER. ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.000s
+
+OK

@@ -1,0 +1,65 @@
+{
+  "task": "R16-T017",
+  "description": "Worked decision example for Introduction[[introduction]] — worked example with checks",
+  "chapter_file": "chapters/en/chapter6/1.mdx",
+  "lab_dir": "chapters/en/chapter6/applied-labs/r16-t017",
+  "fixtures": {
+    "normal_scratch_domain_shift": {
+      "name": "Normal Scenario: Pretraining from Scratch on Python Code",
+      "input_facts": {
+        "training_mode": "scratch",
+        "corpus_domain": "python_code",
+        "pretrained_domain": "english",
+        "corpus_texts": [
+          "def calculate_loss(predictions, targets):\n    return torch.mean((predictions - targets) ** 2)",
+          "import os\nfrom transformers import AutoTokenizer"
+        ]
+      },
+      "expected_decision": "TRAIN_NEW_TOKENIZER"
+    },
+    "boundary_minimal_single_sample": {
+      "name": "Boundary Scenario: Minimal Valid Single-Sample Corpus",
+      "input_facts": {
+        "training_mode": "scratch",
+        "corpus_domain": "domain_specific",
+        "pretrained_domain": "english",
+        "corpus_texts": [
+          "minimal valid token stream for iterator initialization"
+        ]
+      },
+      "expected_decision": "TRAIN_NEW_TOKENIZER"
+    },
+    "missing_information_null_corpus": {
+      "name": "Missing-Information Scenario: Null Corpus Iterator",
+      "input_facts": {
+        "training_mode": "scratch",
+        "corpus_domain": "python_code",
+        "pretrained_domain": "english",
+        "corpus_texts": null
+      },
+      "expected_decision": "REJECT_MISSING_CORPUS"
+    },
+    "boundary_matching_domain_fine_tune": {
+      "name": "Boundary Scenario: Standard Fine-Tuning on Matching Domain",
+      "input_facts": {
+        "training_mode": "fine_tune",
+        "corpus_domain": "english",
+        "pretrained_domain": "english",
+        "corpus_texts": [
+          "Hugging Face course provides excellent tutorials on Natural Language Processing."
+        ]
+      },
+      "expected_decision": "REUSE_PRETRAINED_TOKENIZER"
+    },
+    "missing_information_empty_corpus": {
+      "name": "Missing-Information Scenario: Empty List Corpus",
+      "input_facts": {
+        "training_mode": "scratch",
+        "corpus_domain": "python_code",
+        "pretrained_domain": "english",
+        "corpus_texts": []
+      },
+      "expected_decision": "REJECT_EMPTY_CORPUS"
+    }
+  }
+}

@@ -17,3 +17,49 @@ Topics we will cover include:
 * How to build a tokenizer from scratch with the 🤗 Tokenizers library and train it on some data
 
 The techniques introduced in this chapter will prepare you for the section in [Chapter 7](/course/chapter7/6) where we look at creating a language model for Python source code. Let's start by looking at what it means to "train" a tokenizer in the first place.
+
+## Applied Lab: Worked Decision Example for Tokenizer Strategy[[applied-lab-worked-decision-example]]
+
+### Lesson connection
+
+As introduced above, deciding whether to reuse an existing tokenizer or train a new one from scratch depends critically on the target corpus domain and training objective. When pretraining on code or domain-specific language from scratch, using an off-the-shelf English tokenizer is suboptimal because whitespace, indentation, and syntax symbols are segmented poorly. Conversely, fine-tuning on a task in the original language reuses the pretrained tokenizer to preserve embedding weights.
+
+The applied lab below provides a deterministic offline decision engine and verification checker representing these principles.
+
+### Published Decision Table
+
+| Scenario ID | Name / Description | Input Facts | Expected Decision | Lesson Rationale |
+|---|---|---|---|---|
+| `normal_scratch_domain_shift` | **Normal Scenario**: Pretraining from scratch on Python Code | `mode="scratch"`, `domain="python_code"`, `corpus=[sample code]` | `TRAIN_NEW_TOKENIZER` | Recaps Section 1: Pretraining from scratch on a new domain requires training a new tokenizer to avoid suboptimal whitespace and vocabulary segmentation. |
+| `boundary_minimal_single_sample` | **Boundary Scenario**: Minimal single-sample corpus | `mode="scratch"`, `corpus=["single text sample"]` | `TRAIN_NEW_TOKENIZER` | Minimal valid input boundary: Exactly one non-empty string sample fulfills the iterator contract for vocabulary training without raising empty-data errors. |
+| `missing_information_null_corpus` | **Missing-Information Scenario**: Null corpus iterator | `mode="scratch"`, `corpus=None` | `REJECT_MISSING_CORPUS` | Missing-information failure: Tokenizer training cannot proceed without text data to discover subword merges. Must reject prior to invoking backend trainers. |
+| `boundary_matching_domain_fine_tune` | **Boundary Scenario**: Standard fine-tuning on matching domain | `mode="fine_tune"`, `domain="english"`, `pretrained="english"` | `REUSE_PRETRAINED_TOKENIZER` | Recaps Chapter 3 / Chapter 6 contrast: In downstream fine-tuning on the same domain, reusing the checkpoint's tokenizer preserves learned embedding alignments. |
+
+### Running the example
+
+```bash
+# Run the decision table check:
+python3 chapters/en/chapter6/applied-labs/r16-t017/example.py
+
+# Run the automated unit tests:
+python3 -m unittest discover -s chapters/en/chapter6/applied-labs/r16-t017 -p "test_*.py" -v
+```
+
+**Expected output:**
+
+```text
+[PASS] Normal Scenario: Pretraining from Scratch on Python Code
+       Expected:  TRAIN_NEW_TOKENIZER
+       Actual:    TRAIN_NEW_TOKENIZER
+[PASS] Boundary Scenario: Minimal Valid Single-Sample Corpus
+       Expected:  TRAIN_NEW_TOKENIZER
+       Actual:    TRAIN_NEW_TOKENIZER
+[PASS] Missing-Information Scenario: Null Corpus Iterator
+       Expected:  REJECT_MISSING_CORPUS
+       Actual:    REJECT_MISSING_CORPUS
+```
+
+> [!WARNING]
+> **SIMULATION NOTE**: This decision engine is a pure Python 3 standard library simulation. It formalizes preflight decisions and validation checks, and does not invoke GPU hardware, heavy native tokenizer binaries, or cloud APIs.
+
+See the full source and test suite in [`applied-labs/r16-t017/`](applied-labs/r16-t017/) ([README](applied-labs/r16-t017/README.md)).
