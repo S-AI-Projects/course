@@ -340,3 +340,60 @@ tokenize("This is not a token.")
 > ⚠️ Our implementation will throw an error if there is an unknown character since we didn't do anything to handle them. GPT-2 doesn't actually have an unknown token (it's impossible to get an unknown character when using byte-level BPE), but this could happen here because we did not include all the possible bytes in the initial vocabulary. This aspect of BPE is beyond the scope of this section, so we've left the details out.
 
 That's it for the BPE algorithm! Next, we'll have a look at WordPiece.
+
+## Applied Lab: One BPE Merge Step — Evaluation Experiment[[applied-lab-bpe-merge-step]]
+
+### Lesson connection
+
+As demonstrated above, the core mechanic of Byte-Pair Encoding is iteratively finding the most frequent adjacent token pair and merging it into a single token across the corpus. Each merge replaces two adjacent tokens with one, reducing the total token count and compressing sequence lengths at the cost of expanding the model vocabulary.
+
+The applied lab below isolates a single discrete BPE merge step and conducts an evaluation experiment comparing sequence compression metrics across three controlled configurations using only the Python 3 standard library.
+
+### What this example does
+
+Applying merge rule `('l', 'o') -> 'lo'` to token sequences:
+
+| Input Tokens | Merge Pair | Expected Output Tokens | Occurrences Merged | Token Reduction |
+|---|---|---|---|---|
+| `['l', 'o', 'w', 'e', 'r']` | `('l', 'o')` | `['lo', 'w', 'e', 'r']` | 1 | 1 |
+| `['c', 'a', 't']` | `('l', 'o')` | `['c', 'a', 't']` | 0 | 0 |
+| `['l', 'o', 'w', 'l', 'o']` | `('l', 'o')` | `['lo', 'w', 'lo']` | 2 | 2 |
+
+Unmatched pairs remain strictly separate, and relative token ordering is strictly preserved.
+
+### Evaluation Experiment (Three Controlled Configurations)
+
+The experiment evaluates sequence length compression and adjacent pair reduction across three input sizes:
+
+| Configuration | Description | Sequences | Tokens (Before $\to$ After) | Compression Ratio | Adjacent Pairs Diff |
+|---|---|---|---|---|---|
+| **Small** | Single word `['l', 'o', 'w', 'e', 'r']` | 1 | 5 $\to$ 4 | 20.00% | 4 $\to$ 3 |
+| **Medium** | Word family (`lower`, `lowest`, `lowering`) | 3 | 19 $\to$ 16 | 15.79% | 16 $\to$ 13 |
+| **Large** | 6 mixed sequences | 6 | 30 $\to$ 25 | 16.67% | 24 $\to$ 19 |
+
+**Observed Trade-Off**: Merging frequent token pairs reduces sequence length linearly with match count, which directly lowers the quadratic computational complexity ($\mathcal{O}(N^2)$) of Transformer self-attention layers. The trade-off is an expansion of vocabulary size (+1 entry per learned merge rule) and increased embedding table size.
+
+### Running the example
+
+```bash
+# Run the evaluation experiment demo:
+python3 chapters/en/chapter6/applied-labs/r16-t019/example.py
+
+# Run the automated unit tests:
+python3 -m unittest discover -s chapters/en/chapter6/applied-labs/r16-t019 -p "test_*.py" -v
+```
+
+**Expected output:**
+
+```text
+--- Core Contract ---
+  Input Tokens: ['l', 'o', 'w', 'e', 'r']
+  Merge Pair:   ('l', 'o')
+  Output:       ['lo', 'w', 'e', 'r']
+  Reduction:    1 token(s)
+```
+
+> [!WARNING]
+> **SIMULATION NOTE**: This experiment is a pure Python 3 standard library pedagogical simulation. It evaluates discrete structural token reduction and pair frequencies, and makes no unsupported claims regarding real-world model accuracy, GPU training latency, or cloud deployment performance.
+
+See the full source and test suite in [`applied-labs/r16-t019/`](applied-labs/r16-t019/) ([README](applied-labs/r16-t019/README.md)).

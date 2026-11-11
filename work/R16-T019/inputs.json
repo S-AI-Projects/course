@@ -1,0 +1,46 @@
+{
+  "task": "R16-T019",
+  "description": "One BPE merge step — evaluation experiment",
+  "chapter_file": "chapters/en/chapter6/5.mdx",
+  "lab_dir": "chapters/en/chapter6/applied-labs/r16-t019",
+  "core_contract": {
+    "input_tokens": ["l", "o", "w", "e", "r"],
+    "merge_pair": ["l", "o"],
+    "expected_tokens": ["lo", "w", "e", "r"],
+    "expected_reduction": 1
+  },
+  "configurations": {
+    "Config_Small_SingleWord": {
+      "corpus": [["l", "o", "w", "e", "r"]],
+      "merge_pair": ["l", "o"],
+      "expected_tokens_before": 5,
+      "expected_tokens_after": 4,
+      "expected_tokens_reduced": 1
+    },
+    "Config_Medium_WordFamily": {
+      "corpus": [
+        ["l", "o", "w", "e", "r"],
+        ["l", "o", "w", "e", "s", "t"],
+        ["l", "o", "w", "e", "r", "i", "n", "g"]
+      ],
+      "merge_pair": ["l", "o"],
+      "expected_tokens_before": 19,
+      "expected_tokens_after": 16,
+      "expected_tokens_reduced": 3
+    },
+    "Config_Large_DiverseCorpus": {
+      "corpus": [
+        ["l", "o", "w", "e", "r"],
+        ["l", "o", "w", "e", "s", "t"],
+        ["l", "o", "w", "e", "r", "i", "n", "g"],
+        ["f", "l", "o", "w"],
+        ["s", "l", "o", "w"],
+        ["c", "a", "t"]
+      ],
+      "merge_pair": ["l", "o"],
+      "expected_tokens_before": 30,
+      "expected_tokens_after": 25,
+      "expected_tokens_reduced": 5
+    }
+  }
+}

@@ -1,0 +1,43 @@
+Assignment: R16-T019
+Description: One BPE merge step — evaluation experiment
+======================================================================
+Core Contract Verification: One BPE Merge Step
+======================================================================
+Input Tokens:       ['l', 'o', 'w', 'e', 'r']
+Merge Pair:         ('l', 'o')
+Expected Tokens:    ['lo', 'w', 'e', 'r']
+Actual Tokens:      ['lo', 'w', 'e', 'r']
+Expected Reduction: 1 | Actual: 1
+Core Status:        PASS
+
+======================================================================
+Evaluation Experiment (Three Controlled Configurations):
+======================================================================
+
+[Config_Small_SingleWord]
+  Sequences:         1
+  Tokens:            5 -> 4 (reduced: 1)
+  Compression Ratio: 20.0%
+  Pairs (adj):       4 -> 3
+  Status:            PASS
+
+[Config_Medium_WordFamily]
+  Sequences:         3
+  Tokens:            19 -> 16 (reduced: 3)
+  Compression Ratio: 15.79%
+  Pairs (adj):       16 -> 13
+  Status:            PASS
+
+[Config_Large_DiverseCorpus]
+  Sequences:         6
+  Tokens:            30 -> 25 (reduced: 5)
+  Compression Ratio: 16.67%
+  Pairs (adj):       24 -> 19
+  Status:            PASS
+
+======================================================================
+Deliberate Wrong Result Demonstration:
+  Deliberate wrong expectation ['lo', 'WRONG_TOKEN', 'e', 'r'] correctly triggers mismatch: PASS
+
+======================================================================
+Final Validation Status: ALL CHECKS PASSED
