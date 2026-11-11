@@ -1,0 +1,29 @@
+test_corrupted_merge_output_fails (test_example.TestDeliberateFailure.test_corrupted_merge_output_fails)
+Asserting wrong tokens after merge triggers an assertion failure. ... ok
+test_corrupted_reduction_count_fails (test_example.TestDeliberateFailure.test_corrupted_reduction_count_fails)
+Asserting wrong reduction count triggers an assertion failure. ... ok
+test_experiment_metric_correctness (test_example.TestEvaluationExperiment.test_experiment_metric_correctness)
+Check mathematical consistency of compression metrics across configs. ... ok
+test_three_configurations_evaluated (test_example.TestEvaluationExperiment.test_three_configurations_evaluated)
+Verify that exactly three controlled configurations are evaluated. ... ok
+test_trade_off_observation (test_example.TestEvaluationExperiment.test_trade_off_observation)
+Verify the trade-off: sequence length decreases with merge count. ... ok
+test_adjacent_pair_counting (test_example.TestPairCountingAndEdgeCases.test_adjacent_pair_counting)
+Count adjacent pairs accurately in a token sequence. ... ok
+test_input_validation (test_example.TestPairCountingAndEdgeCases.test_input_validation)
+Invalid inputs to apply_merge raise TypeError or ValueError. ... ok
+test_multiple_occurrences_in_single_sequence (test_example.TestPairCountingAndEdgeCases.test_multiple_occurrences_in_single_sequence)
+Sequence with multiple targets merges all instances without overlap issues. ... ok
+test_overlapping_identical_pairs (test_example.TestPairCountingAndEdgeCases.test_overlapping_identical_pairs)
+Identical adjacent tokens merge greedily from left to right. ... ok
+test_single_token_and_empty_sequence (test_example.TestPairCountingAndEdgeCases.test_single_token_and_empty_sequence)
+Empty or single-token sequences have zero pairs and cannot be merged. ... ok
+test_lower_merge_lo_produces_lo_w_e_r (test_example.TestRequiredContract.test_lower_merge_lo_produces_lo_w_e_r)
+Tokens [l,o,w,e,r] with merge (l,o) become [lo,w,e,r]; unmatched pairs remain separate. ... ok
+test_unmatched_tokens_remain_separate (test_example.TestRequiredContract.test_unmatched_tokens_remain_separate)
+When merge pair does not occur in sequence, tokens remain unchanged. ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.000s
+
+OK
