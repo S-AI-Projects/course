@@ -1,0 +1,15 @@
+Fixture: valid_two_split
+  Expected : {'ok': True, 'errors': []}
+  Actual   : {'ok': True, 'errors': []}
+  Match    : True
+
+Fixture: missing_label_line2
+  Expected : {'ok': False, 'errors': ["line 2 in split 'train': missing field 'label'"]}
+  Actual   : {'ok': False, 'errors': ["line 2 in split 'train': missing field 'label'"]}
+  Match    : True
+
+Fixture: duplicate_id_across_splits
+  Expected : {'ok': False, 'errors': ["duplicate id 'A' in splits 'train' and 'validation'"]}
+  Actual   : {'ok': False, 'errors': ["duplicate id 'A' in splits 'train' and 'validation'"]}
+  Match    : True
+

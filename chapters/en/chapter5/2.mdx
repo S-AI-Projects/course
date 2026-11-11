@@ -156,3 +156,47 @@ This returns the same `DatasetDict` object obtained above, but saves us the step
 > ✏️ **Try it out!** Pick another dataset hosted on GitHub or the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php) and try loading it both locally and remotely using the techniques introduced above. For bonus points, try loading a dataset that’s stored in a CSV or text format (see the [documentation](https://huggingface.co/docs/datasets/loading#local-and-remote-files) for more information on these formats).
 
 
+## Applied Lab: Dataset Manifest Validation — Offline Service Adapter[[applied-lab-dataset-manifest-validation]]
+
+### Lesson connection
+
+The section above shows how `load_dataset()` validates schema and split provenance when loading local JSONL files — each record must match the expected field set, and split identities (`train`, `validation`, etc.) must remain unambiguous. The applied lab below reproduces those same checks using **only the Python 3 standard library** (no `datasets` package, no network, no GPU).
+
+### What this example does
+
+The lab validates a manifest — a `dict` mapping split names to lists of JSONL records — against three rules:
+
+| Scenario | Input | Expected output |
+|---|---|---|
+| **Valid two-split manifest** | `train` (2 records) + `validation` (1 record), all fields present, unique IDs | `ok=True`, `errors=[]` |
+| **Missing `label` on line 2** | `train` record 2 has no `label` key | `ok=False`, error contains `"line 2 … missing field 'label'"` |
+| **Duplicate ID across splits** | Same `id` in both `train` and `validation` | `ok=False`, error contains `"duplicate id"` and both split names |
+
+### Running the example
+
+```bash
+# Run the demo:
+python3 chapters/en/chapter5/applied-labs/r16-t015/example.py
+
+# Run the full test suite (18 tests):
+python3 -m unittest discover \
+  -s chapters/en/chapter5/applied-labs/r16-t015 \
+  -p "test_*.py" -v
+```
+
+**Expected demo output:**
+
+```text
+[VALID MANIFEST]  ok=True  errors=[]
+[MISSING FIELD]   ok=False  errors=["line 2 in split 'train': missing field 'label'"]
+[DUPLICATE ID]    ok=False  errors=["duplicate id 'A' in splits 'train' and 'validation'"]
+```
+
+### Offline service adapter design
+
+The external dependency (`load_dataset()`) is placed behind a callable interface (`validate_manifest`). A deterministic local adapter (`load_jsonl_fixture`) supplies fixture data without I/O. The same interface can later be swapped for a real-service implementation by providing actual credentials and hardware.
+
+> [!WARNING]
+> **SIMULATION NOTE**: This lab is a pure-Python simulation. It does **not** test real Hub connectivity, streaming, Arrow-backed memory-mapped files, automatic decompression, tokenizer output, or feature encodings. Any such testing requires real service credentials/hardware and is outside the scope of this example.
+
+See the full source and tests in [`applied-labs/r16-t015/`](applied-labs/r16-t015/) ([README](applied-labs/r16-t015/README.md)).
