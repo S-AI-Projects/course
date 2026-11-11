@@ -1,0 +1,33 @@
+test_empty_string (test_example.TestBoundaryAndEdgeCases.test_empty_string)
+Empty string returns empty token list. ... ok
+test_multi_word_text_tokenization (test_example.TestBoundaryAndEdgeCases.test_multi_word_text_tokenization)
+Tokenize sentence composed of words matching contract. ... ok
+test_partial_match_whole_word_unk (test_example.TestBoundaryAndEdgeCases.test_partial_match_whole_word_unk)
+In WordPiece, if any continuation fails, the whole word becomes [UNK]. ... ok
+test_whitespace_only (test_example.TestBoundaryAndEdgeCases.test_whitespace_only)
+Whitespace-only string returns empty token list. ... ok
+test_wrong_token_assertion_fails (test_example.TestDeliberateFailure.test_wrong_token_assertion_fails)
+Injecting an incorrect token list triggers an assertion failure. ... ok
+test_wrong_unk_fallback_fails (test_example.TestDeliberateFailure.test_wrong_unk_fallback_fails)
+Asserting out-of-vocabulary word does not return [UNK] fails. ... ok
+test_direct_exceptions_raised (test_example.TestFailureAndRecovery.test_direct_exceptions_raised)
+Calling encode_word or tokenize_text directly raises standard exceptions. ... ok
+test_empty_vocabulary_rejected (test_example.TestFailureAndRecovery.test_empty_vocabulary_rejected)
+Initializing with an empty vocabulary raises ValueError. ... ok
+test_invalid_type_failure_and_explanation (test_example.TestFailureAndRecovery.test_invalid_type_failure_and_explanation)
+Non-string inputs produce documented ERROR results explaining expected type. ... ok
+test_none_input_failure_and_explanation (test_example.TestFailureAndRecovery.test_none_input_failure_and_explanation)
+None input produces a documented ERROR result with explanation. ... ok
+test_stream_failure_and_recovery (test_example.TestFailureAndRecovery.test_stream_failure_and_recovery)
+Stream processing isolates failures and recovers immediately on the next valid item. ... ok
+test_cat_segmented_to_cat (test_example.TestRequiredContract.test_cat_segmented_to_cat)
+Vocabulary {play,##ing,cat}: cat -> ['cat']. ... ok
+test_dog_segmented_to_unk (test_example.TestRequiredContract.test_dog_segmented_to_unk)
+Vocabulary {play,##ing,cat}: dog -> ['[UNK]']. ... ok
+test_playing_segmented_to_play_and_continuation_ing (test_example.TestRequiredContract.test_playing_segmented_to_play_and_continuation_ing)
+Vocabulary {play,##ing,cat}: playing -> ['play', '##ing']. ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.000s
+
+OK
