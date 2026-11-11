@@ -888,3 +888,59 @@ And that's it -- you now have your own custom training loop for causal language 
 > ✏️ **Try it out!** When running long training experiments it's a good idea to log important metrics using tools such as TensorBoard or Weights & Biases. Add proper logging to the training loop so you can always check how the training is going.
 
 {/if}
+
+## Applied Lab: Token-Budget Preflight — Scenario Assessment[[applied-lab-token-budget-preflight]]
+
+### Lesson connection
+
+In the section above, we trained an autoregressive causal language model on Python source code. When deploying or evaluating such models for code completion, prompt inputs must fit within the model's finite context budget (e.g. `block_size`). Feeding prompts that exceed the budget risks silent truncation or runtime tensor shape mismatches. Performing a preflight check validates prompt length, enforces configured resource budgets, and reports truncation explicitly.
+
+The applied lab below implements this deterministic preflight check and presents three applied scenario assessment questions using only the Python 3 standard library.
+
+### What this example does
+
+The preflight check evaluates prompt length against a configured token budget:
+
+| Scenario | Input | Configured Budget | Retained Tokens | Removed Count | Truncated? |
+|---|---|---|---|---|---|
+| **Core Contract** | `"one two three four"` | 3 | `['one', 'two', 'three']` | 1 (`['four']`) | `True` |
+| **Empty Input** | `""` | 3 | `[]` | 0 | `False` |
+| **Exact Fit** | `"one two three"` | 3 | `['one', 'two', 'three']` | 0 | `False` |
+| **Negative Budget** | `"sample prompt"` | -1 | *Raises `ValueError`* | — | — |
+
+### Applied Scenario Assessment Questions
+
+1. **Predict an output**: For prompt `'def calculate_loss(predictions, targets): return loss'` (5 tokens) with budget 4, exactly 4 prefix tokens are retained and 1 token (`'loss'`) is reported as removed (`truncated=True`).
+2. **Diagnose a failure**: Supplying a negative budget raises `ValueError: budget cannot be negative`; non-string inputs raise `TypeError: text must be a str`, preventing downstream tensor corruption.
+3. **Choose a boundary policy**: When token count $\le$ budget, zero truncation occurs (`truncated=False`, `removed_count=0`). Empty prompts retain `[]` without raising false-positive truncation warnings.
+
+### Running the example
+
+```bash
+# Run the demonstration and question assessment:
+python3 chapters/en/chapter7/applied-labs/r16-t020/example.py
+
+# Run the automated unit tests:
+python3 -m unittest discover -s chapters/en/chapter7/applied-labs/r16-t020 -p "test_*.py" -v
+```
+
+**Expected output:**
+
+```text
+--- Core Contract Verification ---
+  Input: 'one two three four', Budget: 3
+  Retained: ['one', 'two', 'three']
+  Removed:  ['four'] (count=1)
+  Truncated: True
+
+--- Applied Assessment Questions ---
+[PASS] Predict an output (Q1_predict_output)
+[PASS] Diagnose a failure (Q2_diagnose_failure)
+[PASS] Choose a boundary policy (Q3_boundary_policy)
+```
+
+> [!WARNING]
+> **SIMULATION NOTE**: The tokenizer in this lab is a **teaching approximation** (whitespace-based), NOT the model's real BPE tokenizer (e.g. CodeParrot GPT-2). It does not compute subwords, assign numerical vocabulary IDs, or simulate GPU memory footprint or training latency.
+
+See the full source and test suite in [`applied-labs/r16-t020/`](applied-labs/r16-t020/) ([README](applied-labs/r16-t020/README.md)).
+

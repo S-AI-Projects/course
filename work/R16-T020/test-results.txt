@@ -1,0 +1,33 @@
+test_evaluate_all_questions_audit (test_example.TestAppliedQuestions.test_evaluate_all_questions_audit)
+All three applied questions execute and pass their audits. ... ok
+test_question_1_predict_output (test_example.TestAppliedQuestions.test_question_1_predict_output)
+Question 1 executable check passes. ... ok
+test_question_2_diagnose_failure (test_example.TestAppliedQuestions.test_question_2_diagnose_failure)
+Question 2 executable check passes. ... ok
+test_question_3_boundary_policy (test_example.TestAppliedQuestions.test_question_3_boundary_policy)
+Question 3 executable check passes. ... ok
+test_budget_exceeds_token_count (test_example.TestBoundaryAndEdgeCases.test_budget_exceeds_token_count)
+Budget larger than token count retains all tokens. ... ok
+test_exact_budget_match (test_example.TestBoundaryAndEdgeCases.test_exact_budget_match)
+Exact budget match retains all tokens with zero truncation. ... ok
+test_invalid_types (test_example.TestBoundaryAndEdgeCases.test_invalid_types)
+Non-string text and non-integer budgets raise TypeError. ... ok
+test_zero_budget (test_example.TestBoundaryAndEdgeCases.test_zero_budget)
+Zero budget removes all tokens. ... ok
+test_corrupted_result_fails_assertion (test_example.TestDeliberateFailure.test_corrupted_result_fails_assertion)
+Injecting a corrupted result triggers assertion failure. ... ok
+test_budget_three_with_four_tokens (test_example.TestRequiredContract.test_budget_three_with_four_tokens)
+Budget 3 with 'one two three four' retains [one, two, three] and reports 1 removed token. ... ok
+test_empty_input_retains_none (test_example.TestRequiredContract.test_empty_input_retains_none)
+Empty input retains no tokens and reports zero removed tokens. ... ok
+test_reject_negative_budget (test_example.TestRequiredContract.test_reject_negative_budget)
+A negative budget must raise a ValueError. ... ok
+test_teaching_approximation_flag (test_example.TestRequiredContract.test_teaching_approximation_flag)
+Verify the tokenizer is explicitly tagged as a teaching approximation. ... ok
+test_whitespace_only_input_retains_none (test_example.TestRequiredContract.test_whitespace_only_input_retains_none)
+Whitespace-only input retains no tokens. ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.002s
+
+OK
