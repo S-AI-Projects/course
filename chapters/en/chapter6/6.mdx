@@ -357,3 +357,59 @@ tokenize("This is the Hugging Face course!")
 ```
 
 That's it for the WordPiece algorithm! Now let's take a look at Unigram.
+
+## Applied Lab: Greedy Subword Segmentation — Failure and Recovery Example[[applied-lab-greedy-subword-segmentation]]
+
+### Lesson connection
+
+In the sections above, we saw how WordPiece tokenizes text by identifying the longest subword in the vocabulary and prefixing subsequent continuation tokens with `##`. If any continuation token cannot be matched, the whole word falls back to `[UNK]`. In production ingestion pipelines, tokenizers must also handle corrupted, missing, or malformed inputs without crashing or losing downstream state.
+
+The applied lab below implements this deterministic greedy segmentation algorithm alongside an isolated failure-and-recovery mechanism using only the Python 3 standard library.
+
+### What this example does
+
+With vocabulary `{"play", "##ing", "cat", "[UNK]"}`:
+
+| Input | Output Tokens | Explanation |
+|---|---|---|
+| `"playing"` | `["play", "##ing"]` | Longest prefix `"play"` matched, followed by continuation `"##ing"`. |
+| `"cat"` | `["cat"]` | Complete single-word token matched directly. |
+| `"dog"` | `["[UNK]"]` | Prefix not in vocabulary; falls back to whole-word `[UNK]`. |
+| `None` | `status="ERROR"` | Explains `"Missing data: input cannot be None"`. |
+| `12345` | `status="ERROR"` | Explains `"Invalid input type: expected str, got int"`. |
+
+### Failure and Recovery Behavior
+
+When processing input streams, encountering an invalid or missing-data item isolates the error with a diagnostic message and immediately demonstrates recovery on the subsequent valid input (e.g., tokenizing `"playing"` successfully directly following `None`).
+
+### Running the example
+
+```bash
+# Run the demonstration:
+python3 chapters/en/chapter6/applied-labs/r16-t018/example.py
+
+# Run the automated unit tests:
+python3 -m unittest discover -s chapters/en/chapter6/applied-labs/r16-t018 -p "test_*.py" -v
+```
+
+**Expected output:**
+
+```text
+--- Core Contract Verification ---
+  Word: 'playing'  -> Tokens: ['play', '##ing']
+  Word: 'cat'      -> Tokens: ['cat']
+  Word: 'dog'      -> Tokens: ['[UNK]']
+
+--- Failure and Recovery Stream Demonstration ---
+[1] SUCCESS  Input: 'cat'      -> Tokens: ['cat']
+[2] ERROR    Input: None       -> Missing data: input cannot be None (expected str).
+[3] SUCCESS  Input: 'playing'  -> Tokens: ['play', '##ing']
+[4] ERROR    Input: 12345      -> Invalid input type: expected str, got int.
+[5] SUCCESS  Input: 'dog'      -> Tokens: ['[UNK]']
+```
+
+> [!WARNING]
+> **SIMULATION NOTE**: This tokenizer is a pure Python 3 standard library pedagogical simulation of WordPiece greedy longest-prefix segmentation. It does not use compiled Rust tokenizers or external pretrained model weights.
+
+See the full source and test suite in [`applied-labs/r16-t018/`](applied-labs/r16-t018/) ([README](applied-labs/r16-t018/README.md)).
+

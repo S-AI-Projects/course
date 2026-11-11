@@ -1,0 +1,53 @@
+Assignment: R16-T018
+Description: Greedy subword segmentation — failure and recovery example
+======================================================================
+Vocabulary Contract & Failure Recovery Verification
+======================================================================
+
+[Fixture: playing]
+  Input:           'playing'
+  Expected Status: SUCCESS | Actual: SUCCESS
+  Expected Tokens: ['play', '##ing'] | Actual: ['play', '##ing']
+  Status:          PASS
+
+[Fixture: cat]
+  Input:           'cat'
+  Expected Status: SUCCESS | Actual: SUCCESS
+  Expected Tokens: ['cat'] | Actual: ['cat']
+  Status:          PASS
+
+[Fixture: dog]
+  Input:           'dog'
+  Expected Status: SUCCESS | Actual: SUCCESS
+  Expected Tokens: ['[UNK]'] | Actual: ['[UNK]']
+  Status:          PASS
+
+[Fixture: none_missing_data]
+  Input:           None
+  Expected Status: ERROR | Actual: ERROR
+  Expected Tokens: None | Actual: None
+  Diagnostic:      Missing data: input cannot be None (expected str).
+  Status:          PASS
+
+[Fixture: invalid_type_integer]
+  Input:           12345
+  Expected Status: ERROR | Actual: ERROR
+  Expected Tokens: None | Actual: None
+  Diagnostic:      Invalid input type: expected str, got int.
+  Status:          PASS
+
+======================================================================
+Sequential Stream Failure and Recovery Demonstration:
+  Step 1: input='cat'      -> status=SUCCESS (tokens=['cat']) 
+  Step 2: input=None       -> status=ERROR   (tokens=None) 
+  Step 3: input='playing'  -> status=SUCCESS (tokens=['play', '##ing']) [RECOVERED]
+  Step 4: input=12345      -> status=ERROR   (tokens=None) 
+  Step 5: input='dog'      -> status=SUCCESS (tokens=['[UNK]']) [RECOVERED]
+  Stream Recovery Verified: PASS
+
+======================================================================
+Deliberate Wrong Result Test Demonstration:
+  Deliberate wrong expectation ['play', 'WRONG_TOKEN'] correctly triggers mismatch: PASS
+
+======================================================================
+Final Status: ALL CHECKS PASSED

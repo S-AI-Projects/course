@@ -1,0 +1,34 @@
+{
+  "task": "R16-T018",
+  "description": "Greedy subword segmentation — failure and recovery example",
+  "chapter_file": "chapters/en/chapter6/6.mdx",
+  "lab_dir": "chapters/en/chapter6/applied-labs/r16-t018",
+  "vocabulary": ["play", "##ing", "cat", "[UNK]"],
+  "fixtures": {
+    "playing": {
+      "input": "playing",
+      "expected_tokens": ["play", "##ing"],
+      "expected_status": "SUCCESS"
+    },
+    "cat": {
+      "input": "cat",
+      "expected_tokens": ["cat"],
+      "expected_status": "SUCCESS"
+    },
+    "dog": {
+      "input": "dog",
+      "expected_tokens": ["[UNK]"],
+      "expected_status": "SUCCESS"
+    },
+    "none_missing_data": {
+      "input": null,
+      "expected_tokens": null,
+      "expected_status": "ERROR"
+    },
+    "invalid_type_integer": {
+      "input": 12345,
+      "expected_tokens": null,
+      "expected_status": "ERROR"
+    }
+  }
+}
