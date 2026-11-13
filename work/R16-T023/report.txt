@@ -1,0 +1,39 @@
+=== TASK R16-T023 VERIFICATION REPORT ===
+
+Task: R16-T023
+Branch: student/e26b07f0747/R16-T023
+Python Version: 3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]
+Platform: macOS-26.6.2-arm64-arm-64bit-Mach-O
+
+--- Contract Checks ---
+[PASS] Budget 3 with 'one two three four' retains [one, two, three] and reports 1 removed | Actual: {'retained': ['one', 'two', 'three'], 'removed_count': 1, 'is_truncated': True}
+[PASS] Empty input retains none and reports 0 removed | Actual: {'retained': [], 'removed_count': 0, 'is_truncated': False}
+[PASS] Negative budget (-1) is rejected with ValueError | Actual: ValueError (rejected)
+[PASS] Compare Approach 1 (Engine) and Approach 2 (Reference Calc) on identical inputs | Actual: All matched: True
+
+--- Unittest Output ---
+test_boundary_exact_and_under_budget (test_example.TestTokenBudgetPreflight.test_boundary_exact_and_under_budget)
+Verify inputs that fit within the budget are not truncated: ... ok
+test_boundary_zero_budget (test_example.TestTokenBudgetPreflight.test_boundary_zero_budget)
+Budget 0 retains no tokens and reports all tokens as removed. ... ok
+test_cli_main_execution (test_example.TestTokenBudgetPreflight.test_cli_main_execution)
+Verify CLI main entrypoint executes cleanly and produces expected text. ... ok
+test_compare_approaches_identical_results (test_example.TestTokenBudgetPreflight.test_compare_approaches_identical_results)
+Verify that Approach 1 (Engine) and Approach 2 (Reference Calc) ... ok
+test_explicit_expected_result_table (test_example.TestTokenBudgetPreflight.test_explicit_expected_result_table)
+Verify both approaches against an independently defined ... ok
+test_required_contract_budget_3 (test_example.TestTokenBudgetPreflight.test_required_contract_budget_3)
+Verify required contract: ... ok
+test_required_contract_empty_input (test_example.TestTokenBudgetPreflight.test_required_contract_empty_input)
+Verify required contract: ... ok
+test_required_contract_negative_budget_rejected (test_example.TestTokenBudgetPreflight.test_required_contract_negative_budget_rejected)
+Verify required contract: ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.000s
+
+OK
+
+Unittest Return Code: 0
+
+ALL CHECKS PASSED.

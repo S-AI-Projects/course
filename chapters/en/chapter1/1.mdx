@@ -149,6 +149,61 @@ For some languages, the [course YouTube videos](https://youtube.com/playlist?lis
 > [!TIP]
 > Don't see your language in the above table or you'd like to contribute to an existing translation? You can help us translate the course by following the instructions <a href="https://github.com/huggingface/course#translating-the-course-into-your-language">here</a>.
 
+### Applied Lab: Token-budget preflight comparison[[applied-lab-token-budget-preflight]]
+
+Before passing prompts to large language models, practical pipelines perform **preflight checks** to measure prompt length against a configured token budget (context limit), ensuring retained tokens and any truncation are reported transparently.
+
+For a concrete, runnable demonstration comparing a stateful preflight engine with a pure functional reference calculation, see [`chapters/en/chapter1/applied-labs/r16-t023`](applied-labs/r16-t023/README.md).
+
+> [!NOTE]
+> **Teaching Approximation Notice:** The tokenizer in this lab uses deterministic whitespace splitting (`prompt.strip().split()`) as an educational proxy for tokenization. It is a teaching simulation, not a trained model's real subword tokenizer (such as BPE or WordPiece). It requires only standard Python 3 (no GPUs, models, or network calls).
+
+- **Prerequisite Tools:** Python 3 standard library (`unittest`).
+- **Fixture:**
+  - Budget `3` with prompt `"one two three four"` retains `["one", "two", "three"]` and reports 1 removed token (`is_truncated: True`).
+  - Empty input `""` retains `[]` and reports 0 removed tokens (`is_truncated: False`).
+  - Negative budgets (e.g. `-1`) are strictly rejected with `ValueError`.
+
+**Invocation:**
+```bash
+python3 chapters/en/chapter1/applied-labs/r16-t023/example.py
+```
+
+**Expected output:**
+```text
+=== Token-Budget Preflight Inspection ===
+Notice: [TEACHING APPROXIMATION] Whitespace splitting is used here solely as a simple, deterministic educational proxy for tokenization. Production LLMs use learned subword tokenizers (e.g. BPE, WordPiece, Unigram) that split words into subword pieces.
+
+Contract Case 1: Prompt: 'one two three four', Budget: 3
+  Total tokens:   4
+  Retained:       ['one', 'two', 'three']
+  Removed tokens: 1
+  Is truncated:   True
+
+Contract Case 2: Empty input: '', Budget: 3
+  Retained:       []
+  Removed tokens: 0
+
+Contract Case 3: Negative budget rejection (budget = -1)
+  PASS: Correctly rejected negative budget (Token budget cannot be negative: received -1)
+
+=== Comparing Approach 1 (Engine) vs Approach 2 (Reference Calc) ===
+  Input: prompt='one two three four', budget=3 -> Match: True
+  Input: prompt='one two three four', budget=4 -> Match: True
+  Input: prompt='one two three four', budget=5 -> Match: True
+  Input: prompt='one two three four', budget=0 -> Match: True
+  Input: prompt='', budget=3 -> Match: True
+  Input: prompt='   ', budget=2 -> Match: True
+  Input: prompt='alpha beta', budget=1 -> Match: True
+
+All comparison cases agreed identically.
+```
+
+**Automated verification:**
+```bash
+python3 -m unittest discover -s chapters/en/chapter1/applied-labs/r16-t023 -p "test_*.py"
+```
+
 ## Let's go 🚀
 
 Are you ready to roll? In this chapter, you will learn:
