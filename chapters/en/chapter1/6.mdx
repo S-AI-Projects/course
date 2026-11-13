@@ -186,6 +186,57 @@ their local window). This is shown in Figure 2d of the paper, see below for a sa
 Using those attention matrices with less parameters then allows the model to have inputs having a bigger sequence
 length.
 
+### Applied Lab: Capability negotiation invariant and state trace[[applied-lab-capability-negotiation]]
+
+In agentic and client-server Transformer architectures, clients and model servers negotiate supported capabilities (e.g. tools, resources, prompts) through set intersection. Any capability not agreed upon during negotiation is gated and strictly rejected before dispatch.
+
+For a concrete, runnable demonstration tracing intermediate states and verifying system invariants, see [`chapters/en/chapter1/applied-labs/r16-t024`](applied-labs/r16-t024/README.md).
+
+> [!NOTE]
+> **Simulation / Pedagogical Scope:** This lab is a minimal Python standard library simulation illustrating client-server capability negotiation, state transitions, and pre-dispatch feature gating. It requires only standard Python 3 (no GPUs, models, external frameworks, or network RPC).
+
+- **Prerequisite Tools:** Python 3 standard library (`unittest`).
+- **Fixture:**
+  - Client capabilities: `{"tools", "resources"}`
+  - Server capabilities: `{"tools", "prompts"}`
+  - Negotiated set: `{"tools"}`
+  - Dispatch behavior: Invoking `"tools"` succeeds (`DISPATCHED`); invoking `"resources"` is strictly rejected before dispatch (`CapabilityNotNegotiatedError`).
+
+**Invocation:**
+```bash
+python3 chapters/en/chapter1/applied-labs/r16-t024/example.py
+```
+
+**Expected output:**
+```text
+=== Capability Negotiation and Invariant State Trace ===
+Client capabilities: ['resources', 'tools']
+Server capabilities: ['prompts', 'tools']
+
+Negotiated capabilities (Intersection): ['tools']
+
+Attempting to dispatch negotiated capability 'tools'...
+  Result: DISPATCHED for capability 'tools'
+
+Attempting to dispatch unnegotiated capability 'resources'...
+  PASS: 'resources' was rejected before dispatch (Capability 'resources' was not negotiated. Active negotiated set: ['tools'])
+
+State Trace Invariant Check: PASSED
+
+State Trace History:
+  Step 0 [INITIALIZED]: init -> READY
+  Step 1 [CLIENT_REGISTERED]: register_client(['resources', 'tools']) -> OK
+  Step 2 [SERVER_REGISTERED]: register_server(['prompts', 'tools']) -> OK
+  Step 3 [NEGOTIATED]: negotiate() -> SETTLED(['tools'])
+  Step 4 [DISPATCH_EXECUTED]: invoke(tools) -> DISPATCHED
+  Step 5 [DISPATCH_REJECTED]: invoke(resources) -> REJECTED_BEFORE_DISPATCH
+```
+
+**Automated verification:**
+```bash
+python3 -m unittest discover -s chapters/en/chapter1/applied-labs/r16-t024 -p "test_*.py"
+```
+
 ### Axial positional encodings
 
 [Reformer](https://huggingface.co/docs/transformers/model_doc/reformer) uses axial positional encodings: in traditional transformer models, the positional encoding
