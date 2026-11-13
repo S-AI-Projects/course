@@ -1,0 +1,144 @@
+{
+  "environment": {
+    "python_version": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "python_executable": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "task_id": "R16-T024",
+    "branch": "student/e26b07f0747/R16-T024"
+  },
+  "contract_checks": [
+    {
+      "description": "Client {tools, resources}, Server {tools, prompts} negotiates {tools}",
+      "input": {
+        "client": [
+          "resources",
+          "tools"
+        ],
+        "server": [
+          "prompts",
+          "tools"
+        ]
+      },
+      "expected": [
+        "tools"
+      ],
+      "actual": [
+        "tools"
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Calling negotiated capability 'tools' dispatches successfully",
+      "input": "tools",
+      "expected": "DISPATCHED",
+      "actual": "DISPATCHED",
+      "status": "PASS"
+    },
+    {
+      "description": "Calling unnegotiated capability 'resources' rejected before dispatch",
+      "input": "resources",
+      "expected": "CapabilityNotNegotiatedError (rejected before dispatch)",
+      "actual": "REJECTED_BEFORE_DISPATCH",
+      "status": "PASS"
+    },
+    {
+      "description": "State trace invariants hold across all intermediate steps",
+      "input": "negotiator.trace",
+      "expected": true,
+      "actual": true,
+      "status": "PASS"
+    }
+  ],
+  "state_trace": [
+    {
+      "step": 0,
+      "phase": "INITIALIZED",
+      "client_caps": [],
+      "server_caps": [],
+      "negotiated_caps": null,
+      "last_action": "init",
+      "last_status": "READY"
+    },
+    {
+      "step": 1,
+      "phase": "CLIENT_REGISTERED",
+      "client_caps": [
+        "resources",
+        "tools"
+      ],
+      "server_caps": [],
+      "negotiated_caps": null,
+      "last_action": "register_client(['resources', 'tools'])",
+      "last_status": "OK"
+    },
+    {
+      "step": 2,
+      "phase": "SERVER_REGISTERED",
+      "client_caps": [
+        "resources",
+        "tools"
+      ],
+      "server_caps": [
+        "prompts",
+        "tools"
+      ],
+      "negotiated_caps": null,
+      "last_action": "register_server(['prompts', 'tools'])",
+      "last_status": "OK"
+    },
+    {
+      "step": 3,
+      "phase": "NEGOTIATED",
+      "client_caps": [
+        "resources",
+        "tools"
+      ],
+      "server_caps": [
+        "prompts",
+        "tools"
+      ],
+      "negotiated_caps": [
+        "tools"
+      ],
+      "last_action": "negotiate()",
+      "last_status": "SETTLED(['tools'])"
+    },
+    {
+      "step": 4,
+      "phase": "DISPATCH_EXECUTED",
+      "client_caps": [
+        "resources",
+        "tools"
+      ],
+      "server_caps": [
+        "prompts",
+        "tools"
+      ],
+      "negotiated_caps": [
+        "tools"
+      ],
+      "last_action": "invoke(tools)",
+      "last_status": "DISPATCHED"
+    },
+    {
+      "step": 5,
+      "phase": "DISPATCH_REJECTED",
+      "client_caps": [
+        "resources",
+        "tools"
+      ],
+      "server_caps": [
+        "prompts",
+        "tools"
+      ],
+      "negotiated_caps": [
+        "tools"
+      ],
+      "last_action": "invoke(resources)",
+      "last_status": "REJECTED_BEFORE_DISPATCH"
+    }
+  ],
+  "deliberate_failure_check": "PASS (wrong expectation correctly detected)",
+  "unittest_exit_code": 0,
+  "unittest_output": "test_boundary_disjoint_capabilities (test_example.TestCapabilityNegotiation.test_boundary_disjoint_capabilities)\nDisjoint capability sets negotiate to an empty set. ... ok\ntest_boundary_empty_capabilities (test_example.TestCapabilityNegotiation.test_boundary_empty_capabilities)\nEmpty client or server set results in empty negotiated set. ... ok\ntest_cli_main_execution (test_example.TestCapabilityNegotiation.test_cli_main_execution)\nVerify CLI main entrypoint executes cleanly and produces expected text. ... ok\ntest_deliberate_invariant_failure_detected (test_example.TestCapabilityNegotiation.test_deliberate_invariant_failure_detected)\nVerify that tampering with internal state or dispatch log ... ok\ntest_dispatch_before_negotiate_rejected (test_example.TestCapabilityNegotiation.test_dispatch_before_negotiate_rejected)\nAttempting to dispatch before negotiation raises error. ... ok\ntest_required_contract_negotiation_and_rejection (test_example.TestCapabilityNegotiation.test_required_contract_negotiation_and_rejection)\nVerify the core contract: ... ok\ntest_state_trace_progression (test_example.TestCapabilityNegotiation.test_state_trace_progression)\nVerify intermediate states are faithfully captured step-by-step ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.000s\n\nOK\n"
+}
