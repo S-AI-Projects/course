@@ -1,0 +1,106 @@
+{
+  "environment": {
+    "python_version": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "python_executable": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "task_id": "R16-T021",
+    "branch": "student/e26b07f0747/R16-T021"
+  },
+  "contract_checks": [
+    {
+      "description": "Required fixture: playing -> ['play', '##ing']",
+      "input": "playing",
+      "expected": [
+        "play",
+        "##ing"
+      ],
+      "actual": [
+        "play",
+        "##ing"
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Required fixture: cat -> ['cat']",
+      "input": "cat",
+      "expected": [
+        "cat"
+      ],
+      "actual": [
+        "cat"
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Required fixture: dog -> ['[UNK]']",
+      "input": "dog",
+      "expected": [
+        "[UNK]"
+      ],
+      "actual": [
+        "[UNK]"
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Partial match with missing suffix: played -> ['[UNK]']",
+      "input": "played",
+      "expected": [
+        "[UNK]"
+      ],
+      "actual": [
+        "[UNK]"
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Partial match with missing suffix: cats -> ['[UNK]']",
+      "input": "cats",
+      "expected": [
+        "[UNK]"
+      ],
+      "actual": [
+        "[UNK]"
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Compound without ##: playcat -> ['[UNK]']",
+      "input": "playcat",
+      "expected": [
+        "[UNK]"
+      ],
+      "actual": [
+        "[UNK]"
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Boundary: empty string -> []",
+      "input": "",
+      "expected": [],
+      "actual": [],
+      "status": "PASS"
+    },
+    {
+      "description": "Multi-word text: 'playing cat dog' -> ['play', '##ing', 'cat', '[UNK]']",
+      "input": "playing cat dog",
+      "expected": [
+        "play",
+        "##ing",
+        "cat",
+        "[UNK]"
+      ],
+      "actual": [
+        "play",
+        "##ing",
+        "cat",
+        "[UNK]"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "deliberate_failure_check": "PASS (wrong expectation correctly detected)",
+  "unittest_exit_code": 0,
+  "unittest_output": "test_boundary_empty_string (test_example.TestGreedySubwordSegmentation.test_boundary_empty_string)\nEmpty string returns empty token list. ... ok\ntest_custom_continuation_prefix (test_example.TestGreedySubwordSegmentation.test_custom_continuation_prefix)\nTest with an alternative prefix such as '@@'. ... ok\ntest_custom_vocabulary_and_markers (test_example.TestGreedySubwordSegmentation.test_custom_vocabulary_and_markers)\nTest segmentation with a custom vocabulary, continuation prefix, and unk token. ... ok\ntest_main_cli_custom_args (test_example.TestGreedySubwordSegmentation.test_main_cli_custom_args)\nTest main CLI entrypoint with custom arguments. ... ok\ntest_main_cli_default (test_example.TestGreedySubwordSegmentation.test_main_cli_default)\nTest main CLI entrypoint with default arguments. ... ok\ntest_partial_match_failure (test_example.TestGreedySubwordSegmentation.test_partial_match_failure)\nTest words where a prefix matches but continuation subwords fail. ... ok\ntest_required_fixture_normal_cases (test_example.TestGreedySubwordSegmentation.test_required_fixture_normal_cases)\nTest the exact required examples with the fixture vocabulary. ... ok\ntest_required_fixture_unknown_cases (test_example.TestGreedySubwordSegmentation.test_required_fixture_unknown_cases)\nTest completely unknown word. ... ok\ntest_tokenize_text (test_example.TestGreedySubwordSegmentation.test_tokenize_text)\nTest whitespace-separated text tokenization across multiple words. ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 0.000s\n\nOK\n"
+}

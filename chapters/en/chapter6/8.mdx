@@ -304,6 +304,40 @@ wrapped_tokenizer = BertTokenizerFast(tokenizer_object=tokenizer)
 
 You can then use this tokenizer like any other 🤗 Transformers tokenizer. You can save it with the `save_pretrained()` method, or upload it to the Hub with the `push_to_hub()` method.
 
+### Applied Lab: Greedy subword segmentation concept example[[applied-lab-greedy-subword-segmentation]]
+
+To see how the WordPiece model block segments words under the hood using greedy longest-prefix matching, continuation tokens (`##`), and fallback unknown handling (`[UNK]`), see the runnable concept lab in [`chapters/en/chapter6/applied-labs/r16-t021`](applied-labs/r16-t021/README.md).
+
+> [!NOTE]
+> **Simulation / Pedagogical Scope:** This lab is a minimal Python standard library simulation illustrating the discrete subword lookup logic inside a WordPiece model block. It requires only standard Python 3 (no GPUs, cloud services, pretrained weights, or external packages). It deliberately omits pre-tokenization normalization and Rust-accelerated batch operations to keep the underlying algorithmic contract transparent and independently testable.
+
+- **Prerequisite Tools:** Python 3 standard library (`unittest`).
+- **Fixture Vocabulary:** `{"play", "##ing", "cat"}`
+- **Continuation Marker:** `##`
+- **Unknown Token:** `[UNK]`
+
+**Invocation:**
+```bash
+python3 chapters/en/chapter6/applied-labs/r16-t021/example.py
+```
+
+**Expected output:**
+```text
+=== Greedy Subword Segmentation (WordPiece Model Concept) ===
+Vocabulary: ['##ing', 'cat', 'play']
+Continuation prefix: '##'
+Unknown token: '[UNK]'
+------------------------------------------------------------
+'playing' -> ['play', '##ing']
+'cat' -> ['cat']
+'dog' -> ['[UNK]']
+```
+
+**Automated verification:**
+```bash
+python3 -m unittest discover -s chapters/en/chapter6/applied-labs/r16-t021 -p "test_*.py"
+```
+
 Now that we've seen how to build a WordPiece tokenizer, let's do the same for a BPE tokenizer. We'll go a bit faster since you know all the steps, and only highlight the differences.
 
 ## Building a BPE tokenizer from scratch[[building-a-bpe-tokenizer-from-scratch]]
