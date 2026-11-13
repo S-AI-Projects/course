@@ -1,0 +1,47 @@
+=== TASK R16-T022 VERIFICATION REPORT ===
+
+Task: R16-T022
+Branch: student/e26b07f0747/R16-T022
+Python Version: 3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]
+Platform: macOS-26.6.2-arm64-arm-64bit-Mach-O
+
+--- Contract Checks ---
+[PASS] Training [2, None, 4] yields mean 3 | Actual: 3
+[PASS] Transformed training [2, None, 4] -> [2, 3, 4] | Actual: [2, 3, 4]
+[PASS] Validation [100, None] becomes [100, 3], not [100, 100] | Actual: [100, 3]
+[PASS] Smallest valid training [5] -> mean 5; transform [None] -> [5] | Actual: {'mean': 5, 'val_imputed': [5]}
+[PASS] Boundary validation [None, None] -> [3, 3] | Actual: [3, 3]
+[PASS] Boundary decision: all-missing training input [None, None, None] rejected with ValueError | Actual: ValueError (rejected)
+
+--- Unittest Output ---
+test_boundary_validation_cases (test_example.TestTrainingOnlyMeanImputer.test_boundary_validation_cases)
+Verify boundary conditions on the validation split: ... ok
+test_cli_main_execution (test_example.TestTrainingOnlyMeanImputer.test_cli_main_execution)
+Verify CLI main entrypoint executes cleanly and produces expected output. ... ok
+test_fit_transform_method (test_example.TestTrainingOnlyMeanImputer.test_fit_transform_method)
+Verify fit_transform convenience method. ... ok
+test_float_and_negative_numbers (test_example.TestTrainingOnlyMeanImputer.test_float_and_negative_numbers)
+Verify handling of floats, decimals, and negative numbers. ... ok
+test_invalid_all_missing_training_rejected (test_example.TestTrainingOnlyMeanImputer.test_invalid_all_missing_training_rejected)
+Verify boundary decision: ... ok
+test_invalid_empty_training_rejected (test_example.TestTrainingOnlyMeanImputer.test_invalid_empty_training_rejected)
+Empty training input must be rejected with ValueError. ... ok
+test_invalid_types_rejected (test_example.TestTrainingOnlyMeanImputer.test_invalid_types_rejected)
+Non-numeric values (including booleans and strings) raise TypeError. ... ok
+test_required_contract_fixtures (test_example.TestTrainingOnlyMeanImputer.test_required_contract_fixtures)
+Verify the core contract: ... ok
+test_run_pipeline_helper (test_example.TestTrainingOnlyMeanImputer.test_run_pipeline_helper)
+Verify the helper pipeline function on the standard contract. ... ok
+test_smallest_valid_training_cases (test_example.TestTrainingOnlyMeanImputer.test_smallest_valid_training_cases)
+Verify smallest valid training fixtures: ... ok
+test_transform_before_fit_rejected (test_example.TestTrainingOnlyMeanImputer.test_transform_before_fit_rejected)
+Calling transform before fit raises ValueError. ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.000s
+
+OK
+
+Unittest Return Code: 0
+
+ALL CHECKS PASSED.
