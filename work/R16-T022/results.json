@@ -1,0 +1,111 @@
+{
+  "environment": {
+    "python_version": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "python_executable": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "task_id": "R16-T022",
+    "branch": "student/e26b07f0747/R16-T022"
+  },
+  "contract_checks": [
+    {
+      "description": "Training [2, None, 4] yields mean 3",
+      "input": [
+        2,
+        null,
+        4
+      ],
+      "expected": 3,
+      "actual": 3,
+      "status": "PASS"
+    },
+    {
+      "description": "Transformed training [2, None, 4] -> [2, 3, 4]",
+      "input": [
+        2,
+        null,
+        4
+      ],
+      "expected": [
+        2,
+        3,
+        4
+      ],
+      "actual": [
+        2,
+        3,
+        4
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Validation [100, None] becomes [100, 3], not [100, 100]",
+      "input": [
+        100,
+        null
+      ],
+      "expected": [
+        100,
+        3
+      ],
+      "actual": [
+        100,
+        3
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Smallest valid training [5] -> mean 5; transform [None] -> [5]",
+      "input": {
+        "train": [
+          5
+        ],
+        "val": [
+          null
+        ]
+      },
+      "expected": {
+        "mean": 5,
+        "val_imputed": [
+          5
+        ]
+      },
+      "actual": {
+        "mean": 5,
+        "val_imputed": [
+          5
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "description": "Boundary validation [None, None] -> [3, 3]",
+      "input": [
+        null,
+        null
+      ],
+      "expected": [
+        3,
+        3
+      ],
+      "actual": [
+        3,
+        3
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Boundary decision: all-missing training input [None, None, None] rejected with ValueError",
+      "input": [
+        null,
+        null,
+        null
+      ],
+      "expected": "ValueError (rejected)",
+      "actual": "ValueError (rejected)",
+      "status": "PASS"
+    }
+  ],
+  "deliberate_failure_check": "PASS (wrong expectation correctly detected)",
+  "unittest_exit_code": 0,
+  "unittest_output": "test_boundary_validation_cases (test_example.TestTrainingOnlyMeanImputer.test_boundary_validation_cases)\nVerify boundary conditions on the validation split: ... ok\ntest_cli_main_execution (test_example.TestTrainingOnlyMeanImputer.test_cli_main_execution)\nVerify CLI main entrypoint executes cleanly and produces expected output. ... ok\ntest_fit_transform_method (test_example.TestTrainingOnlyMeanImputer.test_fit_transform_method)\nVerify fit_transform convenience method. ... ok\ntest_float_and_negative_numbers (test_example.TestTrainingOnlyMeanImputer.test_float_and_negative_numbers)\nVerify handling of floats, decimals, and negative numbers. ... ok\ntest_invalid_all_missing_training_rejected (test_example.TestTrainingOnlyMeanImputer.test_invalid_all_missing_training_rejected)\nVerify boundary decision: ... ok\ntest_invalid_empty_training_rejected (test_example.TestTrainingOnlyMeanImputer.test_invalid_empty_training_rejected)\nEmpty training input must be rejected with ValueError. ... ok\ntest_invalid_types_rejected (test_example.TestTrainingOnlyMeanImputer.test_invalid_types_rejected)\nNon-numeric values (including booleans and strings) raise TypeError. ... ok\ntest_required_contract_fixtures (test_example.TestTrainingOnlyMeanImputer.test_required_contract_fixtures)\nVerify the core contract: ... ok\ntest_run_pipeline_helper (test_example.TestTrainingOnlyMeanImputer.test_run_pipeline_helper)\nVerify the helper pipeline function on the standard contract. ... ok\ntest_smallest_valid_training_cases (test_example.TestTrainingOnlyMeanImputer.test_smallest_valid_training_cases)\nVerify smallest valid training fixtures: ... ok\ntest_transform_before_fit_rejected (test_example.TestTrainingOnlyMeanImputer.test_transform_before_fit_rejected)\nCalling transform before fit raises ValueError. ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 0.000s\n\nOK\n"
+}

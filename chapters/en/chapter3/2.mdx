@@ -287,6 +287,45 @@ Looking good! Now that we've gone from raw text to batches our model can deal wi
 
 Perfect! Now that we have preprocessed our data with the latest best practices from the 🤗 Datasets library, we're ready to move on to training our model using the modern Trainer API. The next section will show you how to fine-tune your model effectively using the latest features and optimizations available in the Hugging Face ecosystem.
 
+### Applied Lab: Training-only imputation boundary-case example[[applied-lab-training-only-imputation]]
+
+When preparing datasets with multiple splits (`train`, `validation`, `test`), any preprocessing parameters (such as mean/variance scalers, imputation constants, or vocabularies) must be computed exclusively on the training split and applied unchanged to validation/test splits to prevent **data leakage**.
+
+For a concrete, runnable demonstration of fit/transform separation, boundary cases, and invalid input rejection, see [`chapters/en/chapter3/applied-labs/r16-t022`](applied-labs/r16-t022/README.md).
+
+> [!NOTE]
+> **Simulation / Pedagogical Scope:** This lab is a minimal Python standard library simulation illustrating strict fit/transform separation and boundary decisions in missing-value imputation. It requires only standard Python 3 (no GPUs, models, external frameworks, or network access).
+
+- **Prerequisite Tools:** Python 3 standard library (`unittest`).
+- **Fixture:**
+  - Training observations: `[2, None, 4]` $\rightarrow$ fitted mean is `3`.
+  - Validation observations: `[100, None]` $\rightarrow$ imputed as `[100, 3]` (NOT `[100, 100]`).
+  - Boundary decision: All-missing training input (`[None, None]`) is strictly rejected with `ValueError`.
+
+**Invocation:**
+```bash
+python3 chapters/en/chapter3/applied-labs/r16-t022/example.py
+```
+
+**Expected output:**
+```text
+=== Training-Only Mean Imputation (Fit/Transform Separation) ===
+Raw training observations:   [2, None, 4]
+Raw validation observations: [100, None]
+
+Fitted mean from training only: 3
+Imputed training:   [2, 3, 4]
+Imputed validation: [100, 3] (using training mean 3, NOT validation mean 100)
+
+Boundary verification:
+PASS: All-missing training input correctly rejected (All-missing training input is rejected: at least one valid observation is required to compute the training mean.)
+```
+
+**Automated verification:**
+```bash
+python3 -m unittest discover -s chapters/en/chapter3/applied-labs/r16-t022 -p "test_*.py"
+```
+
 ## Section Quiz[[section-quiz]]
 
 Test your understanding of data processing concepts:
