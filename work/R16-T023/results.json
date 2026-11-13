@@ -1,0 +1,81 @@
+{
+  "environment": {
+    "python_version": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "python_executable": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "task_id": "R16-T023",
+    "branch": "student/e26b07f0747/R16-T023"
+  },
+  "contract_checks": [
+    {
+      "description": "Budget 3 with 'one two three four' retains [one, two, three] and reports 1 removed",
+      "input": {
+        "prompt": "one two three four",
+        "budget": 3
+      },
+      "expected": {
+        "retained": [
+          "one",
+          "two",
+          "three"
+        ],
+        "removed_count": 1,
+        "is_truncated": true
+      },
+      "actual": {
+        "retained": [
+          "one",
+          "two",
+          "three"
+        ],
+        "removed_count": 1,
+        "is_truncated": true
+      },
+      "status": "PASS"
+    },
+    {
+      "description": "Empty input retains none and reports 0 removed",
+      "input": {
+        "prompt": "",
+        "budget": 3
+      },
+      "expected": {
+        "retained": [],
+        "removed_count": 0,
+        "is_truncated": false
+      },
+      "actual": {
+        "retained": [],
+        "removed_count": 0,
+        "is_truncated": false
+      },
+      "status": "PASS"
+    },
+    {
+      "description": "Negative budget (-1) is rejected with ValueError",
+      "input": {
+        "budget": -1
+      },
+      "expected": "ValueError (rejected)",
+      "actual": "ValueError (rejected)",
+      "status": "PASS"
+    },
+    {
+      "description": "Compare Approach 1 (Engine) and Approach 2 (Reference Calc) on identical inputs",
+      "input": [
+        "prompt='one two three four', budget=3",
+        "prompt='one two three four', budget=4",
+        "prompt='one two three four', budget=5",
+        "prompt='one two three four', budget=0",
+        "prompt='', budget=3",
+        "prompt='alpha beta gamma', budget=2"
+      ],
+      "expected": "All comparisons return True",
+      "actual": "All matched: True",
+      "status": "PASS"
+    }
+  ],
+  "deliberate_failure_check": "PASS (wrong expectation correctly detected)",
+  "unittest_exit_code": 0,
+  "unittest_output": "test_boundary_exact_and_under_budget (test_example.TestTokenBudgetPreflight.test_boundary_exact_and_under_budget)\nVerify inputs that fit within the budget are not truncated: ... ok\ntest_boundary_zero_budget (test_example.TestTokenBudgetPreflight.test_boundary_zero_budget)\nBudget 0 retains no tokens and reports all tokens as removed. ... ok\ntest_cli_main_execution (test_example.TestTokenBudgetPreflight.test_cli_main_execution)\nVerify CLI main entrypoint executes cleanly and produces expected text. ... ok\ntest_compare_approaches_identical_results (test_example.TestTokenBudgetPreflight.test_compare_approaches_identical_results)\nVerify that Approach 1 (Engine) and Approach 2 (Reference Calc) ... ok\ntest_explicit_expected_result_table (test_example.TestTokenBudgetPreflight.test_explicit_expected_result_table)\nVerify both approaches against an independently defined ... ok\ntest_required_contract_budget_3 (test_example.TestTokenBudgetPreflight.test_required_contract_budget_3)\nVerify required contract: ... ok\ntest_required_contract_empty_input (test_example.TestTokenBudgetPreflight.test_required_contract_empty_input)\nVerify required contract: ... ok\ntest_required_contract_negative_budget_rejected (test_example.TestTokenBudgetPreflight.test_required_contract_negative_budget_rejected)\nVerify required contract: ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.000s\n\nOK\n"
+}
