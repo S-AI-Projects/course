@@ -226,3 +226,33 @@ Let's test what you learned in this chapter!
 		}
 	]}
 />
+
+## Applied example: token-budget preflight state trace[[applied-example-r16-t034]]
+
+This example records the state of a token-budget check after every token and tests an invariant at each step: kept plus dropped equals tokens seen, and kept never exceeds the budget. Whitespace splitting is a teaching approximation, not the model's real tokenizer.
+
+Code, tests and notes: [applied-labs/r16-t034](applied-labs/r16-t034/README.md). It needs only Python 3 and the standard library. Run the snippets from that folder.
+
+```python
+from example import trace_preflight
+steps = trace_preflight("one two three four", 3)["steps"]
+print([step["action"] for step in steps])
+```
+
+```text
+['keep', 'keep', 'keep', 'drop']
+```
+
+```python
+from example import trace_preflight, invariant_problems
+result = trace_preflight("a b c", 1)
+print([step["action"] for step in result["steps"]], result["removed"])
+print(invariant_problems(result, 1))
+```
+
+```text
+['keep', 'drop', 'drop'] 2
+[]
+```
+
+**Limits:** Whitespace splitting is a teaching approximation, not the model's real tokenizer. It is a local, deterministic teaching fixture. It makes no claim about real hardware, cloud service behavior or trained-model performance.
