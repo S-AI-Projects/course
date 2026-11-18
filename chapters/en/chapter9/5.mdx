@@ -64,4 +64,67 @@ gr.Interface.load(
 
 <iframe src="https://course-demos-Remove-bg.hf.space" frameBorder="0" height="550" title="Gradio app" class="container p-0 flex-grow space-iframe" allow="accelerometer; ambient-light-sensor; autoplay; battery; camera; document-domain; encrypted-media; fullscreen; geolocation; gyroscope; layout-animations; legacy-image-formats; magnetometer; microphone; midi; oversized-images; payment; picture-in-picture; publickey-credentials-get; sync-xhr; usb; vr ; wake-lock; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-downloads"></iframe>
 
+### Applied Lab: Hub integrations worked decision example[[applied-lab-hub-integrations]]
+
+Deciding between loading via the Hugging Face Inference API (`huggingface/<model>`) and loading an interactive Space application (`spaces/<space>`) depends on host resource constraints, target artifact type, and required UI parameter customizations.
+
+For a concrete three-scenario worked example featuring a deterministic offline service adapter, decision table, and automated checker, see [`chapters/en/chapter9/applied-labs/r16-t025`](applied-labs/r16-t025/README.md).
+
+> [!NOTE]
+> **Simulation / Pedagogical Scope:** This lab is a minimal Python standard library simulation illustrating the decision logic and routing prefixes for `Interface.load()`. It operates completely offline via a deterministic local adapter without requiring external network connectivity, Hugging Face API tokens, GPU hardware, or model downloads.
+
+- **Prerequisite Tools:** Python 3 standard library (`unittest`).
+- **Fixture Scenarios:**
+  - **Normal**: High-RAM model (`EleutherAI/gpt-j-6B`) on 4GB host $\rightarrow$ `LOAD_HUB_MODEL` (`huggingface/EleutherAI/gpt-j-6B`).
+  - **Boundary**: Full Space demo (`abidlabs/remove-bg`) with webcam override $\rightarrow$ `LOAD_SPACES_APP` (`spaces/abidlabs/remove-bg`).
+  - **Missing Information**: Unspecified artifact type $\rightarrow$ `REJECT_INSUFFICIENT_INFORMATION`.
+
+**Invocation:**
+```bash
+python3 chapters/en/chapter9/applied-labs/r16-t025/example.py
+```
+
+**Expected output:**
+```text
+=== Hugging Face Hub Integrations: Worked Decision Example ===
+
+--- Published Scenarios & Decision Table ---
+
+Scenario: [NORMAL]
+  Facts:    {'artifact_id': 'EleutherAI/gpt-j-6B', 'artifact_type': 'model', 'parameter_count': '6B', 'local_ram_gb': 4, 'network_online': True}
+  Decision: LOAD_HUB_MODEL
+  Prefix:   huggingface/EleutherAI/gpt-j-6B
+  Rationale: The model has 6 billion parameters and requires substantial RAM (~24GB+ in FP32/FP16), exceeding the local 4GB host memory...
+
+Scenario: [BOUNDARY]
+  Facts:    {'artifact_id': 'abidlabs/remove-bg', 'artifact_type': 'space', 'parameter_count': None, 'local_ram_gb': 16, 'custom_input': 'webcam', 'network_online': True}
+  Decision: LOAD_SPACES_APP
+  Prefix:   spaces/abidlabs/remove-bg
+  Rationale: The target is an established, multi-component Space application...
+
+Scenario: [MISSING_INFORMATION]
+  Facts:    {'artifact_id': 'custom-org/unspecified-pkg', 'artifact_type': None, 'parameter_count': None, 'local_ram_gb': 8, 'network_online': True}
+  Decision: REJECT_INSUFFICIENT_INFORMATION
+  Prefix:   None
+  Rationale: The artifact type (model vs. space) is unspecified...
+
+--- Running Decision Table Checker ---
+Checker Status: ALL_PASSED
+  [PASS] normal -> LOAD_HUB_MODEL (huggingface/EleutherAI/gpt-j-6B)
+  [PASS] boundary -> LOAD_SPACES_APP (spaces/abidlabs/remove-bg)
+  [PASS] missing_information -> REJECT_INSUFFICIENT_INFORMATION (None)
+
+--- Unestablished Real-Service Behaviors (Explicit Boundaries) ---
+  1. Network latency, connection timeouts, and DNS resolution failures.
+  2. Hugging Face Inference API rate limits (HTTP 429) and compute quotas.
+  3. Authentication against private repositories using user access tokens (HF_TOKEN).
+  4. Cold-start model loading delays on the remote Inference API.
+  5. Real-time remote Space schema verification and component compatibility.
+```
+
+**Automated verification:**
+```bash
+python3 -m unittest discover -s chapters/en/chapter9/applied-labs/r16-t025 -p "test_*.py"
+```
+
 Now that we've explored a few ways to integrate Gradio with the Hugging Face Hub, let's take a look at some advanced features of the `Interface` class. That's the topic of the next section!

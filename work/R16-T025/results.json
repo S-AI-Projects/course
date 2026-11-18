@@ -1,0 +1,86 @@
+{
+  "environment": {
+    "python_version": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "python_executable": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "task_id": "R16-T025",
+    "branch": "student/e26b07f0747/R16-T025"
+  },
+  "contract_checks": [
+    {
+      "description": "Normal scenario: high-RAM model GPT-J-6B routes to LOAD_HUB_MODEL",
+      "input": {
+        "artifact_id": "EleutherAI/gpt-j-6B",
+        "artifact_type": "model",
+        "parameter_count": "6B",
+        "local_ram_gb": 4,
+        "network_online": true
+      },
+      "expected": {
+        "decision": "LOAD_HUB_MODEL",
+        "prefix": "huggingface/EleutherAI/gpt-j-6B"
+      },
+      "actual": {
+        "decision": "LOAD_HUB_MODEL",
+        "prefix": "huggingface/EleutherAI/gpt-j-6B"
+      },
+      "status": "PASS"
+    },
+    {
+      "description": "Boundary scenario: Spaces demo remove-bg routes to LOAD_SPACES_APP",
+      "input": {
+        "artifact_id": "abidlabs/remove-bg",
+        "artifact_type": "space",
+        "parameter_count": null,
+        "local_ram_gb": 16,
+        "custom_input": "webcam",
+        "network_online": true
+      },
+      "expected": {
+        "decision": "LOAD_SPACES_APP",
+        "prefix": "spaces/abidlabs/remove-bg"
+      },
+      "actual": {
+        "decision": "LOAD_SPACES_APP",
+        "prefix": "spaces/abidlabs/remove-bg"
+      },
+      "status": "PASS"
+    },
+    {
+      "description": "Missing-information scenario: unspecified artifact type rejected before dispatch",
+      "input": {
+        "artifact_id": "custom-org/unspecified-pkg",
+        "artifact_type": null,
+        "parameter_count": null,
+        "local_ram_gb": 8,
+        "network_online": true
+      },
+      "expected": {
+        "decision": "REJECT_INSUFFICIENT_INFORMATION",
+        "prefix": null
+      },
+      "actual": {
+        "decision": "REJECT_INSUFFICIENT_INFORMATION",
+        "prefix": null
+      },
+      "status": "PASS"
+    },
+    {
+      "description": "Decision table checker validates published decision table",
+      "input": "PUBLISHED_DECISION_TABLE",
+      "expected": "ALL_PASSED",
+      "actual": "ALL_PASSED",
+      "status": "PASS"
+    }
+  ],
+  "unestablished_real_service_behaviors": [
+    "Network latency, connection timeouts, and DNS resolution failures.",
+    "Hugging Face Inference API rate limits (HTTP 429) and compute quotas.",
+    "Authentication against private repositories using user access tokens (HF_TOKEN).",
+    "Cold-start model loading delays on the remote Inference API.",
+    "Real-time remote Space schema verification and component compatibility."
+  ],
+  "deliberate_failure_check": "PASS (checker correctly rejected tampered decision)",
+  "unittest_exit_code": 0,
+  "unittest_output": "test_boundary_scenario_space_app (test_example.TestHubIntegrationsDecisionExample.test_boundary_scenario_space_app)\nBoundary scenario: ... ok\ntest_checker_fails_on_deliberately_changed_decision (test_example.TestHubIntegrationsDecisionExample.test_checker_fails_on_deliberately_changed_decision)\nRequirement: The checker MUST fail when a decision is deliberately changed. ... ok\ntest_checker_fails_on_deliberately_changed_prefix (test_example.TestHubIntegrationsDecisionExample.test_checker_fails_on_deliberately_changed_prefix)\nThe checker fails if expected prefix differs from actual. ... ok\ntest_checker_validates_published_table (test_example.TestHubIntegrationsDecisionExample.test_checker_validates_published_table)\nThe checker passes completely on the standard published decision table. ... ok\ntest_cli_main_execution (test_example.TestHubIntegrationsDecisionExample.test_cli_main_execution)\nVerify CLI main entrypoint executes cleanly and produces expected output. ... ok\ntest_missing_information_scenario (test_example.TestHubIntegrationsDecisionExample.test_missing_information_scenario)\nMissing-information scenario: ... ok\ntest_normal_scenario_gpt_j_model (test_example.TestHubIntegrationsDecisionExample.test_normal_scenario_gpt_j_model)\nNormal scenario: ... ok\ntest_unestablished_behaviors_documented (test_example.TestHubIntegrationsDecisionExample.test_unestablished_behaviors_documented)\nVerify explicit list of real-service behaviors not established by mock. ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.000s\n\nOK\n"
+}

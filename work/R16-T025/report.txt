@@ -1,0 +1,46 @@
+=== TASK R16-T025 VERIFICATION REPORT ===
+
+Task: R16-T025
+Branch: student/e26b07f0747/R16-T025
+Python Version: 3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]
+Platform: macOS-26.6.2-arm64-arm-64bit-Mach-O
+
+--- Contract Checks ---
+[PASS] Normal scenario: high-RAM model GPT-J-6B routes to LOAD_HUB_MODEL | Actual: {'decision': 'LOAD_HUB_MODEL', 'prefix': 'huggingface/EleutherAI/gpt-j-6B'}
+[PASS] Boundary scenario: Spaces demo remove-bg routes to LOAD_SPACES_APP | Actual: {'decision': 'LOAD_SPACES_APP', 'prefix': 'spaces/abidlabs/remove-bg'}
+[PASS] Missing-information scenario: unspecified artifact type rejected before dispatch | Actual: {'decision': 'REJECT_INSUFFICIENT_INFORMATION', 'prefix': None}
+[PASS] Decision table checker validates published decision table | Actual: ALL_PASSED
+
+--- Unestablished Real-Service Behaviors ---
+1. Network latency, connection timeouts, and DNS resolution failures.
+2. Hugging Face Inference API rate limits (HTTP 429) and compute quotas.
+3. Authentication against private repositories using user access tokens (HF_TOKEN).
+4. Cold-start model loading delays on the remote Inference API.
+5. Real-time remote Space schema verification and component compatibility.
+
+--- Unittest Output ---
+test_boundary_scenario_space_app (test_example.TestHubIntegrationsDecisionExample.test_boundary_scenario_space_app)
+Boundary scenario: ... ok
+test_checker_fails_on_deliberately_changed_decision (test_example.TestHubIntegrationsDecisionExample.test_checker_fails_on_deliberately_changed_decision)
+Requirement: The checker MUST fail when a decision is deliberately changed. ... ok
+test_checker_fails_on_deliberately_changed_prefix (test_example.TestHubIntegrationsDecisionExample.test_checker_fails_on_deliberately_changed_prefix)
+The checker fails if expected prefix differs from actual. ... ok
+test_checker_validates_published_table (test_example.TestHubIntegrationsDecisionExample.test_checker_validates_published_table)
+The checker passes completely on the standard published decision table. ... ok
+test_cli_main_execution (test_example.TestHubIntegrationsDecisionExample.test_cli_main_execution)
+Verify CLI main entrypoint executes cleanly and produces expected output. ... ok
+test_missing_information_scenario (test_example.TestHubIntegrationsDecisionExample.test_missing_information_scenario)
+Missing-information scenario: ... ok
+test_normal_scenario_gpt_j_model (test_example.TestHubIntegrationsDecisionExample.test_normal_scenario_gpt_j_model)
+Normal scenario: ... ok
+test_unestablished_behaviors_documented (test_example.TestHubIntegrationsDecisionExample.test_unestablished_behaviors_documented)
+Verify explicit list of real-service behaviors not established by mock. ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.000s
+
+OK
+
+Unittest Return Code: 0
+
+ALL CHECKS PASSED.
