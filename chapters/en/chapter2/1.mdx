@@ -22,3 +22,32 @@ Then we'll look at the tokenizer API, which is the other main component of the `
 
 > [!TIP]
 > ⚠️ In order to benefit from all features available with the Model Hub and 🤗 Transformers, we recommend <a href="https://huggingface.co/join">creating an account</a>.
+
+## Applied example: worked decision example for pipeline steps[[applied-example-r16-t039]]
+
+This worked example picks which pipeline step (tokenizer, model or postprocessing) to inspect for a given symptom. Rule sets of three sizes are compared on one small fixture, reporting correctness and the number of comparisons.
+
+Code, tests and notes: [applied-labs/r16-t039](applied-labs/r16-t039/README.md). It needs only Python 3 and the standard library. Run the snippets from that folder.
+
+```python
+from example import decide
+print(decide({"symptom": "raw_logits_shown"}))
+```
+
+```text
+postprocessing
+```
+
+```python
+from example import evaluate, STAGE_FOR_SYMPTOM
+for size in (1, 2, 3):
+    print(evaluate(STAGE_FOR_SYMPTOM[:size]))
+```
+
+```text
+{'rules': 1, 'correct': 3, 'cases': 5, 'comparisons': 4}
+{'rules': 2, 'correct': 4, 'cases': 5, 'comparisons': 7}
+{'rules': 3, 'correct': 5, 'cases': 5, 'comparisons': 9}
+```
+
+**Limits:** The results describe a five-case hand-made fixture only, not real-world model accuracy. It is a local, deterministic teaching fixture. It makes no claim about real hardware, cloud service behavior or trained-model performance.
