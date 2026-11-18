@@ -1,0 +1,39 @@
+=== TASK R16-T026 VERIFICATION REPORT ===
+
+Task: R16-T026
+Branch: student/e26b07f0747/R16-T026
+Python Version: 3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]
+Platform: macOS-26.6.2-arm64-arm-64bit-Mach-O
+
+--- Contract Checks ---
+[PASS] Refactored tokenizer produces expected tokens and spans for '  red   apple ' | Actual: [('red', (2, 5)), ('apple', (8, 13))]
+[PASS] Slice recovery invariant: fixture[2:5] == 'red' and fixture[8:13] == 'apple' | Actual: {'slice_red': 'red', 'slice_apple': 'apple'}
+[PASS] Extracted WhitespaceSpanScanner correctly detects spans [(2, 5), (8, 13)] | Actual: [(2, 5), (8, 13)]
+[PASS] Baseline and refactored implementations produce identical outputs | Actual: True
+
+--- Unittest Output ---
+test_baseline_refactored_equivalence (test_example.TestNormalizationWithOffsets.test_baseline_refactored_equivalence)
+Prove before/after equivalence on the standard fixture and additional strings. ... ok
+test_boundary_empty_and_whitespace_only (test_example.TestNormalizationWithOffsets.test_boundary_empty_and_whitespace_only)
+Verify handling of empty strings and whitespace-only strings. ... ok
+test_boundary_single_word (test_example.TestNormalizationWithOffsets.test_boundary_single_word)
+Verify single word with and without padding. ... ok
+test_cli_main_execution (test_example.TestNormalizationWithOffsets.test_cli_main_execution)
+Verify CLI main entrypoint executes cleanly and produces expected text. ... ok
+test_deliberate_wrong_result_fails (test_example.TestNormalizationWithOffsets.test_deliberate_wrong_result_fails)
+Deliberate wrong expected result triggers failure. ... ok
+test_extracted_scanner_spans (test_example.TestNormalizationWithOffsets.test_extracted_scanner_spans)
+Verify the extracted WhitespaceSpanScanner responsibility independently. ... ok
+test_required_contract_fixture (test_example.TestNormalizationWithOffsets.test_required_contract_fixture)
+Verify the core contract: ... ok
+test_slice_recovery_invariant_universality (test_example.TestNormalizationWithOffsets.test_slice_recovery_invariant_universality)
+Ensure slice recovery invariant text[start:end] == token holds on all outputs. ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.000s
+
+OK
+
+Unittest Return Code: 0
+
+ALL CHECKS PASSED.

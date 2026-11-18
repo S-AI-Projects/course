@@ -99,6 +99,53 @@ Like the GPT-2 tokenizer, this one keeps spaces and replaces them with a specifi
 
 Now that we've seen a little of how some different tokenizers process text, we can start to explore the underlying algorithms themselves. We'll begin with a quick look at the broadly widely applicable SentencePiece; then, over the next three sections, we'll examine how the three main algorithms used for subword tokenization work.
 
+### Applied Lab: Normalization with offsets — refactored teaching example[[applied-lab-normalization-offsets]]
+
+As shown in the pre-tokenization examples above, tokenizers normalize repeated whitespace while preserving exact character offsets (`[start, end)`) pointing back to the original text.
+
+For a hands-on refactoring lab that extracts span offset scanning into a dedicated `WhitespaceSpanScanner` responsibility and proves before/after equivalence on the slice recovery invariant, see [`chapters/en/chapter6/applied-labs/r16-t026`](applied-labs/r16-t026/README.md).
+
+> [!NOTE]
+> **Simulation / Pedagogical Scope:** This lab is a minimal Python standard library implementation illustrating whitespace normalization, offset calculation, and code refactoring. It requires only standard Python 3 (no GPUs, models, or compiled Rust tokenizers).
+
+- **Prerequisite Tools:** Python 3 standard library (`unittest`).
+- **Fixture:**
+  - Input text: `"  red   apple "`
+  - Expected output: `"red"` at `[2, 5)` and `"apple"` at `[8, 13)`.
+  - Slice recovery: `text[2:5] == "red"`, `text[8:13] == "apple"`.
+
+**Invocation:**
+```bash
+python3 chapters/en/chapter6/applied-labs/r16-t026/example.py
+```
+
+**Expected output:**
+```text
+=== Normalization with Offsets: Refactored Teaching Example ===
+Raw Input: '  red   apple ' (length: 14)
+
+1. Baseline Output:
+   token: 'red'    span: [2, 5)
+   token: 'apple'  span: [8, 13)
+
+2. Refactored Output (Extracted WhitespaceSpanScanner):
+   token: 'red'    span: [2, 5)
+   token: 'apple'  span: [8, 13)
+
+3. Equivalence Check: PASSED
+
+4. Slice Recovery Invariant Verification:
+   fixture[2:5] -> 'red' == token 'red': True
+   fixture[8:13] -> 'apple' == token 'apple': True
+
+Slice Recovery Invariant: PASSED
+```
+
+**Automated verification:**
+```bash
+python3 -m unittest discover -s chapters/en/chapter6/applied-labs/r16-t026 -p "test_*.py"
+```
+
 ## SentencePiece[[sentencepiece]]
 
 [SentencePiece](https://github.com/google/sentencepiece) is a tokenization algorithm for the preprocessing of text that you can use with any of the models we will see in the next three sections. It considers the text as a sequence of Unicode characters, and replaces spaces with a special character, `▁`. Used in conjunction with the Unigram algorithm (see [section 7](/course/chapter6/7)), it doesn't even require a pre-tokenization step, which is very useful for languages where the space character is not used (like Chinese or Japanese).

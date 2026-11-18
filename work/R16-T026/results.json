@@ -1,0 +1,99 @@
+{
+  "environment": {
+    "python_version": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "python_executable": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "task_id": "R16-T026",
+    "branch": "student/e26b07f0747/R16-T026"
+  },
+  "contract_checks": [
+    {
+      "description": "Refactored tokenizer produces expected tokens and spans for '  red   apple '",
+      "input": "  red   apple ",
+      "expected": [
+        [
+          "red",
+          [
+            2,
+            5
+          ]
+        ],
+        [
+          "apple",
+          [
+            8,
+            13
+          ]
+        ]
+      ],
+      "actual": [
+        [
+          "red",
+          [
+            2,
+            5
+          ]
+        ],
+        [
+          "apple",
+          [
+            8,
+            13
+          ]
+        ]
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Slice recovery invariant: fixture[2:5] == 'red' and fixture[8:13] == 'apple'",
+      "input": {
+        "slice_red": "fixture[2:5]",
+        "slice_apple": "fixture[8:13]"
+      },
+      "expected": {
+        "slice_red": "red",
+        "slice_apple": "apple"
+      },
+      "actual": {
+        "slice_red": "red",
+        "slice_apple": "apple"
+      },
+      "status": "PASS"
+    },
+    {
+      "description": "Extracted WhitespaceSpanScanner correctly detects spans [(2, 5), (8, 13)]",
+      "input": "  red   apple ",
+      "expected": [
+        [
+          2,
+          5
+        ],
+        [
+          8,
+          13
+        ]
+      ],
+      "actual": [
+        [
+          2,
+          5
+        ],
+        [
+          8,
+          13
+        ]
+      ],
+      "status": "PASS"
+    },
+    {
+      "description": "Baseline and refactored implementations produce identical outputs",
+      "input": "  red   apple ",
+      "expected": true,
+      "actual": true,
+      "status": "PASS"
+    }
+  ],
+  "deliberate_failure_check": "PASS (wrong expected offsets correctly failed match)",
+  "unittest_exit_code": 0,
+  "unittest_output": "test_baseline_refactored_equivalence (test_example.TestNormalizationWithOffsets.test_baseline_refactored_equivalence)\nProve before/after equivalence on the standard fixture and additional strings. ... ok\ntest_boundary_empty_and_whitespace_only (test_example.TestNormalizationWithOffsets.test_boundary_empty_and_whitespace_only)\nVerify handling of empty strings and whitespace-only strings. ... ok\ntest_boundary_single_word (test_example.TestNormalizationWithOffsets.test_boundary_single_word)\nVerify single word with and without padding. ... ok\ntest_cli_main_execution (test_example.TestNormalizationWithOffsets.test_cli_main_execution)\nVerify CLI main entrypoint executes cleanly and produces expected text. ... ok\ntest_deliberate_wrong_result_fails (test_example.TestNormalizationWithOffsets.test_deliberate_wrong_result_fails)\nDeliberate wrong expected result triggers failure. ... ok\ntest_extracted_scanner_spans (test_example.TestNormalizationWithOffsets.test_extracted_scanner_spans)\nVerify the extracted WhitespaceSpanScanner responsibility independently. ... ok\ntest_required_contract_fixture (test_example.TestNormalizationWithOffsets.test_required_contract_fixture)\nVerify the core contract: ... ok\ntest_slice_recovery_invariant_universality (test_example.TestNormalizationWithOffsets.test_slice_recovery_invariant_universality)\nEnsure slice recovery invariant text[start:end] == token holds on all outputs. ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.000s\n\nOK\n"
+}
