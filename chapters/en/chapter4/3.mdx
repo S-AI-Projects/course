@@ -635,3 +635,31 @@ The UI allows you to explore the model files and commits and to see the diff int
 <img src="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter4/diffstf.gif" alt="The diff introduced by the recent commit." width="80%"/>
 </div>
 {/if}
+
+## Applied example: worked decision example for sharing a model[[applied-example-r16-t035]]
+
+This worked example decides whether a model is ready to share. Each of three scenarios has input facts, a decision and a rationale. The hub is reached through a callable, and a deterministic offline adapter stands in for it, so nothing here touches the network.
+
+Code, tests and notes: [applied-labs/r16-t035](applied-labs/r16-t035/README.md). It needs only Python 3 and the standard library. Run the snippets from that folder.
+
+```python
+from example import decide, make_offline_hub
+hub = make_offline_hub()
+print(decide({"repo_id": "student/my-model", "has_weights": True}, hub))
+```
+
+```text
+create_repo_and_push
+```
+
+```python
+from example import decide, make_offline_hub
+hub = make_offline_hub(user=None)
+print(decide({"repo_id": "student/my-model", "has_weights": True}, hub))
+```
+
+```text
+log_in_first
+```
+
+**Limits:** The offline adapter does not establish real login, permissions, repo-name rules, upload limits, network errors or how the real hub behaves today. It is a local, deterministic teaching fixture. It makes no claim about real hardware, cloud service behavior or trained-model performance.
