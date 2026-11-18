@@ -156,3 +156,39 @@ This returns the same `DatasetDict` object obtained above, but saves us the step
 > ✏️ **Try it out!** Pick another dataset hosted on GitHub or the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php) and try loading it both locally and remotely using the techniques introduced above. For bonus points, try loading a dataset that’s stored in a CSV or text format (see the [documentation](https://huggingface.co/docs/datasets/loading#local-and-remote-files) for more information on these formats).
 
 
+
+## Applied example: dataset manifest validation[[applied-example-r16-t031]]
+
+This runnable local example validates a JSONL dataset described by a train/validation manifest. It checks the required id, text and label fields, reports the line number of a missing label, and rejects duplicate ids across splits. The rows are three made-up examples.
+
+Code, tests and notes: [applied-labs/r16-t031](applied-labs/r16-t031/README.md). It needs only Python 3 and the standard library. Run the snippets from that folder.
+
+```python
+from example import build_manifest, validate_dataset, VALID_TRAIN, VALID_VALIDATION
+import tempfile
+with tempfile.TemporaryDirectory() as folder:
+    manifest = build_manifest(folder, VALID_TRAIN, VALID_VALIDATION)
+    print(validate_dataset(manifest))
+```
+
+```text
+{'train': 2, 'validation': 1}
+```
+
+```python
+from example import build_manifest, validate_dataset, ManifestError, VALID_TRAIN, VALID_VALIDATION
+import tempfile
+no_label = [VALID_TRAIN[0], '{"id": "a2", "text": "dull film"}']
+with tempfile.TemporaryDirectory() as folder:
+    manifest = build_manifest(folder, no_label, VALID_VALIDATION)
+    try:
+        validate_dataset(manifest)
+    except ManifestError as err:
+        print(err)
+```
+
+```text
+train line 2: missing required field 'label'
+```
+
+**Limits:** It checks file structure only, not data quality. It does not use the Hub, the datasets library or any model.
