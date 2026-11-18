@@ -226,3 +226,32 @@ Let's test what you learned in this chapter!
 		}
 	]}
 />
+
+## Applied example: token-budget preflight failure and recovery[[applied-example-r16-t038]]
+
+This example shows what happens when a token-budget check gets bad input. A negative budget and a missing prompt each raise a clear error, and a batch runner reports the error and carries on with the next valid input. Whitespace splitting is a teaching approximation, not the model's real tokenizer.
+
+Code, tests and notes: [applied-labs/r16-t038](applied-labs/r16-t038/README.md). It needs only Python 3 and the standard library. Run the snippets from that folder.
+
+```python
+from example import run_batch
+results = run_batch([("one two three four", 3), ("hello", -1)])
+print([item["status"] for item in results])
+print(results[1]["error"])
+```
+
+```text
+['ok', 'error']
+budget must be 0 or more, got -1
+```
+
+```python
+from example import run_batch
+print(run_batch([("hello", -1), ("a b c", 2)])[-1])
+```
+
+```text
+{'request': 2, 'status': 'ok', 'retained': ['a', 'b'], 'removed': 1}
+```
+
+**Limits:** Whitespace splitting is a teaching approximation, not the model's real tokenizer. It is a local, deterministic teaching fixture. It makes no claim about real hardware, cloud service behavior or trained-model performance.
