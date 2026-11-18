@@ -38,3 +38,30 @@ The skills you've developed here - data preprocessing, training configuration, e
 > - Use the 🤗 Hub to find pretrained models that are close to your task for better starting points
 > - Monitor your training with proper evaluation metrics and don't forget to save checkpoints
 > - Leverage the community - share your models and datasets to help others and get feedback on your work
+
+## Applied example: trainable-parameter accounting[[applied-example-r16-t037]]
+
+This worked example counts total and trainable parameters from a small named-parameter manifest and applies a prefix-based freeze rule. A freeze prefix that matches no parameter is reported instead of silently ignored.
+
+Code, tests and notes: [applied-labs/r16-t037](applied-labs/r16-t037/README.md). It needs only Python 3 and the standard library. Run the snippets from that folder.
+
+```python
+from example import account_parameters
+print(account_parameters({"encoder": 100, "head": 20}, ["encoder"]))
+```
+
+```text
+{'total': 120, 'frozen': 100, 'trainable': 20, 'unmatched_prefixes': []}
+```
+
+```python
+from example import account_parameters
+manifest = {"encoder": 100, "head": 20, "decoder": 30}
+print(account_parameters(manifest, ["encoder", "adapter"]))
+```
+
+```text
+{'total': 150, 'frozen': 100, 'trainable': 50, 'unmatched_prefixes': ['adapter']}
+```
+
+**Limits:** The sizes are toy numbers and no real model is loaded. It is a local, deterministic teaching fixture. It makes no claim about real hardware, cloud service behavior or trained-model performance.
