@@ -370,3 +370,31 @@ Test your understanding of the Trainer API and fine-tuning concepts:
 > - `compute_metrics` enables custom evaluation metrics beyond just training loss
 > - Modern features like mixed precision (`fp16=True`) and gradient accumulation can significantly improve training efficiency
 
+
+## Applied example: gradient-accumulation accounting[[applied-example-r16-t040]]
+
+This example schedules optimizer steps for gradient accumulation and handles the final partial group explicitly. Three applied questions follow: predict an output, diagnose a failure and choose a boundary policy, each with a rationale and an executable check.
+
+Code, tests and notes: [applied-labs/r16-t040](applied-labs/r16-t040/README.md). It needs only Python 3 and the standard library. Run the snippets from that folder.
+
+```python
+from example import optimizer_steps
+print(optimizer_steps(10, 4))
+```
+
+```text
+[4, 8, 10]
+```
+
+```python
+from example import optimizer_steps
+print(optimizer_steps(10, 4, "drop"))
+print(optimizer_steps(0, 4))
+```
+
+```text
+[4, 8]
+[]
+```
+
+**Limits:** It only schedules steps. It does not compute gradients or scale losses. It is a local, deterministic teaching fixture. It makes no claim about real hardware, cloud service behavior or trained-model performance.
