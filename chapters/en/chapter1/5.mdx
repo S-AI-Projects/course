@@ -233,3 +233,33 @@ Ready to try your hand at image classification? Check out our complete [image cl
 
 > [!TIP]
 > Notice the parallel between ViT and BERT: both use a special token (<code>[CLS]</code>) to capture the overall representation, both add position information to their embeddings, and both use a Transformer encoder to process the sequence of tokens/patches.
+
+## Applied example: token-budget preflight[[applied-example-r16-t033]]
+
+This example checks a prompt against a token budget using a whitespace tokenizer. It computes the result two ways, by slicing and by counting, and compares both with an expected-result table on identical inputs. Whitespace splitting is a teaching approximation, not the model's real tokenizer.
+
+Code, tests and notes: [applied-labs/r16-t033](applied-labs/r16-t033/README.md). It needs only Python 3 and the standard library. Run the snippets from that folder.
+
+```python
+from example import check_budget
+print(check_budget("one two three four", 3))
+```
+
+```text
+{'retained': ['one', 'two', 'three'], 'removed': 1, 'truncated': True}
+```
+
+```python
+from example import check_budget, check_budget_by_counting
+prompt = "one two three four"
+for budget in (0, 2, 10):
+    print(budget, check_budget(prompt, budget) == check_budget_by_counting(prompt, budget))
+```
+
+```text
+0 True
+2 True
+10 True
+```
+
+**Limits:** Whitespace splitting is a teaching approximation, not the model's real tokenizer. It is a local, deterministic teaching fixture. It makes no claim about real hardware, cloud service behavior or trained-model performance.
