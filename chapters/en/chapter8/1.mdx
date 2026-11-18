@@ -15,3 +15,31 @@ More precisely, in this chapter you will learn:
 - How to write a good issue
 
 None of this is specifically related to 🤗 Transformers or the Hugging Face ecosystem, of course; the lessons from this chapter are applicable to most open source projects!
+
+## Applied example: worked decision example for asking for help[[applied-example-r16-t036]]
+
+This worked example decides whether a help request is ready to post. A baseline version is written first, then one named responsibility is extracted into its own function. The tests show the two versions give the same decisions.
+
+Code, tests and notes: [applied-labs/r16-t036](applied-labs/r16-t036/README.md). It needs only Python 3 and the standard library. Run the snippets from that folder.
+
+```python
+from example import decide_baseline, decide_refactored
+facts = {"has_traceback": True, "has_minimal_example": True, "has_versions": False}
+print(decide_baseline(facts), decide_refactored(facts))
+```
+
+```text
+add_versions_then_post add_versions_then_post
+```
+
+```python
+from example import decide_baseline, decide_refactored
+facts = {"has_traceback": True}
+print(decide_baseline(facts), decide_refactored(facts))
+```
+
+```text
+need_more_information need_more_information
+```
+
+**Limits:** It is a local, deterministic teaching fixture. It makes no claim about real hardware, cloud service behavior or trained-model performance.
