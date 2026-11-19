@@ -27,6 +27,17 @@ For a complete list of components, [see the Gradio docs ](https://gradio.app/doc
 For example, as we saw in the [previous section](/course/chapter9/2),
 instead of passing in `"textbox"` to the `inputs` parameter, you can pass in a `Textbox(lines=7, label="Prompt")` component to create a textbox with 7 lines and a label.
 
+> [!TIP]
+> 🧪 **Applied example: check `fn` before you build the UI.** The [local example](https://github.com/S-AI-Projects/course/tree/main/chapters/en/chapter9/applied-labs/r16-t007) (`chapters/en/chapter9/applied-labs/r16-t007/`) writes the `fn` for `gr.Interface(fn=analyze_text, inputs="text", outputs="json")` and checks its contract without Gradio: one `str` in, `{"word_count": int, "unique_count": int}` out. It needs only Python 3 and its standard library.
+>
+> ```bash
+> python3 chapters/en/chapter9/applied-labs/r16-t007/example.py
+> ```
+>
+> It walks `"red red apple"` step by step to `{'word_count': 3, 'unique_count': 2}`. Empty text returns zeros, and a non-string raises `TypeError`. The worked example in the lab's README is checked by a test, so it always matches the code.
+>
+> **Limits:** Gradio is not run here. Words are whitespace-separated and case-sensitive.
+
 Let's take a look at another example, this time with an `Audio` component.
 
 ## A simple example with audio[[a-simple-example-with-audio]]
