@@ -15,6 +15,17 @@ This wraps up the chapter on building cool ML demos with Gradio - we hope you en
 
 If you'd like to test your understanding of the concepts covered in this chapter, check out the quiz in the next section!
 
+> [!TIP]
+> 🧪 **Applied example: test your callback without the UI or the service (mock).** The function you pass as `fn` to `gr.Interface` can be tested on its own. The [local example](https://github.com/S-AI-Projects/course/tree/main/chapters/en/chapter9/applied-labs/r16-t005) (`chapters/en/chapter9/applied-labs/r16-t005/`) keeps the callback pure, puts the external text service behind a plain `tokenize(text) -> list[str]` callable, and uses a deterministic offline stand-in. It needs only Python 3 and its standard library: no Gradio, no network, no model.
+>
+> ```bash
+> python3 chapters/en/chapter9/applied-labs/r16-t005/example.py
+> ```
+>
+> `"red red apple"` returns `{'word_count': 3, 'unique_count': 2}`, empty text returns zeros, and a non-string input raises `TypeError`.
+>
+> **Limits:** the offline adapter is a mock. It says nothing about a real service's latency, rate limits, authentication or tokenizer, or about Gradio's own UI behaviour.
+
 ## Where to next?[[where-to-next]]
 
 If you want to learn more about Gradio you can
