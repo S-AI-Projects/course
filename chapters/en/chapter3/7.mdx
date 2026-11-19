@@ -25,3 +25,14 @@ In this quiz, you will be asked to select the correct answer from a list of opti
 	width="850"
 	height="450"
 ></iframe>
+
+> [!TIP]
+> 🧪 **Applied example: what an automatic grader can and cannot check (simulation).** The quiz above is graded automatically. The [local example](https://github.com/S-AI-Projects/course/tree/main/chapters/en/chapter3/applied-labs/r16-t004) (`chapters/en/chapter3/applied-labs/r16-t004/`) grades three *fictional* security scenarios from this chapter's workflow (a leaked Hub token, a private dataset pushed by mistake, a phishing sign-in page). Each scenario is written as asset, threat, control and residual risk. It needs only Python 3 and its standard library.
+>
+> ```bash
+> python3 chapters/en/chapter3/applied-labs/r16-t004/example.py
+> ```
+>
+> The complete scenarios get `PASS`, the answer with no asset gets `FAIL`, and the answer whose control targets a different threat gets `REVIEW`. The checker prints its state after each step, and the tests check that the verdict always follows from those states.
+>
+> **Limits:** the checker only verifies structure. Whether an explanation is correct is a job for a human reviewer.
