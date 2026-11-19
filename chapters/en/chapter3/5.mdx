@@ -193,6 +193,17 @@ trainer = Trainer(
 )
 ```
 
+> [!TIP]
+> 🧪 **Applied example: spotting divergence by hand (simulation).** The first overfitting symptom above can be written as one explicit rule: *flag divergence when, between the last two steps, training loss falls and validation loss rises.* The [local example](https://github.com/S-AI-Projects/course/tree/main/chapters/en/chapter3/applied-labs/r16-t001) (`chapters/en/chapter3/applied-labs/r16-t001/`) applies this rule to hand-written loss values. It needs only Python 3 and its standard library: no model, no download, no GPU.
+>
+> ```bash
+> python3 chapters/en/chapter3/applied-labs/r16-t001/example.py
+> ```
+>
+> With training `[0.8, 0.5, 0.3]` and validation `[0.9, 0.6, 0.7]` it prints `divergence on last step: True`. With validation `[0.9, 0.6, 0.4]` (both losses falling) it prints `False`.
+>
+> **Limits:** the numbers are simulated, and a two-step rule is a heuristic, not a diagnosis. A single noisy evaluation can trigger it, which is why `EarlyStoppingCallback` above waits for `early_stopping_patience=3` evaluations before stopping.
+
 #### 2. Underfitting[[underfitting]]
 
 Underfitting occurs when the model is too simple to capture the underlying patterns in the data. This can happen for several reasons:
