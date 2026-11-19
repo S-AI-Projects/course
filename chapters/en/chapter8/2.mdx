@@ -353,3 +353,14 @@ Answer: pytorch, tensorflow, and jax
 ```
 
 Nice, it worked! This is a great example of how useful Stack Overflow can be: by identifying a similar problem, we were able to benefit from the experience of others in the community. However, a search like this won't always yield a relevant answer, so what can you do in such cases? Fortunately, there is a welcoming community of developers on the [Hugging Face forums](https://discuss.huggingface.co/) that can help you out! In the next section, we'll take a look at how you can craft good forum questions that are likely to get answered.
+
+> [!TIP]
+> 🧪 **Applied example: catch input mistakes early with a preflight (simulation).** The forward-pass bug above came from passing the wrong kind of input, and the traceback only revealed it deep inside the library. A *preflight* check validates inputs before the expensive call. The [local example](https://github.com/S-AI-Projects/course/tree/main/chapters/en/chapter8/applied-labs/r16-t010) (`chapters/en/chapter8/applied-labs/r16-t010/`) checks a prompt against a token budget and reports what is kept and what is cut. It needs only Python 3 and its standard library.
+>
+> ```bash
+> python3 chapters/en/chapter8/applied-labs/r16-t010/example.py
+> ```
+>
+> With budget 3, `"one two three four"` keeps `['one', 'two', 'three']` and reports 1 removed token. Empty input keeps nothing, and a negative budget is rejected. Passing a `list` instead of a string fails immediately with `TypeError: prompt must be a str, got list`. The lab ends with three applied questions (predict an output, diagnose a failure, choose a boundary policy), each with an executable check.
+>
+> **Limits:** tokens here are whitespace-separated words, a *teaching approximation*, not a real model tokenizer.
