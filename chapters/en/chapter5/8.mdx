@@ -229,3 +229,14 @@ dataset[0]
 		},
 	]}
 />
+
+> [!TIP]
+> 🧪 **Applied example: a filter function that survives bad rows (simulation).** Question 3 filters a dataset with a function. The [local example](https://github.com/S-AI-Projects/course/tree/main/chapters/en/chapter5/applied-labs/r16-t008) (`chapters/en/chapter5/applied-labs/r16-t008/`) writes a function of the same shape for coordinate records: a teaching geofence with latitude [10, 20] and longitude [70, 80], edges included. It needs only Python 3 and its standard library: no 🤗 Datasets install.
+>
+> ```bash
+> python3 chapters/en/chapter5/applied-labs/r16-t008/example.py
+> ```
+>
+> `(15, 75)` and the corner `(10, 70)` are inside, and `(21, 75)` is outside. A record with latitude 100 is rejected with a clear reason, and the next valid record is still classified normally. Records use named `lat`/`lon` keys, so the order can't be swapped by accident.
+>
+> **Limits:** this is a flat rectangle in degrees, **not a spherical-distance model**, and the coordinates are made-up fixtures.
