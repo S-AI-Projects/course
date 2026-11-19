@@ -162,3 +162,14 @@ If you've ever tried to debug someone else's code, you've probably first tried t
 
 This topic now contains quite a lot of information, and it's written in a way that is much more likely to attract the attention of the community and get a helpful answer. With these basic guidelines, you can now create great topics to find the answers to your 🤗 Transformers questions!
 
+> [!TIP]
+> 🧪 **Applied example: a reproducible error and its report (simulation).** The [local example](https://github.com/S-AI-Projects/course/tree/main/chapters/en/chapter8/applied-labs/r16-t002) (`chapters/en/chapter8/applied-labs/r16-t002/`) copies this section's `IndexError` with a toy "model" that has only 8 position slots, so the failure is small and the same every time. It needs only Python 3 and its standard library: no model, no download.
+>
+> ```bash
+> python3 chapters/en/chapter8/applied-labs/r16-t002/example.py
+> ```
+>
+> With 9 tokens it raises `IndexError: list index out of range` and prints a report with the five things a good post needs: **environment, exact command, expected result, actual result and full traceback**. Removing the 9th token makes it succeed, because 8 tokens fit slots 0–7 exactly. The report contains no environment variables or tokens, and home-directory paths are shortened to `~`.
+>
+> **Limits:** `embed_positions` is a stand-in, not Transformers code. A real model's message, traceback and maximum length differ.
+
