@@ -17,3 +17,14 @@ Topics we will cover include:
 * How to build a tokenizer from scratch with the 🤗 Tokenizers library and train it on some data
 
 The techniques introduced in this chapter will prepare you for the section in [Chapter 7](/course/chapter7/6) where we look at creating a language model for Python source code. Let's start by looking at what it means to "train" a tokenizer in the first place.
+
+> [!TIP]
+> 🧪 **Applied example: reuse or train a new tokenizer? (simulation).** The [local example](https://github.com/S-AI-Projects/course/tree/main/chapters/en/chapter6/applied-labs/r16-t009) (`chapters/en/chapter6/applied-labs/r16-t009/`) turns this page's advice into a three-scenario decision table with a checker. It measures how much of a corpus a toy English word-level tokenizer does not recognise. It needs only Python 3 and its standard library.
+>
+> ```bash
+> python3 chapters/en/chapter6/applied-labs/r16-t009/example.py
+> ```
+>
+> A Japanese sample is entirely unknown, so the decision is `train-new`. A sample exactly at the 1/4 threshold gives `reuse`, and no sample at all gives `need-more-info`. A small experiment compares vocabulary sizes 4, 8 and 16 on the same text (unknown rate 1/2, 1/6 and 0) to show the coverage-versus-size trade-off.
+>
+> **Limits:** the toy tokenizer is not a real subword tokenizer. The numbers illustrate the idea only and say nothing about real-world accuracy.
