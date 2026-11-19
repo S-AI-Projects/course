@@ -93,3 +93,14 @@ model = TFAutoModelForMaskedLM.from_pretrained("camembert-base")
 
 > [!TIP]
 > When using a pretrained model, make sure to check how it was trained, on which datasets, its limits, and its biases. All of this information should be indicated on its model card.
+
+> [!TIP]
+> 🧪 **Applied example: a worked "should I use this checkpoint?" decision (simulation).** The [local example](https://github.com/S-AI-Projects/course/tree/main/chapters/en/chapter4/applied-labs/r16-t006) (`chapters/en/chapter4/applied-labs/r16-t006/`) turns this page's two checks (does the head suit the task, and is there a model card to check) into a three-scenario decision table with a checker. It needs only Python 3 and its standard library: nothing is downloaded.
+>
+> ```bash
+> python3 chapters/en/chapter4/applied-labs/r16-t006/example.py
+> ```
+>
+> `camembert-base` for `fill-mask` gives `use`. The same checkpoint for `text-classification` gives `do-not-use`. With no model card the answer is `need-more-info`. The lab also shows a small refactor: one responsibility moves into its own function, and the tests prove the decisions are identical before and after.
+>
+> **Limits:** the facts are typed in by hand, and the rules are a teaching summary, not a complete model-selection checklist.
