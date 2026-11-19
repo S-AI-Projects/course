@@ -45,6 +45,17 @@ However, LLMs also have important limitations:
 - **Context windows**: They have limited context windows (though this is improving)
 - **Computational resources**: They require significant computational resources
 
+> [!TIP]
+> 🧪 **Applied example: a token-budget preflight (simulation).** Because context windows are limited, it helps to check a prompt's length *before* sending it. The [local example](https://github.com/S-AI-Projects/course/tree/main/chapters/en/chapter1/applied-labs/r16-t003) (`chapters/en/chapter1/applied-labs/r16-t003/`) counts tokens, compares them with a budget, and reports what is kept and what is cut. It checks a step-by-step implementation against an independent slicing calculation and a table of expected results. It needs only Python 3 and its standard library.
+>
+> ```bash
+> python3 chapters/en/chapter1/applied-labs/r16-t003/example.py
+> ```
+>
+> With budget 3, `"one two three four"` keeps `['one', 'two', 'three']` and reports 1 removed token. Empty input keeps nothing, and a negative budget is rejected.
+>
+> **Limits:** tokens here are whitespace-separated words, a *teaching approximation*. Real models use subword tokenizers, so their token counts differ.
+
 ## Why is language processing challenging?[[why-is-it-challenging]]
 
 Computers don't process information in the same way as humans. For example, when we read the sentence "I am hungry," we can easily understand its meaning. Similarly, given two sentences such as "I am hungry" and "I am sad," we're able to easily determine how similar they are. For machine learning (ML) models, such tasks are more difficult. The text needs to be processed in a way that enables the model to learn from it. And because language is complex, we need to think carefully about how this processing must be done. There has been a lot of research done on how to represent text, and we will look at some methods in the next chapter.
