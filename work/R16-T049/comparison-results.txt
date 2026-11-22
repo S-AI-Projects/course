@@ -1,0 +1,46 @@
+Assignment: R16-T049
+Comparison: Expected vs Actual Results & Experiment Audits
+============================================================
+
+Scenario: normal_red_red_apple
+Input: 'red red apple'
+Expected: {'word_count': 3, 'unique_count': 2}
+Actual:   {'word_count': 3, 'unique_count': 2}
+Status: PASS
+
+Scenario: boundary_empty_string
+Input: ''
+Expected: {'word_count': 0, 'unique_count': 0}
+Actual:   {'word_count': 0, 'unique_count': 0}
+Status: PASS
+
+Scenario: boundary_whitespace_string
+Input: '   \n\t  '
+Expected: {'word_count': 0, 'unique_count': 0}
+Actual:   {'word_count': 0, 'unique_count': 0}
+Status: PASS
+
+Scenario: failure_nonstring_none
+Input: None
+Expected Exception: TypeError
+Actual Exception: TypeError (Input must be a string, got NoneType)
+Status: PASS
+
+Scenario: failure_nonstring_int
+Input: 12345
+Expected Exception: TypeError
+Actual Exception: TypeError (Input must be a string, got int)
+Status: PASS
+
+============================================================
+Controlled Input Size Evaluation Experiment:
+  [small_sentence] Words: 3, Unique: 2, Ratio: 0.6667, Latency: 0.000001s | Correct: True
+  [medium_sentence] Words: 10, Unique: 9, Ratio: 0.9, Latency: 0.000001s | Correct: True
+  [large_paragraph] Words: 25, Unique: 23, Ratio: 0.92, Latency: 0.000003s | Correct: True
+
+============================================================
+Deliberate Wrong Result Test Demonstration:
+Deliberate wrong assertion (expected {'word_count': 999, 'unique_count': 999} vs actual {'word_count': 3, 'unique_count': 2}) correctly detected: PASS
+
+============================================================
+Final Validation Status: ALL CHECKS PASSED
