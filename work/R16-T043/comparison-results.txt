@@ -1,0 +1,42 @@
+Assignment: R16-T043
+Comparison: Expected vs Actual Results
+============================================================
+
+Scenario: contract_char_5_maps_to_token_1 (For 'red apple', spans [0,3],[4,9] map character 5 to token 1)
+Text: 'red apple', Spans: [(0, 3), (4, 9)]
+Char Index: 5 ('p')
+Expected Token: 1
+Actual Token:   1
+Status: PASS
+
+Scenario: contract_separating_space_maps_to_none (Separating space at character 3 maps to no token (None))
+Text: 'red apple', Spans: [(0, 3), (4, 9)]
+Char Index: 3 (' ')
+Expected Token: None
+Actual Token:   None
+Status: PASS
+
+Scenario: approach_comparison_red_apple (Approach 1 vs Approach 2 on 'red apple' identical comparison)
+Text: 'red apple', Spans: [(0, 3), (4, 9)]
+Expected Approach Match: True
+Actual Approach Match:   True
+Status: PASS
+
+Scenario: approach_comparison_multi_token (Approach 1 vs Approach 2 on multi-token sentence)
+Text: '  quick brown fox  ', Spans: [(2, 7), (8, 13), (14, 17)]
+Expected Approach Match: True
+Actual Approach Match:   True
+Status: PASS
+
+Scenario: invalid_overlapping_spans_rejected (Overlapping spans rejected with ValueError)
+Text: 'hello world', Spans: [(0, 6), (5, 11)]
+Expected Exception: ValueError
+Actual Exception: ValueError (Overlapping or out-of-order span [5, 11) with previous end 6)
+Status: PASS
+
+============================================================
+Deliberate Wrong Result Test Demonstration:
+Deliberate wrong assertion (expected 0 vs actual 1) correctly detected: PASS (mismatch caught)
+
+============================================================
+Final Validation Status: ALL CHECKS PASSED

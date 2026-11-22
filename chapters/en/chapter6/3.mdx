@@ -462,3 +462,39 @@ And we get the same results as with our second pipeline!
 ```
 
 Another example of a task where these offsets are extremely useful is question answering. Diving into that pipeline, which we'll do in the next section, will also enable us to take a look at one last feature of the tokenizers in the 🤗 Transformers library: dealing with overflowing tokens when we truncate an input to a given length.
+
+## Applied Lab: Token-to-Character Alignment (Compare Two Approaches)[[applied-lab-token-to-character-alignment]]
+
+### Related Concept: Character Offsets, Half-Open Intervals, and Alignment
+
+Fast tokenizers track the relationship between tokens and character slices using half-open intervals `[start, end)`. These character offsets enable pinpointing exact substring boundaries in raw texts, bridging predictions back to original character indices. Characters falling in whitespace or delimiter gaps outside tokens naturally map to no token (`None`).
+
+The applied lab in [`applied-labs/r16-t043/example.py`](applied-labs/r16-t043/example.py) (with unit tests in [`applied-labs/r16-t043/test_example.py`](applied-labs/r16-t043/test_example.py) and documentation in [`applied-labs/r16-t043/README.md`](applied-labs/r16-t043/README.md)) implements a deterministic local model of this alignment.
+
+### Invocation, Fixtures, and Expected Output
+
+```python
+from example import TokenSpanAlignment, compare_alignment_approaches
+
+# For text "red apple" with non-overlapping spans [0, 3) and [4, 9)
+text = "red apple"
+spans = [(0, 3), (4, 9)]
+aligner = TokenSpanAlignment(text, spans)
+
+# Character 5 ('p' in 'apple') maps to token 1
+aligner.char_to_token(5)
+# Expected: 1
+
+# Separating space at index 3 maps to no token
+aligner.char_to_token(3)
+# Expected: None
+
+# Compare Approach 1 (direct interval search) with Approach 2 (dense character map)
+matches, _ = compare_alignment_approaches(text, spans)
+# Expected: True (both approaches produce identical mappings)
+```
+
+### Simulation Scope & Simplifications
+> [!NOTE]
+> **Simulation Scope**: This lab provides a pure Python standard library fixture for understanding offset intervals and character-to-token projection. It does not require downloading pre-trained tokenizers, compiling Rust backends, or running GPU hardware.
+

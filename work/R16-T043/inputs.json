@@ -1,0 +1,90 @@
+[
+  {
+    "scenario": "contract_char_5_maps_to_token_1",
+    "description": "For 'red apple', spans [0,3],[4,9] map character 5 to token 1",
+    "text": "red apple",
+    "spans": [
+      [
+        0,
+        3
+      ],
+      [
+        4,
+        9
+      ]
+    ],
+    "query_char_index": 5,
+    "expected_token_index": 1
+  },
+  {
+    "scenario": "contract_separating_space_maps_to_none",
+    "description": "Separating space at character 3 maps to no token (None)",
+    "text": "red apple",
+    "spans": [
+      [
+        0,
+        3
+      ],
+      [
+        4,
+        9
+      ]
+    ],
+    "query_char_index": 3,
+    "expected_token_index": null
+  },
+  {
+    "scenario": "approach_comparison_red_apple",
+    "description": "Approach 1 vs Approach 2 on 'red apple' identical comparison",
+    "text": "red apple",
+    "spans": [
+      [
+        0,
+        3
+      ],
+      [
+        4,
+        9
+      ]
+    ],
+    "query_char_index": "ALL",
+    "expected_approach_match": true
+  },
+  {
+    "scenario": "approach_comparison_multi_token",
+    "description": "Approach 1 vs Approach 2 on multi-token sentence",
+    "text": "  quick brown fox  ",
+    "spans": [
+      [
+        2,
+        7
+      ],
+      [
+        8,
+        13
+      ],
+      [
+        14,
+        17
+      ]
+    ],
+    "query_char_index": "ALL",
+    "expected_approach_match": true
+  },
+  {
+    "scenario": "invalid_overlapping_spans_rejected",
+    "description": "Overlapping spans rejected with ValueError",
+    "text": "hello world",
+    "spans": [
+      [
+        0,
+        6
+      ],
+      [
+        5,
+        11
+      ]
+    ],
+    "expected_exception": "ValueError"
+  }
+]
