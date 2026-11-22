@@ -1,0 +1,79 @@
+[
+  {
+    "scenario": "normal_truncation",
+    "description": "Budget 3 with 'one two three four' retains ['one', 'two', 'three'] and reports 1 removed token",
+    "input": {
+      "prompt": "one two three four",
+      "budget": 3
+    },
+    "expected_output": {
+      "retained": [
+        "one",
+        "two",
+        "three"
+      ],
+      "removed_count": 1,
+      "is_truncated": true,
+      "total_tokens": 4
+    },
+    "expected_exception": null
+  },
+  {
+    "scenario": "boundary_empty",
+    "description": "Empty input retains [] and reports 0 removed tokens",
+    "input": {
+      "prompt": "",
+      "budget": 3
+    },
+    "expected_output": {
+      "retained": [],
+      "removed_count": 0,
+      "is_truncated": false,
+      "total_tokens": 0
+    },
+    "expected_exception": null
+  },
+  {
+    "scenario": "boundary_whitespace",
+    "description": "Whitespace-only input retains [] and reports 0 removed tokens",
+    "input": {
+      "prompt": "   \n\t   ",
+      "budget": 3
+    },
+    "expected_output": {
+      "retained": [],
+      "removed_count": 0,
+      "is_truncated": false,
+      "total_tokens": 0
+    },
+    "expected_exception": null
+  },
+  {
+    "scenario": "failure_negative_budget",
+    "description": "Reject a negative budget with ValueError",
+    "input": {
+      "prompt": "one two three",
+      "budget": -1
+    },
+    "expected_output": null,
+    "expected_exception": "ValueError"
+  },
+  {
+    "scenario": "within_budget_no_truncation",
+    "description": "Prompt within budget retains all tokens without truncation",
+    "input": {
+      "prompt": "one two",
+      "budget": 3
+    },
+    "expected_output": {
+      "retained": [
+        "one",
+        "two"
+      ],
+      "removed_count": 0,
+      "is_truncated": false,
+      "total_tokens": 2
+    },
+    "expected_exception": null
+  }
+]

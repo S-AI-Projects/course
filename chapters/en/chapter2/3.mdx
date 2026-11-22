@@ -295,3 +295,46 @@ output = model(model_inputs)
 
 While the model accepts a lot of different arguments, only the input IDs are necessary. We'll explain what the other arguments do and when they are required later, 
 but first we need to take a closer look at the tokenizers that build the inputs that a Transformer model can understand.
+
+## Applied Lab: Token-Budget Preflight[[applied-lab-token-budget-preflight]]
+
+### Related Concept: Token Boundaries, Resource Budgets, and Preflight Reporting
+
+Every Transformer model operates under a fixed context window and resource budget (such as BERT's 512-token limit). In production pipelines, before feeding sequences into model tokenizers and constructing multi-dimensional tensors, a **preflight check** is performed against a configured token budget. This guarantees predictable memory usage, avoids unexpected sequence truncation downstream, and provides explicit reporting of retained versus dropped tokens.
+
+The applied lab in [`applied-labs/r16-t041/example.py`](applied-labs/r16-t041/example.py) (with unit tests in [`applied-labs/r16-t041/test_example.py`](applied-labs/r16-t041/test_example.py) and documentation in [`applied-labs/r16-t041/README.md`](applied-labs/r16-t041/README.md)) implements a minimal, deterministic local example of this preflight mechanism.
+
+### Invocation, Fixtures, and Expected Output
+
+```python
+from example import TokenBudgetPreflight
+
+# Configure a preflight engine with a token budget of 3
+preflight = TokenBudgetPreflight(budget=3)
+
+# Normal scenario: Prompt exceeding budget reports retained tokens and truncation count
+report = preflight.check("one two three four")
+# report.retained -> ['one', 'two', 'three']
+# report.removed_count -> 1
+# report.is_truncated -> True
+
+# Boundary scenario: Empty prompt retains no tokens without truncation
+empty_report = preflight.check("")
+# empty_report.retained -> []
+# empty_report.removed_count -> 0
+
+# Failure scenario: Reject negative budget
+try:
+    TokenBudgetPreflight(budget=-1)
+except ValueError as e:
+    # Expected: ValueError("Token budget cannot be negative: received -1")
+    pass
+```
+
+### Simulation Scope & Teaching Simplifications
+> [!NOTE]
+> **Teaching Approximation Label**:
+> The tokenization fixture in this example is a **local whitespace tokenizer** designed purely for deterministic, educational illustration of token budget bounds and preflight reporting. It is **not** the model's real subword tokenizer (such as WordPiece or BPE), does not map tokens to vocabulary IDs, and does not insert special tokens (`[CLS]`, `[SEP]`).
+>
+> No external model downloads, paid API providers, GPUs, or physical devices are required.
+

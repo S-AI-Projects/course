@@ -1,0 +1,40 @@
+Assignment: R16-T041
+Comparison: Expected vs Actual Results
+============================================================
+
+Scenario: normal_truncation (Budget 3 with 'one two three four' retains ['one', 'two', 'three'] and reports 1 removed token)
+Input: prompt='one two three four', budget=3
+Expected: {'retained': ['one', 'two', 'three'], 'removed_count': 1, 'is_truncated': True, 'total_tokens': 4}
+Actual:   {'retained': ['one', 'two', 'three'], 'removed_count': 1, 'is_truncated': True, 'total_tokens': 4}
+Status: PASS
+
+Scenario: boundary_empty (Empty input retains [] and reports 0 removed tokens)
+Input: prompt='', budget=3
+Expected: {'retained': [], 'removed_count': 0, 'is_truncated': False, 'total_tokens': 0}
+Actual:   {'retained': [], 'removed_count': 0, 'is_truncated': False, 'total_tokens': 0}
+Status: PASS
+
+Scenario: boundary_whitespace (Whitespace-only input retains [] and reports 0 removed tokens)
+Input: prompt='   \n\t   ', budget=3
+Expected: {'retained': [], 'removed_count': 0, 'is_truncated': False, 'total_tokens': 0}
+Actual:   {'retained': [], 'removed_count': 0, 'is_truncated': False, 'total_tokens': 0}
+Status: PASS
+
+Scenario: failure_negative_budget (Reject a negative budget with ValueError)
+Input: prompt='one two three', budget=-1
+Expected Exception: ValueError
+Actual Exception: ValueError (Token budget cannot be negative: received -1)
+Status: PASS
+
+Scenario: within_budget_no_truncation (Prompt within budget retains all tokens without truncation)
+Input: prompt='one two', budget=3
+Expected: {'retained': ['one', 'two'], 'removed_count': 0, 'is_truncated': False, 'total_tokens': 2}
+Actual:   {'retained': ['one', 'two'], 'removed_count': 0, 'is_truncated': False, 'total_tokens': 2}
+Status: PASS
+
+============================================================
+Deliberate Wrong Result Test Demonstration:
+Deliberate wrong assertion (expected ['one', 'two', 'three', 'four'] vs actual ['one', 'two', 'three']) correctly detected: PASS (mismatch caught)
+
+============================================================
+Final Validation Status: ALL CHECKS PASSED
