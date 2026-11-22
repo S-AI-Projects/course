@@ -202,3 +202,49 @@ Which of the following might be a good choice for the title of a forum topic to 
 		}
 	]}
 />
+
+## Applied Lab: Token-Budget Preflight (Worked Example with Checks)[[applied-lab-token-budget-preflight-checks]]
+
+### Related Concept: Input Validation and Regression Testing
+
+Before triggering complex model training or pipeline operations, running a lightweight token-budget preflight acts as a rapid verification step. It checks input lengths against context limits and produces reproducible regression checks.
+
+The applied lab in [`applied-labs/r16-t047/example.py`](applied-labs/r16-t047/example.py) (with unit tests in [`applied-labs/r16-t047/test_example.py`](applied-labs/r16-t047/test_example.py) and documentation in [`applied-labs/r16-t047/README.md`](applied-labs/r16-t047/README.md)) implements a deterministic preflight check and regression test runner.
+
+### Invocation, Worked Example, and Regression Checks
+
+```python
+from example import TokenBudgetPreflight, run_regression_suite
+
+# Worked example: Budget 3 with 4 tokens
+preflight = TokenBudgetPreflight(budget=3)
+result = preflight.check("one two three four")
+
+# result.retained -> ['one', 'two', 'three']
+# result.removed_count -> 1
+# result.is_truncated -> True
+# result.explanation -> "Input has 4 tokens, exceeding configured budget 3. Truncated 1 token(s). Retained: ['one', 'two', 'three']."
+
+# Empty input scenario
+empty_res = preflight.check("")
+# empty_res.retained -> []
+# empty_res.removed_count -> 0
+
+# Negative budget rejection
+try:
+    TokenBudgetPreflight(-1)
+except ValueError:
+    pass
+
+# Execute regression suite
+all_passed, records = run_regression_suite()
+# all_passed -> True
+```
+
+### Teaching Simplifications & Disclaimers
+> [!NOTE]
+> **Teaching Approximation Label**:
+> Whitespace splitting is used here as a deterministic local educational proxy to illustrate input bounds and regression checks. It is **not** a production subword tokenizer (WordPiece or BPE) and does not map vocabulary IDs or insert special tokens.
+>
+> No external model downloads, paid cloud services, or GPU hardware are required.
+
