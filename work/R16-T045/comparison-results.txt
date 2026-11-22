@@ -1,0 +1,35 @@
+Assignment: R16-T045
+Comparison: Expected vs Actual Results & Triage Audits
+============================================================
+
+Scenario: local_training_runtime_error (normal)
+Expected Decision: LOCAL_DEBUG
+Actual Decision:   LOCAL_DEBUG
+Rationale Valid:   True
+Rationale:         Error originates within user local script / training pipeline and does not stem from an upstream library defect. Per Chapter 8 Introduction ('The first thing to do when you get an error' and 'How to debug your training pipeline'), inspect traceback and debug locally.
+Adapter Response:  {'status': 'ACCEPTED', 'receipt_id': 'MOCK-0001', 'destination': 'LOCAL_DEBUG'}
+Status: PASS
+
+Scenario: reproducible_library_defect (boundary)
+Expected Decision: LIBRARY_BUG_REPORT
+Actual Decision:   LIBRARY_BUG_REPORT
+Rationale Valid:   True
+Rationale:         Confirmed library defect with a verified minimal reproduction. Per Chapter 8 Introduction ('How to write a good issue'), file an actionable bug report on the Hugging Face repository issue tracker.
+Adapter Response:  {'status': 'ACCEPTED', 'receipt_id': 'MOCK-0002', 'destination': 'LIBRARY_BUG_REPORT'}
+Status: PASS
+
+Scenario: vague_crash_without_origin_or_repro (missing_information)
+Expected Decision: REQUEST_MISSING_INFO
+Actual Decision:   REQUEST_MISSING_INFO
+Rationale Valid:   True
+Rationale:         Missing required triage facts ['error_origin', 'has_minimal_repro']. Per Chapter 8 Introduction, identifying the error origin and having a minimal reproducible example are mandatory prerequisites before reporting or seeking external help.
+Adapter Response:  None
+Status: PASS
+
+============================================================
+Deliberate Tampered Decision Checker Verification:
+Checker correctly failed when normal scenario decision was deliberately changed: PASS (tampering caught)
+Deliberate wrong assertion (expected NON_EXISTENT_DECISION vs actual LOCAL_DEBUG) correctly detected: PASS
+
+============================================================
+Final Validation Status: ALL CHECKS PASSED

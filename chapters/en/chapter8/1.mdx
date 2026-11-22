@@ -15,3 +15,49 @@ More precisely, in this chapter you will learn:
 - How to write a good issue
 
 None of this is specifically related to 🤗 Transformers or the Hugging Face ecosystem, of course; the lessons from this chapter are applicable to most open source projects!
+
+## Applied Lab: Worked Decision Example — Offline Service Adapter[[applied-lab-worked-decision-example-offline-adapter]]
+
+### Related Concept: Troubleshooting Decision Pathways and Offline Adapters
+
+Resolving errors systematically requires choosing the right problem-solving channel: debugging locally, posting on community forums, or filing an issue report. In test and continuous integration environments, interactions with external ticketing or forum systems should be decoupled behind an offline service adapter.
+
+The applied lab in [`applied-labs/r16-t045/example.py`](applied-labs/r16-t045/example.py) (with unit tests in [`applied-labs/r16-t045/test_example.py`](applied-labs/r16-t045/test_example.py) and documentation in [`applied-labs/r16-t045/README.md`](applied-labs/r16-t045/README.md)) implements a deterministic decision model and offline adapter.
+
+### Invocation, Decision Scenarios, and Adapter Interface
+
+```python
+from example import OfflineServiceAdapter, check_decision_table, evaluate_triage_decision
+
+adapter = OfflineServiceAdapter()
+
+# Normal scenario: Local code error -> debug pipeline locally
+res_normal = evaluate_triage_decision(
+    "normal",
+    {"error_origin": "local_code", "has_minimal_repro": True, "is_upstream_library_bug": False},
+    service_adapter=adapter,
+)
+# res_normal.decision -> 'LOCAL_DEBUG'
+
+# Boundary scenario: Upstream bug with repro -> file GitHub issue
+res_boundary = evaluate_triage_decision(
+    "boundary",
+    {"error_origin": "transformers_core", "has_minimal_repro": True, "is_upstream_library_bug": True},
+    service_adapter=adapter,
+)
+# res_boundary.decision -> 'LIBRARY_BUG_REPORT'
+
+# Missing information scenario: missing facts -> request details
+res_missing = evaluate_triage_decision("missing", {"error_origin": None, "has_minimal_repro": None})
+# res_missing.decision -> 'REQUEST_MISSING_INFO'
+
+# Run table checker
+all_passed, audit_log = check_decision_table(service_adapter=adapter)
+# all_passed -> True
+```
+
+### Simulation Scope & Limitations
+> [!NOTE]
+> **Real-Service Disclaimers**:
+> The `OfflineServiceAdapter` isolates external service dispatching deterministically in memory. It does not establish live HTTP network connectivity, credential authentication, HTTP rate-limiting headers, or remote server-side issue database updates.
+
