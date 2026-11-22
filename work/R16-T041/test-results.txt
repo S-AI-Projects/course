@@ -1,0 +1,25 @@
+test_deliberate_wrong_result_fails (test_example.TestTokenBudgetPreflight.test_deliberate_wrong_result_fails)
+Demonstrate that an intentional incorrect result triggers assertion failure. ... ok
+test_empty_input_retains_none (test_example.TestTokenBudgetPreflight.test_empty_input_retains_none)
+Empty input retains [] and reports 0 removed. ... ok
+test_exact_budget_match (test_example.TestTokenBudgetPreflight.test_exact_budget_match)
+Prompt length exactly matching budget retains all tokens without truncation. ... ok
+test_invalid_types_raise_typeerror (test_example.TestTokenBudgetPreflight.test_invalid_types_raise_typeerror)
+Non-string prompt or non-integer budget raises TypeError. ... ok
+test_negative_budget_rejected (test_example.TestTokenBudgetPreflight.test_negative_budget_rejected)
+Reject negative budget with ValueError. ... ok
+test_normal_budget_truncation (test_example.TestTokenBudgetPreflight.test_normal_budget_truncation)
+Budget 3 with 'one two three four' retains [one,two,three] and reports 1 removed. ... ok
+test_teaching_approximation_label_present (test_example.TestTokenBudgetPreflight.test_teaching_approximation_label_present)
+Ensure tokenizer is explicitly labeled as teaching approximation. ... ok
+test_whitespace_input_retains_none (test_example.TestTokenBudgetPreflight.test_whitespace_input_retains_none)
+Whitespace-only input retains [] and reports 0 removed. ... ok
+test_within_budget_no_truncation (test_example.TestTokenBudgetPreflight.test_within_budget_no_truncation)
+Inputs within budget retain all tokens without truncation. ... ok
+test_zero_budget (test_example.TestTokenBudgetPreflight.test_zero_budget)
+Budget 0 truncates all tokens and reports all removed. ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.000s
+
+OK
