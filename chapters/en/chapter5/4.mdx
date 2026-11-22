@@ -269,4 +269,65 @@ next(iter(pile_dataset["train"]))
 > [!TIP]
 > ✏️ **Try it out!** Use one of the large Common Crawl corpora like [`mc4`](https://huggingface.co/datasets/mc4) or [`oscar`](https://huggingface.co/datasets/oscar) to create a streaming multilingual dataset that represents the spoken proportions of languages in a country of your choice. For example, the four national languages in Switzerland are German, French, Italian, and Romansh, so you could try creating a Swiss corpus by sampling the Oscar subsets according to their spoken proportion.
 
+### Applied Lab: Streaming aggregation with error recovery worked example[[applied-lab-streaming-aggregation-error-recovery]]
+
+When streaming large datasets in production pipelines, memory state must remain strictly bounded ($O(K)$ distinct category counts), and the ingestion pipeline must gracefully report malformed or incomplete records with exact line numbers without halting the entire stream.
+
+For a concrete, runnable worked example demonstrating bounded-memory streaming aggregation, line-level error reporting, and automatic recovery on subsequent records, see [`chapters/en/chapter5/applied-labs/r16-t028`](applied-labs/r16-t028/README.md).
+
+> [!NOTE]
+> **Simulation / Pedagogical Scope:** This lab is a minimal Python standard library demonstration of streaming ingestion with constant memory footprint and fault recovery. It operates on local fixtures without requiring network access, external services, or GPU hardware.
+
+- **Prerequisite Tools:** Python 3 standard library (`unittest`).
+- **Fixture Scenarios:**
+  - **Canonical Stream (`A, B, A, C`)**: Ingests 4 records $\rightarrow$ produces counts `{'A': 2, 'B': 1, 'C': 1}`.
+  - **Empty Input**: Ingests empty input $\rightarrow$ produces `{}`.
+  - **Malformed Record with Recovery**: Ingests `A`, followed by broken JSON syntax on line 2, followed by `B`, `A`, `C` $\rightarrow$ reports `Line 2 [SYNTAX_ERROR]`, recovers on line 3 (`B`), and completes with final counts `{'A': 2, 'B': 1, 'C': 1}`.
+
+**Invocation:**
+```bash
+python3 chapters/en/chapter5/applied-labs/r16-t028/example.py
+```
+
+**Expected output:**
+```text
+=== Streaming Aggregation: Worked Example with Failure & Recovery ===
+
+[Scenario 1: Canonical Stream A, B, A, C]
+  Input:         A, B, A, C
+  Result counts: {'A': 2, 'B': 1, 'C': 1}
+  Total lines:   4, Valid records: 4, Errors: 0
+  Outcome:       PASS
+
+[Scenario 2: Empty Stream]
+  Input:         <empty>
+  Result counts: {}
+  Total lines:   0, Valid records: 0, Errors: 0
+  Outcome:       PASS
+
+[Scenario 3: Malformed JSON Line with Resilient Recovery]
+  Total lines:   5, Valid records: 4
+  Reported error count: 1
+    -> Line 2 [SYNTAX_ERROR]: JSON decode failure: Expecting value (col 18)
+       Raw snippet: '{"invalid_json": broken'
+  Recovered on next valid input: True
+  Final aggregated counts:      {'A': 2, 'B': 1, 'C': 1}
+  Outcome: PASS
+
+[Scenario 4: Missing Required Key with Resilient Recovery]
+  Total lines:   5, Valid records: 4
+  Reported error count: 1
+    -> Line 2 [MISSING_FIELD]: Missing required field 'category'
+  Recovered on next valid input: True
+  Final aggregated counts:      {'A': 2, 'B': 1, 'C': 1}
+  Outcome: PASS
+
+All streaming scenarios executed successfully.
+```
+
+**Automated verification:**
+```bash
+python3 -m unittest discover -s chapters/en/chapter5/applied-labs/r16-t028 -p "test_*.py"
+```
+
 You now have all the tools you need to load and process datasets of all shapes and sizes -- but unless you're exceptionally lucky, there will come a point in your NLP journey where you'll have to actually create a dataset to solve the problem at hand. That's the topic of the next section!
