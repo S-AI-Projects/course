@@ -157,3 +157,47 @@ Are you ready to roll? In this chapter, you will learn:
 * About the Transformer architecture
 * How to distinguish between encoder, decoder, and encoder-decoder architectures and use cases
 
+## Applied Lab: Token-Budget Preflight (Scenario Assessment)[[applied-lab-token-budget-preflight-assessment]]
+
+### Related Concept: Tokenization Boundaries, Resource Limits, and Preflight Checks
+
+Before feeding text into tokenizers and constructing embeddings during LLM inference, models require verifying sequence lengths against a configured token budget to enforce memory limits and report truncation.
+
+The applied lab in [`applied-labs/r16-t050/example.py`](applied-labs/r16-t050/example.py) (with unit tests in [`applied-labs/r16-t050/test_example.py`](applied-labs/r16-t050/test_example.py) and documentation in [`applied-labs/r16-t050/README.md`](applied-labs/r16-t050/README.md)) implements a deterministic preflight engine with an applied scenario assessment suite.
+
+### Invocation, Contract, and Scenario Assessment
+
+```python
+from example import TokenBudgetPreflight, execute_scenario_assessments
+
+# Normal contract: Budget 3 with 'one two three four'
+preflight = TokenBudgetPreflight(budget=3)
+result = preflight.check("one two three four")
+# result.retained -> ['one', 'two', 'three']
+# result.removed_count -> 1
+# result.is_truncated -> True
+
+# Empty input contract
+empty_res = preflight.check("")
+# empty_res.retained -> []
+# empty_res.removed_count -> 0
+
+# Negative budget rejection
+try:
+    TokenBudgetPreflight(-1)
+except ValueError:
+    pass
+
+# Execute scenario assessment questions (predict output, diagnose failure, choose boundary policy)
+all_passed, audit = execute_scenario_assessments()
+# all_passed -> True
+```
+
+### Teaching Simplifications & Disclaimers
+> [!NOTE]
+> **Teaching Approximation Label**:
+> The tokenization fixture in this example is a local whitespace-splitting proxy used to illustrate token limits and preflight reporting. It is **not** a production subword tokenizer (WordPiece or BPE) and does not map vocabulary IDs or insert special tokens.
+>
+> No external model downloads, paid cloud services, or GPU hardware are required.
+
+
