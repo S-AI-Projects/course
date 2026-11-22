@@ -1,0 +1,19 @@
+test_budget_3_with_one_two_three_four (test_example.TestTokenBudgetPreflightR16T047.test_budget_3_with_one_two_three_four)
+Budget 3 with 'one two three four' retains [one,two,three] and reports 1 removed. ... ok
+test_deliberate_wrong_result_fails (test_example.TestTokenBudgetPreflightR16T047.test_deliberate_wrong_result_fails)
+Deliberate wrong expectation triggers assertion failure. ... ok
+test_empty_input_retains_none (test_example.TestTokenBudgetPreflightR16T047.test_empty_input_retains_none)
+Empty input retains none ([]) and reports 0 removed. ... ok
+test_regression_suite_execution (test_example.TestTokenBudgetPreflightR16T047.test_regression_suite_execution)
+Execute the exact worked example regression suite. ... ok
+test_reject_negative_budget (test_example.TestTokenBudgetPreflightR16T047.test_reject_negative_budget)
+Reject negative budget with ValueError. ... ok
+test_teaching_approximation_disclaimer_present (test_example.TestTokenBudgetPreflightR16T047.test_teaching_approximation_disclaimer_present)
+Ensure tokenizer is labeled as a teaching approximation. ... ok
+test_whitespace_only_retains_none (test_example.TestTokenBudgetPreflightR16T047.test_whitespace_only_retains_none)
+Whitespace string retains none and reports 0 removed. ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.000s
+
+OK

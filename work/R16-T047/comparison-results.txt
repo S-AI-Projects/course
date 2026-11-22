@@ -1,0 +1,34 @@
+Assignment: R16-T047
+Comparison: Expected vs Actual Results & Regression Audits
+============================================================
+
+Scenario: normal_truncation_budget_3
+Prompt: 'one two three four', Budget: 3
+Expected Retained: ['one', 'two', 'three'], Removed: 1
+Actual Retained:   ['one', 'two', 'three'], Removed: 1
+Explanation:       Input has 4 tokens, exceeding configured budget 3. Truncated 1 token(s). Retained: ['one', 'two', 'three'].
+Status: PASS
+
+Scenario: boundary_empty_input
+Prompt: '', Budget: 3
+Expected Retained: [], Removed: 0
+Actual Retained:   [], Removed: 0
+Explanation:       Input has 0 token(s), which fits within budget 3. All tokens are retained: [].
+Status: PASS
+
+Scenario: failure_negative_budget
+Prompt: 'one two', Budget: -1
+Expected Exception: ValueError
+Actual Exception: ValueError (Token budget cannot be negative: received -1)
+Status: PASS
+
+============================================================
+Automated Regression Suite Verification:
+Regression Suite Status: PASS
+
+============================================================
+Deliberate Wrong Result Test Demonstration:
+Deliberate wrong assertion (expected ['one', 'two', 'three', 'four'] vs actual ['one', 'two', 'three']) correctly detected: PASS
+
+============================================================
+Final Validation Status: ALL CHECKS PASSED
