@@ -229,3 +229,53 @@ dataset[0]
 		},
 	]}
 />
+
+### Applied Lab: Inclusive rectangular geofence evaluation worked example[[applied-lab-inclusive-rectangular-geofence]]
+
+When processing tabular or spatial datasets in data pipelines, coordinate validation and boundary membership filtering are essential preprocessing steps.
+
+For a concrete, runnable worked example demonstrating an inclusive rectangular teaching geofence, boundary handling, and a controlled 3-configuration evaluation experiment, see [`chapters/en/chapter5/applied-labs/r16-t029`](applied-labs/r16-t029/README.md).
+
+> [!NOTE]
+> **Simulation / Pedagogical Scope:** This rectangular fixture uses an inclusive 2D Cartesian bounding box (`10.0 <= latitude <= 20.0` and `70.0 <= longitude <= 80.0`) and is **not** a spherical-distance (haversine or geodesic) model. It operates entirely on local synthetic fixtures using Python's standard library without external GIS dependencies, cloud APIs, or hardware accelerators.
+
+- **Prerequisite Tools:** Python 3 standard library (`unittest`).
+- **Fixture Scenarios:**
+  - **Inside Point**: `(15.0, 75.0)` $\rightarrow$ classified as `INSIDE` (`is_inside = True`).
+  - **Boundary Inclusion**: `(10.0, 70.0)` $\rightarrow$ classified as `INSIDE` (`is_inside = True`).
+  - **Outside Point**: `(21.0, 75.0)` $\rightarrow$ classified as `OUTSIDE` (`is_inside = False`).
+  - **Invalid Coordinate**: `(100.0, 75.0)` $\rightarrow$ rejected with `InvalidCoordinateError` (latitude out of $[-90.0, 90.0]$ range).
+  - **Controlled Evaluation**: Compares 3 configurations ($N=5, 25, 100$) measuring $100\%$ classification accuracy, error rejection, and throughput trade-offs.
+
+**Invocation:**
+```bash
+python3 chapters/en/chapter5/applied-labs/r16-t029/example.py
+```
+
+**Expected output:**
+```text
+=== Rectangular Geofence Membership: Contract Checks & Evaluation ===
+
+Geofence Bounds: Latitude [10.0, 20.0], Longitude [70.0, 80.0] (Inclusive)
+Notice: Rectangular fixture is a Cartesian bounding box, not a spherical-distance model.
+
+[Contract 1] Point (15.0, 75.0): status=INSIDE, is_inside=True (Expected: INSIDE)
+[Contract 2] Boundary (10.0, 70.0): status=INSIDE, is_inside=True (Expected: INSIDE)
+[Contract 3] Point (21.0, 75.0): status=OUTSIDE, is_inside=False (Expected: OUTSIDE)
+[Contract 4] Point (100.0, 75.0): REJECTED as expected (Invalid latitude 100.0: must be within [-90.0, 90.0])
+
+--- Controlled 3-Configuration Evaluation Experiment ---
+  Config A (Small)   | N=5   | Accuracy=100.0% | Inside=4  Outside=1  Invalid=0  | Throughput= ... rec/s (...)
+  Config B (Medium)  | N=25  | Accuracy=100.0% | Inside=12 Outside=9  Invalid=4  | Throughput= ... rec/s (...)
+  Config C (Large)   | N=100 | Accuracy=100.0% | Inside=40 Outside=40 Invalid=20 | Throughput= ... rec/s (...)
+
+Trade-off Summary:
+  Correctness is invariant (100.0%) across all input sizes.
+  Per-record dispatch cost amortizes as batch size increases, yielding higher throughput with minimal memory overhead.
+```
+
+**Automated verification:**
+```bash
+python3 -m unittest discover -s chapters/en/chapter5/applied-labs/r16-t029 -p "test_*.py"
+```
+

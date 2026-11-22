@@ -1,0 +1,103 @@
+{
+  "task_id": "R16-T029",
+  "timestamp": "2026-11-22T17:43:09.026141",
+  "environment": {
+    "python_version": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+    "working_directory": "/Users/lavishfargose/course"
+  },
+  "model_disclaimer": "Planar 2D rectangular bounding box fixture; not a spherical-distance model.",
+  "checks": [
+    {
+      "name": "point_inside",
+      "point": [
+        15.0,
+        75.0
+      ],
+      "status": "PASS",
+      "expected": "INSIDE",
+      "actual": "INSIDE"
+    },
+    {
+      "name": "boundary_point_inclusive",
+      "point": [
+        10.0,
+        70.0
+      ],
+      "status": "PASS",
+      "expected": "INSIDE",
+      "actual": "INSIDE"
+    },
+    {
+      "name": "point_outside",
+      "point": [
+        21.0,
+        75.0
+      ],
+      "status": "PASS",
+      "expected": "OUTSIDE",
+      "actual": "OUTSIDE"
+    },
+    {
+      "name": "invalid_latitude_rejected",
+      "point": [
+        100.0,
+        75.0
+      ],
+      "status": "PASS",
+      "detail": "Correctly rejected with error: Invalid latitude 100.0: must be within [-90.0, 90.0]"
+    },
+    {
+      "name": "three_configuration_evaluation",
+      "status": "PASS",
+      "configurations_evaluated": 3,
+      "configurations": [
+        {
+          "configuration": "Config A (Small)",
+          "sample_size": 5,
+          "accuracy_pct": 100.0,
+          "correct_count": 5,
+          "inside_count": 4,
+          "outside_count": 1,
+          "invalid_rejected_count": 0,
+          "elapsed_microseconds": 3.75,
+          "throughput_rec_per_sec": 1333333.5
+        },
+        {
+          "configuration": "Config B (Medium)",
+          "sample_size": 25,
+          "accuracy_pct": 100.0,
+          "correct_count": 25,
+          "inside_count": 12,
+          "outside_count": 9,
+          "invalid_rejected_count": 4,
+          "elapsed_microseconds": 14.33,
+          "throughput_rec_per_sec": 1744226.6
+        },
+        {
+          "configuration": "Config C (Large)",
+          "sample_size": 100,
+          "accuracy_pct": 100.0,
+          "correct_count": 100,
+          "inside_count": 40,
+          "outside_count": 40,
+          "invalid_rejected_count": 20,
+          "elapsed_microseconds": 53.42,
+          "throughput_rec_per_sec": 1872063.2
+        }
+      ]
+    },
+    {
+      "name": "deliberate_failure_check",
+      "status": "PASS",
+      "detail": "AssertionError successfully raised on deliberate wrong result"
+    }
+  ],
+  "overall_status": "PASSED",
+  "unittests": {
+    "tests_run": 10,
+    "failures": 0,
+    "errors": 0,
+    "was_successful": true
+  }
+}
