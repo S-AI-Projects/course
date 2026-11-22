@@ -1,0 +1,42 @@
+[
+  {
+    "scenario": "normal_render",
+    "description": "Template with name and topic renders supplied values",
+    "variables": {
+      "name": "Alice",
+      "topic": "Quantum Computing"
+    },
+    "expected_output": "Instruction: Write an essay for Alice on Quantum Computing.",
+    "expected_exception": null
+  },
+  {
+    "scenario": "braces_inside_user_data",
+    "description": "Braces inside user data remain literal",
+    "variables": {
+      "name": "Bob",
+      "topic": "Deep Learning {LLM} Architecture"
+    },
+    "expected_output": "Instruction: Write an essay for Bob on Deep Learning {LLM} Architecture.",
+    "expected_exception": null
+  },
+  {
+    "scenario": "missing_topic_fails",
+    "description": "Missing topic fails with KeyError",
+    "variables": {
+      "name": "Charlie"
+    },
+    "expected_output": null,
+    "expected_exception": "KeyError"
+  },
+  {
+    "scenario": "unknown_key_rejected",
+    "description": "Undeclared variable rejected with ValueError",
+    "variables": {
+      "name": "Dave",
+      "topic": "AI",
+      "extra_bad": "malicious"
+    },
+    "expected_output": null,
+    "expected_exception": "ValueError"
+  }
+]

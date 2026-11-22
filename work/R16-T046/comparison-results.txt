@@ -1,0 +1,38 @@
+Assignment: R16-T046
+Comparison: Expected vs Actual Results & Equivalence Audits
+============================================================
+
+Scenario: normal_render (Template with name and topic renders supplied values)
+Variables: {'name': 'Alice', 'topic': 'Quantum Computing'}
+Expected: Instruction: Write an essay for Alice on Quantum Computing.
+Actual:   Instruction: Write an essay for Alice on Quantum Computing.
+Status: PASS
+
+Scenario: braces_inside_user_data (Braces inside user data remain literal)
+Variables: {'name': 'Bob', 'topic': 'Deep Learning {LLM} Architecture'}
+Expected: Instruction: Write an essay for Bob on Deep Learning {LLM} Architecture.
+Actual:   Instruction: Write an essay for Bob on Deep Learning {LLM} Architecture.
+Status: PASS
+
+Scenario: missing_topic_fails (Missing topic fails with KeyError)
+Variables: {'name': 'Charlie'}
+Expected Exception: KeyError
+Actual Exception: KeyError ("Missing required template variables: ['topic']")
+Status: PASS
+
+Scenario: unknown_key_rejected (Undeclared variable rejected with ValueError)
+Variables: {'name': 'Dave', 'topic': 'AI', 'extra_bad': 'malicious'}
+Expected Exception: ValueError
+Actual Exception: ValueError (Unknown variables supplied: ['extra_bad'])
+Status: PASS
+
+============================================================
+Before/After Refactoring Equivalence Proof:
+All fixtures strictly equivalent across Baseline & Refactored: True
+
+============================================================
+Deliberate Wrong Result Test Demonstration:
+Deliberate wrong assertion (expected 'Deliberate Wrong Output' vs actual 'Instruction: Write an essay for A on B.') correctly detected: PASS
+
+============================================================
+Final Validation Status: ALL CHECKS PASSED
