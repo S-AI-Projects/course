@@ -131,3 +131,46 @@ sequences = ["I've been waiting for a HuggingFace course my whole life.", "So ha
 tokens = tokenizer(sequences, padding=True, truncation=True, return_tensors="pt")
 output = model(**tokens)
 ```
+
+## Applied Lab: Chronological Evaluation Split (Failure and Recovery)[[applied-lab-chronological-evaluation-split]]
+
+### Related Concept: Temporal Data Splitting, Leakage Prevention, and Pipeline Recovery
+
+When putting together an end-to-end evaluation pipeline for time-sensitive data, random train/test splitting introduces lookahead data leakage. Partitioning must strictly obey time order (earliest 60% for training, subsequent 20% for validation, and latest 20% for test), sort shuffled inputs, validate timestamp uniqueness, and recover cleanly from invalid records.
+
+The applied lab in [`applied-labs/r16-t048/example.py`](applied-labs/r16-t048/example.py) (with unit tests in [`applied-labs/r16-t048/test_example.py`](applied-labs/r16-t048/test_example.py) and documentation in [`applied-labs/r16-t048/README.md`](applied-labs/r16-t048/README.md)) implements chronological partitioning and failure recovery.
+
+### Invocation, Contract, and Recovery Example
+
+```python
+from example import chronological_split, process_observation_batches
+
+# Ten timestamped observations (shuffled)
+obs = [
+    {"timestamp": 10}, {"timestamp": 2}, {"timestamp": 8}, {"timestamp": 1},
+    {"timestamp": 4},  {"timestamp": 7}, {"timestamp": 3}, {"timestamp": 9},
+    {"timestamp": 5},  {"timestamp": 6}
+]
+
+# Partitioning: sorted chronologically and split 60% / 20% / 20%
+res = chronological_split(obs)
+# len(res.train) -> 6 (timestamps 1..6)
+# len(res.validation) -> 2 (timestamps 7..8)
+# len(res.test) -> 2 (timestamps 9..10)
+
+# Failure and recovery across batches
+batches = [
+    {"batch_id": "b1", "observations": obs},
+    {"batch_id": "b2_duplicate_err", "observations": [{"timestamp": 1}, {"timestamp": 1}]},
+    {"batch_id": "b3_recovered", "observations": [{"timestamp": 100}, {"timestamp": 200}, {"timestamp": 300}, {"timestamp": 400}, {"timestamp": 500}, {"timestamp": 600}, {"timestamp": 700}, {"timestamp": 800}, {"timestamp": 900}, {"timestamp": 1000}]}
+]
+history = process_observation_batches(batches)
+# b1: SUCCESS (train=6)
+# b2: FAILED (ValueError: duplicate timestamp detected)
+# b3: SUCCESS (cleanly recovered, train=6)
+```
+
+### Simulation Scope & Simplifications
+> [!NOTE]
+> **Simulation Scope**: This lab provides a pure Python standard library fixture for understanding temporal evaluation splits and error handling. It does not load model checkpoints, download external datasets, or require GPU hardware.
+
