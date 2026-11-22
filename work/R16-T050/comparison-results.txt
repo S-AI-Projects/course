@@ -1,0 +1,43 @@
+Assignment: R16-T050
+Comparison: Expected vs Actual Results & Scenario Assessments
+============================================================
+
+Scenario: normal_truncation_budget_3
+Prompt: 'one two three four', Budget: 3
+Expected Retained: ['one', 'two', 'three'], Removed: 1
+Actual Retained:   ['one', 'two', 'three'], Removed: 1
+Status: PASS
+
+Scenario: boundary_empty_input
+Prompt: '', Budget: 3
+Expected Retained: [], Removed: 0
+Actual Retained:   [], Removed: 0
+Status: PASS
+
+Scenario: failure_negative_budget
+Prompt: 'one two', Budget: -1
+Expected Exception: ValueError
+Actual Exception: ValueError (Token budget cannot be negative: received -1)
+Status: PASS
+
+============================================================
+Three Applied Scenario Assessment Questions:
+
+Question: Q1_predict_output (Predict an output)
+  Rationale: Per Chapter 1 tokenization and inference prefill principles, the prompt is split into 4 whitespace tokens. Since budget is 2, the earliest 2 tokens ('apple', 'banana') are retained and 4 - 2 = 2 tokens are truncated.
+  Status: PASS
+
+Question: Q2_diagnose_failure (Diagnose a failure)
+  Rationale: A negative token capacity is mathematically undefined for sequence limits; the preflight engine validates budget >= 0 and raises ValueError to protect downstream model memory allocation.
+  Status: PASS
+
+Question: Q3_boundary_policy (Choose a boundary policy)
+  Rationale: Empty input contains 0 tokens, which does not exceed budget 3. The boundary policy cleanly retains an empty list without reporting truncation or throwing false positive errors.
+  Status: PASS
+
+============================================================
+Deliberate Wrong Result Test Demonstration:
+Deliberate wrong assertion (expected ['one', 'two', 'three', 'four'] vs actual ['one', 'two', 'three']) correctly detected: PASS
+
+============================================================
+Final Validation Status: ALL CHECKS PASSED

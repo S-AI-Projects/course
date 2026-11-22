@@ -1,0 +1,19 @@
+test_budget_3_with_one_two_three_four (test_example.TestTokenBudgetScenarioAssessment.test_budget_3_with_one_two_three_four)
+Budget 3 with 'one two three four' retains [one,two,three] and reports 1 removed. ... ok
+test_deliberate_wrong_result_fails (test_example.TestTokenBudgetScenarioAssessment.test_deliberate_wrong_result_fails)
+Demonstrate that an intentional wrong result makes test fail. ... ok
+test_empty_input_retains_none (test_example.TestTokenBudgetScenarioAssessment.test_empty_input_retains_none)
+Empty input retains [] and reports 0 removed. ... ok
+test_reject_negative_budget (test_example.TestTokenBudgetScenarioAssessment.test_reject_negative_budget)
+Reject negative budget with ValueError. ... ok
+test_teaching_approximation_label_present (test_example.TestTokenBudgetScenarioAssessment.test_teaching_approximation_label_present)
+Ensure tokenizer is labeled as a teaching approximation. ... ok
+test_three_applied_scenario_assessment_questions (test_example.TestTokenBudgetScenarioAssessment.test_three_applied_scenario_assessment_questions)
+Verify all three applied questions (predict output, diagnose failure, boundary policy) pass checks. ... ok
+test_whitespace_only_retains_none (test_example.TestTokenBudgetScenarioAssessment.test_whitespace_only_retains_none)
+Whitespace string retains [] and reports 0 removed. ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.000s
+
+OK

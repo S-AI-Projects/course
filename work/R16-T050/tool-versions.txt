@@ -1,0 +1,8 @@
+Assignment: R16-T050
+Student: Nilesh
+Assigned Branch: student/e26b07f1071/R16-T050
+Platform: macOS-27.2-arm64-arm-64bit-Mach-O
+Python Version: 3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]
+Git Version: git version 2.54.0 (Apple Git-157)
+Automated Test Command:
+  python3 -m unittest discover -s chapters/en/chapter1/applied-labs/r16-t050 -p 'test_*.py'
