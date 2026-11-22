@@ -1,0 +1,23 @@
+test_all_character_mappings_in_red_apple (test_example.TestTokenToCharacterAlignment.test_all_character_mappings_in_red_apple)
+Verify full mapping for 'red apple': ... ok
+test_character_5_maps_to_token_1 (test_example.TestTokenToCharacterAlignment.test_character_5_maps_to_token_1)
+For 'red apple', spans [0,3],[4,9] map character 5 to token 1. ... ok
+test_compare_approaches_identical (test_example.TestTokenToCharacterAlignment.test_compare_approaches_identical)
+Direct implementation matches dense expected-result table calculation on identical inputs. ... ok
+test_compare_approaches_on_multi_token_sentence (test_example.TestTokenToCharacterAlignment.test_compare_approaches_on_multi_token_sentence)
+Compare approaches on multi-token sentence with leading/trailing spaces. ... ok
+test_deliberate_wrong_result_fails (test_example.TestTokenToCharacterAlignment.test_deliberate_wrong_result_fails)
+Demonstrate that an intentional wrong result makes test fail. ... ok
+test_out_of_bounds_character_indices (test_example.TestTokenToCharacterAlignment.test_out_of_bounds_character_indices)
+Indices negative or beyond text length return None. ... ok
+test_separating_space_maps_to_no_token (test_example.TestTokenToCharacterAlignment.test_separating_space_maps_to_no_token)
+The separating space at index 3 maps to no token (None). ... ok
+test_validation_rejects_invalid_span_bounds (test_example.TestTokenToCharacterAlignment.test_validation_rejects_invalid_span_bounds)
+Invalid spans (start >= end or out of bounds) raise ValueError. ... ok
+test_validation_rejects_overlapping_spans (test_example.TestTokenToCharacterAlignment.test_validation_rejects_overlapping_spans)
+Overlapping spans must raise ValueError. ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.000s
+
+OK
