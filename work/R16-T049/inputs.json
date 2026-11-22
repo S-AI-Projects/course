@@ -1,0 +1,41 @@
+[
+  {
+    "scenario": "normal_red_red_apple",
+    "input": "red red apple",
+    "expected_output": {
+      "word_count": 3,
+      "unique_count": 2
+    },
+    "expected_exception": null
+  },
+  {
+    "scenario": "boundary_empty_string",
+    "input": "",
+    "expected_output": {
+      "word_count": 0,
+      "unique_count": 0
+    },
+    "expected_exception": null
+  },
+  {
+    "scenario": "boundary_whitespace_string",
+    "input": "   \n\t  ",
+    "expected_output": {
+      "word_count": 0,
+      "unique_count": 0
+    },
+    "expected_exception": null
+  },
+  {
+    "scenario": "failure_nonstring_none",
+    "input": null,
+    "expected_output": null,
+    "expected_exception": "TypeError"
+  },
+  {
+    "scenario": "failure_nonstring_int",
+    "input": 12345,
+    "expected_output": null,
+    "expected_exception": "TypeError"
+  }
+]

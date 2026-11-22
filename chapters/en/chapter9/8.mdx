@@ -22,3 +22,40 @@ If you want to learn more about Gradio you can
 - Take a look at [Demos](https://github.com/gradio-app/gradio/tree/main/demo) in the repo, there are quite a lot of examples there.
 - See the [Guides](https://gradio.app/guides/) page, where you can find guides about cool and advanced features.
 - Check the [Docs](https://gradio.app/docs/) page to learn the details.
+
+## Applied Lab: UI Callback Contract (Evaluation Experiment)[[applied-lab-ui-callback-contract-experiment]]
+
+### Related Concept: Callback Function Contracts and Evaluation Metrics
+
+In any Gradio demo, frontend components send inputs to a Python callback function and render the structured output. Decoupling this callback function enables offline contract validation and performance measurement across various input sizes.
+
+The applied lab in [`applied-labs/r16-t049/example.py`](applied-labs/r16-t049/example.py) (with unit tests in [`applied-labs/r16-t049/test_example.py`](applied-labs/r16-t049/test_example.py) and documentation in [`applied-labs/r16-t049/README.md`](applied-labs/r16-t049/README.md)) implements a deterministic callback and an evaluation experiment across three input sizes.
+
+### Invocation, Contract, and Evaluation Experiment
+
+```python
+from example import analyze_text, evaluate_input_configurations
+
+# Normal contract: 'red red apple' returns word_count=3 and unique_count=2
+result = analyze_text("red red apple")
+# Expected: {"word_count": 3, "unique_count": 2}
+
+# Boundary contract: empty text returns zeros
+result_empty = analyze_text("")
+# Expected: {"word_count": 0, "unique_count": 0}
+
+# Non-string input rejection
+try:
+    analyze_text(12345)
+except TypeError:
+    pass
+
+# Run evaluation experiment across three controlled input sizes
+experiment_results = evaluate_input_configurations()
+# Compares small, medium, and large inputs on uniqueness ratio and latency
+```
+
+### Simulation Scope & Limitations
+> [!NOTE]
+> **Simulation Scope**: This lab simulates the backend callback contract in pure Python without requiring a live web server or browser. Word and uniqueness statistics are computed via standard library tokenization rather than a pre-trained language model.
+

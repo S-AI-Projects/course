@@ -1,0 +1,21 @@
+test_callback_alias_identical (test_example.TestUICallbackContractR16T049.test_callback_alias_identical)
+text_analysis_callback behaves identically to analyze_text. ... ok
+test_deliberate_wrong_result_fails (test_example.TestUICallbackContractR16T049.test_deliberate_wrong_result_fails)
+Demonstrate that an intentional wrong result makes test fail. ... ok
+test_empty_text_returns_zeros (test_example.TestUICallbackContractR16T049.test_empty_text_returns_zeros)
+Empty text returns zeros. ... ok
+test_evaluation_experiment_compares_three_configurations (test_example.TestUICallbackContractR16T049.test_evaluation_experiment_compares_three_configurations)
+Verify experiment evaluates three controlled input sizes with metrics. ... ok
+test_nonstring_input_rejected_none (test_example.TestUICallbackContractR16T049.test_nonstring_input_rejected_none)
+Non-string None input is rejected with TypeError. ... ok
+test_nonstring_input_rejected_types (test_example.TestUICallbackContractR16T049.test_nonstring_input_rejected_types)
+Non-string int, list, dict inputs rejected with TypeError. ... ok
+test_normal_input_red_red_apple (test_example.TestUICallbackContractR16T049.test_normal_input_red_red_apple)
+Input 'red red apple' returns word_count=3 and unique_count=2. ... ok
+test_whitespace_only_returns_zeros (test_example.TestUICallbackContractR16T049.test_whitespace_only_returns_zeros)
+Whitespace string returns zeros. ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.000s
+
+OK
