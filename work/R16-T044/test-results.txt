@@ -1,0 +1,17 @@
+test_boundary_scenario_huge_dataset_streams (test_example.TestWorkedDecisionExample.test_boundary_scenario_huge_dataset_streams)
+Boundary scenario: huge dataset (825 GB >= 16 GB RAM) resolves to STREAM_FROM_DISK_OR_URL. ... ok
+test_checker_fails_when_decision_deliberately_changed (test_example.TestWorkedDecisionExample.test_checker_fails_when_decision_deliberately_changed)
+Checker must fail when a decision in the table is deliberately altered. ... ok
+test_deliberate_wrong_result_makes_test_fail (test_example.TestWorkedDecisionExample.test_deliberate_wrong_result_makes_test_fail)
+Deliberate wrong expectation triggers assertion failure. ... ok
+test_missing_information_scenario_halts_early (test_example.TestWorkedDecisionExample.test_missing_information_scenario_halts_early)
+Missing information scenario: missing size_gb resolves to REQUEST_MISSING_INFO at step 1. ... ok
+test_normal_scenario_state_trace_and_decision (test_example.TestWorkedDecisionExample.test_normal_scenario_state_trace_and_decision)
+Normal scenario: small hub dataset resolves to HUB_IN_MEMORY with 4 steps. ... ok
+test_published_table_checker_passes (test_example.TestWorkedDecisionExample.test_published_table_checker_passes)
+Checker for published decision table passes for all three canonical scenarios. ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.000s
+
+OK

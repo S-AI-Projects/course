@@ -1,0 +1,39 @@
+[
+  {
+    "scenario_type": "normal",
+    "scenario_name": "hub_standard_in_memory",
+    "facts": {
+      "dataset_source": "hub",
+      "dataset_name": "rotten_tomatoes",
+      "size_gb": 0.5,
+      "available_ram_gb": 16,
+      "file_format": "parquet"
+    },
+    "expected_decision": "HUB_IN_MEMORY",
+    "rationale_keyword": "Hugging Face Hub"
+  },
+  {
+    "scenario_type": "boundary",
+    "scenario_name": "huge_pile_dataset_boundary",
+    "facts": {
+      "dataset_source": "hub",
+      "dataset_name": "the_pile",
+      "size_gb": 825.0,
+      "available_ram_gb": 16,
+      "file_format": "jsonl"
+    },
+    "expected_decision": "STREAM_FROM_DISK_OR_URL",
+    "rationale_keyword": "streaming"
+  },
+  {
+    "scenario_type": "missing_information",
+    "scenario_name": "unspecified_dataset_volume",
+    "facts": {
+      "dataset_source": "local",
+      "size_gb": null,
+      "file_format": "csv"
+    },
+    "expected_decision": "REQUEST_MISSING_INFO",
+    "rationale_keyword": "Missing required facts"
+  }
+]
