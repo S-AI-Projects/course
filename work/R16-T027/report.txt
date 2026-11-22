@@ -1,0 +1,42 @@
+=== TASK R16-T027 VERIFICATION REPORT ===
+
+Task: R16-T027
+Branch: student/e26b07f0747/R16-T027
+Python Version: 3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]
+Platform: macOS-27.2.1-arm64-arm-64bit-Mach-O
+
+--- Contract Checks ---
+[PASS] Valid two-split fixture passes with 3 records and verified unique IDs | Actual: {'is_valid': True, 'total_records': 3, 'split_counts': {'train': 2, 'validation': 1}}
+[PASS] Missing required field 'label' fails with line number 2 in 'train' | Actual: {'error_caught': True, 'line_number': 2, 'field': 'label'}
+[PASS] Duplicate ID '101' detected across splits fails with provenance conflict | Actual: {'error_caught': True, 'conflicting_id': 101}
+
+--- Unittest Output ---
+test_boundary_blank_lines_ignored (test_example.TestDatasetManifestValidator.test_boundary_blank_lines_ignored)
+Blank lines in JSONL should be ignored without distorting line counting. ... ok
+test_boundary_empty_manifest_rejected (test_example.TestDatasetManifestValidator.test_boundary_empty_manifest_rejected)
+Verify that an empty manifest is rejected. ... ok
+test_cli_main_execution (test_example.TestDatasetManifestValidator.test_cli_main_execution)
+Verify CLI main entrypoint executes cleanly and produces expected text. ... ok
+test_deliberate_wrong_result_fails (test_example.TestDatasetManifestValidator.test_deliberate_wrong_result_fails)
+A deliberate wrong assertion about record counts or validity fails. ... ok
+test_duplicate_id_across_splits_fails (test_example.TestDatasetManifestValidator.test_duplicate_id_across_splits_fails)
+Verify that duplicate IDs across splits trigger an error. ... ok
+test_duplicate_id_within_same_split (test_example.TestDatasetManifestValidator.test_duplicate_id_within_same_split)
+Verify that duplicate IDs within the same split are rejected. ... ok
+test_invalid_json_syntax_fails_with_line_number (test_example.TestDatasetManifestValidator.test_invalid_json_syntax_fails_with_line_number)
+Malformed JSON syntax raises ManifestValidationError with line number. ... ok
+test_missing_label_fails_with_line_number (test_example.TestDatasetManifestValidator.test_missing_label_fails_with_line_number)
+Verify that a record missing 'label' fails with the exact line number. ... ok
+test_missing_other_required_fields (test_example.TestDatasetManifestValidator.test_missing_other_required_fields)
+Missing 'id' or 'text' also fails with field name and line number. ... ok
+test_valid_two_split_fixture_passes (test_example.TestDatasetManifestValidator.test_valid_two_split_fixture_passes)
+Verify that the standard two-split fixture passes validation. ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+OK
+
+Unittest Return Code: 0
+
+ALL CHECKS PASSED.

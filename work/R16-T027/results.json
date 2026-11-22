@@ -1,0 +1,63 @@
+{
+  "environment": {
+    "python_version": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "python_executable": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+    "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+    "task_id": "R16-T027",
+    "branch": "student/e26b07f0747/R16-T027"
+  },
+  "contract_checks": [
+    {
+      "description": "Valid two-split fixture passes with 3 records and verified unique IDs",
+      "input": "VALID_TWO_SPLIT_FIXTURE",
+      "expected": {
+        "is_valid": true,
+        "total_records": 3,
+        "split_counts": {
+          "train": 2,
+          "validation": 1
+        }
+      },
+      "actual": {
+        "is_valid": true,
+        "total_records": 3,
+        "split_counts": {
+          "train": 2,
+          "validation": 1
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "description": "Missing required field 'label' fails with line number 2 in 'train'",
+      "input": "MISSING_LABEL_FIXTURE",
+      "expected": {
+        "error_caught": true,
+        "line_number": 2,
+        "field": "label"
+      },
+      "actual": {
+        "error_caught": true,
+        "line_number": 2,
+        "field": "label"
+      },
+      "status": "PASS"
+    },
+    {
+      "description": "Duplicate ID '101' detected across splits fails with provenance conflict",
+      "input": "DUPLICATE_ID_FIXTURE",
+      "expected": {
+        "error_caught": true,
+        "conflicting_id": 101
+      },
+      "actual": {
+        "error_caught": true,
+        "conflicting_id": 101
+      },
+      "status": "PASS"
+    }
+  ],
+  "deliberate_failure_check": "PASS (wrong expectation correctly detected)",
+  "unittest_exit_code": 0,
+  "unittest_output": "test_boundary_blank_lines_ignored (test_example.TestDatasetManifestValidator.test_boundary_blank_lines_ignored)\nBlank lines in JSONL should be ignored without distorting line counting. ... ok\ntest_boundary_empty_manifest_rejected (test_example.TestDatasetManifestValidator.test_boundary_empty_manifest_rejected)\nVerify that an empty manifest is rejected. ... ok\ntest_cli_main_execution (test_example.TestDatasetManifestValidator.test_cli_main_execution)\nVerify CLI main entrypoint executes cleanly and produces expected text. ... ok\ntest_deliberate_wrong_result_fails (test_example.TestDatasetManifestValidator.test_deliberate_wrong_result_fails)\nA deliberate wrong assertion about record counts or validity fails. ... ok\ntest_duplicate_id_across_splits_fails (test_example.TestDatasetManifestValidator.test_duplicate_id_across_splits_fails)\nVerify that duplicate IDs across splits trigger an error. ... ok\ntest_duplicate_id_within_same_split (test_example.TestDatasetManifestValidator.test_duplicate_id_within_same_split)\nVerify that duplicate IDs within the same split are rejected. ... ok\ntest_invalid_json_syntax_fails_with_line_number (test_example.TestDatasetManifestValidator.test_invalid_json_syntax_fails_with_line_number)\nMalformed JSON syntax raises ManifestValidationError with line number. ... ok\ntest_missing_label_fails_with_line_number (test_example.TestDatasetManifestValidator.test_missing_label_fails_with_line_number)\nVerify that a record missing 'label' fails with the exact line number. ... ok\ntest_missing_other_required_fields (test_example.TestDatasetManifestValidator.test_missing_other_required_fields)\nMissing 'id' or 'text' also fails with field name and line number. ... ok\ntest_valid_two_split_fixture_passes (test_example.TestDatasetManifestValidator.test_valid_two_split_fixture_passes)\nVerify that the standard two-split fixture passes validation. ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.001s\n\nOK\n"
+}

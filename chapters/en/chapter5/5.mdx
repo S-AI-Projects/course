@@ -380,6 +380,56 @@ You can create the *README.md* file directly on the Hub, and you can find a temp
 > [!TIP]
 > ✏️ **Try it out!** Use the `dataset-tagging` application and [🤗 Datasets guide](https://github.com/huggingface/datasets/blob/master/templates/README_guide.md) to complete the *README.md* file for your GitHub issues dataset.
 
+### Applied Lab: Dataset manifest validation worked example[[applied-lab-dataset-manifest-validation]]
+
+When assembling custom datasets into JSONL files and defining `train` and `validation` splits, data pipelines must enforce mandatory schema fields (e.g., `id`, `text`, `label`) and verify that unique record IDs never leak across splits.
+
+For a concrete, runnable worked example demonstrating schema validation, line-level diagnostics, and split provenance checks, see [`chapters/en/chapter5/applied-labs/r16-t027`](applied-labs/r16-t027/README.md).
+
+> [!NOTE]
+> **Simulation / Pedagogical Scope:** This lab is a minimal Python standard library implementation illustrating JSONL schema enforcement and split provenance tracking. It operates entirely on local fixtures without requiring network access, GitHub API tokens, or model downloads.
+
+- **Prerequisite Tools:** Python 3 standard library (`unittest`).
+- **Fixture Scenarios:**
+  - **Normal**: Valid two-split fixture (`train` with 2 records, `validation` with 1 record) $\rightarrow$ passes validation with 3 verified records.
+  - **Missing Label**: Record at line 2 in `train` missing `label` $\rightarrow$ fails with `Missing required field 'label' in split 'train' at line 2`.
+  - **Duplicate ID**: ID `101` appearing in both `train` and `validation` $\rightarrow$ fails with `Duplicate ID '101' detected across splits`.
+
+**Invocation:**
+```bash
+python3 chapters/en/chapter5/applied-labs/r16-t027/example.py
+```
+
+**Expected output:**
+```text
+=== Dataset Manifest Validation: Worked Example with Checks ===
+
+[Case 1: Valid Two-Split Fixture]
+  Status:         VALID
+  Total records:  3
+  Split counts:   {'train': 2, 'validation': 1}
+  Verified IDs:   [101, 102, 201]
+  Outcome:        Manifest passed validation: 3 records verified across 2 splits.
+
+[Case 2: Missing Required Field ('label')]
+  Caught expected error: Missing required field 'label' in split 'train' at line 2
+  Failed split:          train
+  Line number:           2
+  Missing field:         label
+
+[Case 3: Duplicate ID Across Splits]
+  Caught expected error: Duplicate ID '101' detected across splits: first defined in 'train' at line 1, duplicated in 'validation' at line 1
+  Conflicting ID:        101
+  Duplicated in split:   validation at line 1
+
+All worked validation scenarios behaved exactly according to specification.
+```
+
+**Automated verification:**
+```bash
+python3 -m unittest discover -s chapters/en/chapter5/applied-labs/r16-t027 -p "test_*.py"
+```
+
 That's it! We've seen in this section that creating a good dataset can be quite involved, but fortunately uploading it and sharing it with the community is not. In the next section we'll use our new dataset to create a semantic search engine with 🤗 Datasets that can match questions to the most relevant issues and comments.
 
 > [!TIP]
