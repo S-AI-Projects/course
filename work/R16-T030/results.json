@@ -1,0 +1,63 @@
+{
+  "task_id": "R16-T030",
+  "timestamp": "2026-11-22T17:50:07.515106",
+  "environment": {
+    "python_version": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+    "working_directory": "/Users/lavishfargose/course"
+  },
+  "checks": [
+    {
+      "name": "canonical_filter_and_project",
+      "status": "PASS",
+      "expected": [
+        "id2",
+        "id3"
+      ],
+      "actual": [
+        "id2",
+        "id3"
+      ],
+      "projected_records": [
+        {
+          "id": "id2"
+        },
+        {
+          "id": "id3"
+        }
+      ]
+    },
+    {
+      "name": "source_collection_immutability",
+      "status": "PASS",
+      "detail": "Input sequence and record dictionaries remained unmutated"
+    },
+    {
+      "name": "scenario_q1_predict_output",
+      "status": "PASS",
+      "verified": true
+    },
+    {
+      "name": "scenario_q2_diagnose_failure",
+      "status": "PASS",
+      "verified": true
+    },
+    {
+      "name": "scenario_q3_boundary_policy",
+      "status": "PASS",
+      "verified": true
+    },
+    {
+      "name": "deliberate_failure_check",
+      "status": "PASS",
+      "detail": "AssertionError successfully raised on deliberate wrong result"
+    }
+  ],
+  "overall_status": "PASSED",
+  "unittests": {
+    "tests_run": 10,
+    "failures": 0,
+    "errors": 0,
+    "was_successful": true
+  }
+}

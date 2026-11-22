@@ -717,4 +717,64 @@ And that's it for our excursion into data wrangling with 🤗 Datasets! Now that
 1. Use the techniques from [Chapter 3](/course/chapter3) to train a classifier that can predict the patient condition based on the drug review.
 2. Use the `summarization` pipeline from [Chapter 1](/course/chapter1) to generate summaries of the reviews.
 
+### Applied Lab: Dataset selection semantics and scenario assessment worked example[[applied-lab-dataset-selection-scenario-assessment]]
+
+When filtering and selecting records in data wrangling pipelines, transformations must preserve record identity and order while maintaining strict source collection immutability.
+
+For a concrete, runnable worked example demonstrating functional filtering, column projection, and a 3-question scenario assessment (output prediction, failure diagnosis, and boundary policy choice), see [`chapters/en/chapter5/applied-labs/r16-t030`](applied-labs/r16-t030/README.md).
+
+> [!NOTE]
+> **Simulation / Pedagogical Scope:** This lab is a minimal Python standard library implementation illustrating functional record filtering, column projection, and immutability. It runs entirely on local synthetic fixtures without requiring external packages, GPU accelerators, or cloud APIs.
+
+- **Prerequisite Tools:** Python 3 standard library (`unittest`).
+- **Fixture Scenarios:**
+  - **Canonical Selection**: Rows `(id1, score: 2), (id2, score: 5), (id3, score: 5)`, filtered by `score >= 5` and projected on `id`, yield `['id2', 'id3']` in order with the source collection left unmutated.
+  - **Scenario Assessment**:
+    - **Q1 (Predict Output)**: Evaluates row predicate filtering and sequence preservation.
+    - **Q2 (Diagnose Failure)**: Diagnoses schema mismatch when a record lacks the `'score'` key, raising `DatasetSelectionError`.
+    - **Q3 (Boundary Policy)**: Compares inclusive (`score >= 5`) vs strict (`score > 5`) boundary policies on threshold rows.
+
+**Invocation:**
+```bash
+python3 chapters/en/chapter5/applied-labs/r16-t030/example.py
+```
+
+**Expected output:**
+```text
+=== Dataset Selection Semantics: Filtering, Projection & Assessment ===
+
+[Contract Check: Canonical Filtering and Projection]
+  Input rows:            [{'id': 'id1', 'score': 2}, {'id': 'id2', 'score': 5}, {'id': 'id3', 'score': 5}]
+  Predicate:             score >= 5
+  Projected column:      'id'
+  Resulting IDs:         ['id2', 'id3']
+  Resulting records:     [{'id': 'id2'}, {'id': 'id3'}]
+  Contract met:          PASS
+  Source unmutated:      PASS
+
+--- Scenario Assessment: Applied Questions & Executable Checks ---
+
+[Q1_PREDICT_OUTPUT] Predict Output: Filtering and Projection
+  Correct Answer: (B)
+  Executable Check: PASS
+  Rationale: Row (id1, score: 2) is evaluated against score >= 5, which evaluates to False (2 < 5). Rows (id2, score: 5) and (id3, score: 5) satisfy 5 >= 5 (True). Projection of column 'id' preserves the original encounter order, yielding ['id2', 'id3'].
+
+[Q2_DIAGNOSE_FAILURE] Diagnose Failure: Schema Inconsistency
+  Correct Answer: (B)
+  Executable Check: PASS
+  Rationale: In strict filtering mode, accessing an undeclared key raises a KeyError. The DatasetSelection validator captures the underlying exception and raises a DatasetSelectionError identifying row index 3 and the offending record, preventing silent corruption.
+
+[Q3_BOUNDARY_POLICY] Boundary Policy: Strict vs. Inclusive Inequality
+  Correct Answer: (A)
+  Executable Check: PASS
+  Rationale: Boundary points (where value == threshold) are included under the inclusive policy (>=) because 5 >= 5 is True. Under the strict policy (>), 5 > 5 is False, so both id2 and id3 are dropped, yielding an empty list [].
+
+All dataset selection contracts and scenario checks passed successfully.
+```
+
+**Automated verification:**
+```bash
+python3 -m unittest discover -s chapters/en/chapter5/applied-labs/r16-t030 -p "test_*.py"
+```
+
 Next, we'll take a look at how 🤗 Datasets can enable you to work with huge datasets without blowing up your laptop!
