@@ -1,0 +1,87 @@
+[
+  {
+    "scenario": "ten_observations_shuffled",
+    "description": "Ten shuffled observations yield 6 train, 2 val, 2 test after sorting",
+    "observations": [
+      {
+        "timestamp": 10
+      },
+      {
+        "timestamp": 2
+      },
+      {
+        "timestamp": 8
+      },
+      {
+        "timestamp": 1
+      },
+      {
+        "timestamp": 4
+      },
+      {
+        "timestamp": 7
+      },
+      {
+        "timestamp": 3
+      },
+      {
+        "timestamp": 9
+      },
+      {
+        "timestamp": 5
+      },
+      {
+        "timestamp": 6
+      }
+    ],
+    "expected_train_count": 6,
+    "expected_val_count": 2,
+    "expected_test_count": 2,
+    "expected_train_ts": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "expected_val_ts": [
+      7,
+      8
+    ],
+    "expected_test_ts": [
+      9,
+      10
+    ],
+    "expected_exception": null
+  },
+  {
+    "scenario": "duplicate_timestamps_rejected",
+    "description": "Duplicate timestamps are rejected with ValueError",
+    "observations": [
+      {
+        "timestamp": 1
+      },
+      {
+        "timestamp": 2
+      },
+      {
+        "timestamp": 2
+      }
+    ],
+    "expected_exception": "ValueError"
+  },
+  {
+    "scenario": "missing_timestamp_rejected",
+    "description": "Missing timestamp field is rejected with KeyError",
+    "observations": [
+      {
+        "timestamp": 1
+      },
+      {
+        "invalid_key": 2
+      }
+    ],
+    "expected_exception": "KeyError"
+  }
+]

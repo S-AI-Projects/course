@@ -1,0 +1,19 @@
+test_deliberate_wrong_result_fails (test_example.TestChronologicalSplit.test_deliberate_wrong_result_fails)
+Demonstrate that an intentional wrong result makes the test fail. ... ok
+test_duplicate_timestamps_are_rejected (test_example.TestChronologicalSplit.test_duplicate_timestamps_are_rejected)
+Duplicate timestamps raise ValueError to prevent ambiguous ordering. ... ok
+test_failure_and_recovery_across_batches (test_example.TestChronologicalSplit.test_failure_and_recovery_across_batches)
+Exercise documented invalid data case, explain error, and demonstrate recovery on next valid input. ... ok
+test_future_observations_remain_out_of_training (test_example.TestChronologicalSplit.test_future_observations_remain_out_of_training)
+Strict temporal boundary: max(train.timestamp) < min(validation.timestamp) < min(test.timestamp). ... ok
+test_missing_timestamp_rejected (test_example.TestChronologicalSplit.test_missing_timestamp_rejected)
+Observation missing 'timestamp' key raises KeyError. ... ok
+test_shuffled_input_is_sorted_first (test_example.TestChronologicalSplit.test_shuffled_input_is_sorted_first)
+Shuffled input is sorted before partitioning. ... ok
+test_ten_ordered_observations_yield_6_train_2_val_2_test (test_example.TestChronologicalSplit.test_ten_ordered_observations_yield_6_train_2_val_2_test)
+Ten ordered observations yield 6 train, 2 validation, 2 test. ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.000s
+
+OK

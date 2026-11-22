@@ -1,0 +1,35 @@
+Assignment: R16-T048
+Comparison: Expected vs Actual Results & Recovery Audits
+============================================================
+
+Scenario: ten_observations_shuffled (Ten shuffled observations yield 6 train, 2 val, 2 test after sorting)
+Expected: train=6, val=2, test=2
+Actual:   train=6, val=2, test=2
+Train Timestamps: [1, 2, 3, 4, 5, 6]
+Val Timestamps:   [7, 8]
+Test Timestamps:  [9, 10]
+Status: PASS
+
+Scenario: duplicate_timestamps_rejected (Duplicate timestamps are rejected with ValueError)
+Expected Exception: ValueError
+Actual Exception: ValueError (Duplicate timestamp detected: 2. Timestamps must be strictly unique.)
+Status: PASS
+
+Scenario: missing_timestamp_rejected (Missing timestamp field is rejected with KeyError)
+Expected Exception: KeyError
+Actual Exception: KeyError ("Item at index 1 is missing required 'timestamp' field")
+Status: PASS
+
+============================================================
+Pipeline Failure and Recovery Demonstration:
+  [SUCCESS] b1_valid: Error=None | TrainCount=6
+  [FAILED] b2_duplicate_err: Error=ValueError | TrainCount=0
+  [SUCCESS] b3_recovered: Error=None | TrainCount=6
+Failure and Recovery Verified: PASS
+
+============================================================
+Deliberate Wrong Result Test Demonstration:
+Deliberate wrong assertion (expected 999 vs actual 6) correctly detected: PASS
+
+============================================================
+Final Validation Status: ALL CHECKS PASSED
