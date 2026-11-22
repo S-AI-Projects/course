@@ -1,0 +1,37 @@
+[
+  {
+    "scenario_type": "normal",
+    "scenario_name": "local_training_runtime_error",
+    "facts": {
+      "error_origin": "local_code",
+      "has_minimal_repro": true,
+      "is_upstream_library_bug": false,
+      "error_type": "IndexError"
+    },
+    "expected_decision": "LOCAL_DEBUG",
+    "rationale_keyword": "debug your training pipeline"
+  },
+  {
+    "scenario_type": "boundary",
+    "scenario_name": "reproducible_library_defect",
+    "facts": {
+      "error_origin": "transformers_core",
+      "has_minimal_repro": true,
+      "is_upstream_library_bug": true,
+      "error_type": "AttributeError"
+    },
+    "expected_decision": "LIBRARY_BUG_REPORT",
+    "rationale_keyword": "write a good issue"
+  },
+  {
+    "scenario_type": "missing_information",
+    "scenario_name": "vague_crash_without_origin_or_repro",
+    "facts": {
+      "error_origin": null,
+      "has_minimal_repro": null,
+      "error_type": "UnknownException"
+    },
+    "expected_decision": "REQUEST_MISSING_INFO",
+    "rationale_keyword": "Missing required triage facts"
+  }
+]

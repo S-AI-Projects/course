@@ -1,0 +1,19 @@
+test_boundary_scenario_upstream_bug_reports_issue (test_example.TestWorkedDecisionExampleR16T045.test_boundary_scenario_upstream_bug_reports_issue)
+Boundary scenario: upstream library bug with repro resolves to LIBRARY_BUG_REPORT. ... ok
+test_checker_fails_when_decision_deliberately_changed (test_example.TestWorkedDecisionExampleR16T045.test_checker_fails_when_decision_deliberately_changed)
+Checker must fail when a decision in the table is deliberately altered. ... ok
+test_deliberate_wrong_result_makes_test_fail (test_example.TestWorkedDecisionExampleR16T045.test_deliberate_wrong_result_makes_test_fail)
+Deliberate wrong expectation triggers assertion failure. ... ok
+test_missing_info_scenario_requests_clarification (test_example.TestWorkedDecisionExampleR16T045.test_missing_info_scenario_requests_clarification)
+Missing information scenario: missing required keys resolves to REQUEST_MISSING_INFO. ... ok
+test_normal_scenario_local_debug (test_example.TestWorkedDecisionExampleR16T045.test_normal_scenario_local_debug)
+Normal scenario: local training error resolves to LOCAL_DEBUG. ... ok
+test_offline_adapter_records_dispatches (test_example.TestWorkedDecisionExampleR16T045.test_offline_adapter_records_dispatches)
+Verify OfflineServiceAdapter accumulates payloads deterministically. ... ok
+test_published_table_checker_passes (test_example.TestWorkedDecisionExampleR16T045.test_published_table_checker_passes)
+Checker passes on canonical three-scenario table. ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.000s
+
+OK
