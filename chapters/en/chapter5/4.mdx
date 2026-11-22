@@ -270,3 +270,51 @@ next(iter(pile_dataset["train"]))
 > ✏️ **Try it out!** Use one of the large Common Crawl corpora like [`mc4`](https://huggingface.co/datasets/mc4) or [`oscar`](https://huggingface.co/datasets/oscar) to create a streaming multilingual dataset that represents the spoken proportions of languages in a country of your choice. For example, the four national languages in Switzerland are German, French, Italian, and Romansh, so you could try creating a Swiss corpus by sampling the Oscar subsets according to their spoken proportion.
 
 You now have all the tools you need to load and process datasets of all shapes and sizes -- but unless you're exceptionally lucky, there will come a point in your NLP journey where you'll have to actually create a dataset to solve the problem at hand. That's the topic of the next section!
+
+## Applied Lab: Streaming Aggregation (Boundary-Case Lesson Extension)[[applied-lab-streaming-aggregation]]
+
+### Related Concept: Bounded In-Memory State and Streaming Validation
+
+When processing massive corpora using streaming (such as iterating over JSONL shards of the Pile), applications must aggregate statistics or validate inputs without buffering the complete dataset in memory. Maintaining bounded state during streaming requires handling stream boundaries and malformed records gracefully.
+
+The applied lab in [`applied-labs/r16-t042/example.py`](applied-labs/r16-t042/example.py) (with unit tests in [`applied-labs/r16-t042/test_example.py`](applied-labs/r16-t042/test_example.py) and documentation in [`applied-labs/r16-t042/README.md`](applied-labs/r16-t042/README.md)) implements a deterministic streaming aggregator.
+
+### Invocation, Fixtures, and Expected Output
+
+```python
+from example import stream_aggregate_jsonl
+
+# Normal streaming case: A, B, A, C yields category counts
+lines = [
+    '{"category": "A"}',
+    '{"category": "B"}',
+    '{"category": "A"}',
+    '{"category": "C"}',
+]
+result = stream_aggregate_jsonl(lines)
+# Expected result.category_counts: {"A": 2, "B": 1, "C": 1}
+
+# Boundary case: Empty stream yields empty counts
+empty_result = stream_aggregate_jsonl([])
+# Expected empty_result.category_counts: {}
+
+# Malformed line reporting: reports line number without failing the stream
+stream_with_error = [
+    '{"category": "A"}',
+    '{invalid json line}',
+    '{"category": "B"}',
+]
+res = stream_aggregate_jsonl(stream_with_error)
+# res.category_counts -> {"A": 1, "B": 1}
+# res.malformed_records[0].line_number -> 2
+```
+
+### Boundary Decisions & Simulation Scope
+> [!NOTE]
+> **Boundary Decisions**:
+> - Empty inputs immediately return `{}` with 0 errors.
+> - Pure whitespace/blank lines are skipped cleanly without false positive malformed errors.
+> - Malformed lines (syntax error or missing schema field) are isolated and reported with their 1-indexed line numbers.
+>
+> **Simulation Scope**: This lab illustrates the streaming aggregation principle locally using Python standard library iteration. It does not download the 825 GB Pile dataset or require GPUs, external network connections, or paid cloud services.
+

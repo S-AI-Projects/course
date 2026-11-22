@@ -1,0 +1,23 @@
+test_deliberate_wrong_result_fails (test_example.TestStreamingAggregation.test_deliberate_wrong_result_fails)
+Deliberate wrong expectation triggers an assertion failure. ... ok
+test_empty_stream_gives_empty_dict (test_example.TestStreamingAggregation.test_empty_stream_gives_empty_dict)
+Empty input stream gives empty counts {} and no errors. ... ok
+test_generator_input_demonstrating_streaming_nature (test_example.TestStreamingAggregation.test_generator_input_demonstrating_streaming_nature)
+Verify stream is processed as a generator without loading entire sequence at once. ... ok
+test_malformed_json_syntax_reported_with_line_number (test_example.TestStreamingAggregation.test_malformed_json_syntax_reported_with_line_number)
+Malformed JSON syntax is caught and reported with exact line number. ... ok
+test_missing_category_field_reported_with_line_number (test_example.TestStreamingAggregation.test_missing_category_field_reported_with_line_number)
+JSON missing the required category field is reported with line number. ... ok
+test_non_dict_json_reported_with_line_number (test_example.TestStreamingAggregation.test_non_dict_json_reported_with_line_number)
+JSON primitive or list is reported with line number. ... ok
+test_smallest_valid_input (test_example.TestStreamingAggregation.test_smallest_valid_input)
+Single line valid record gives single category count. ... ok
+test_standard_stream_a_b_a_c (test_example.TestStreamingAggregation.test_standard_stream_a_b_a_c)
+Input records A, B, A, C give category counts A:2, B:1, C:1 without errors. ... ok
+test_whitespace_and_blank_lines_skipped (test_example.TestStreamingAggregation.test_whitespace_and_blank_lines_skipped)
+Blank or whitespace-only lines are ignored and do not produce errors. ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.000s
+
+OK
