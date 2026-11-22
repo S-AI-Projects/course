@@ -1,0 +1,32 @@
+Assignment: R16-T044
+Comparison: Expected vs Actual Results & Invariant Audits
+============================================================
+
+Scenario: hub_standard_in_memory (normal)
+Expected Decision: HUB_IN_MEMORY
+Actual Decision:   HUB_IN_MEMORY
+Invariants Held:   True (steps=4)
+Rationale:         Dataset is hosted on Hugging Face Hub and fits comfortably within available RAM (0.5 GB < 16 GB). Standard `load_dataset('rotten_tomatoes')` is chosen, utilizing memory-mapped Apache Arrow files.
+Status: PASS
+
+Scenario: huge_pile_dataset_boundary (boundary)
+Expected Decision: STREAM_FROM_DISK_OR_URL
+Actual Decision:   STREAM_FROM_DISK_OR_URL
+Invariants Held:   True (steps=4)
+Rationale:         Dataset size (825.0 GB) meets or exceeds memory limit (16 GB). Per Chapter 5 Introduction ('What do you do when your dataset is huge and will melt your laptop's RAM?'), streaming iteration (`streaming=True`) must be used to consume records with bounded memory.
+Status: PASS
+
+Scenario: unspecified_dataset_volume (missing_information)
+Expected Decision: REQUEST_MISSING_INFO
+Actual Decision:   REQUEST_MISSING_INFO
+Invariants Held:   True (steps=1)
+Rationale:         Missing required facts ['size_gb']. As outlined in Chapter 5 Introduction, identifying the data location and volume is essential before choosing a loading strategy.
+Status: PASS
+
+============================================================
+Deliberate Tampered Decision Checker Verification:
+Checker correctly failed when normal scenario decision was deliberately changed: PASS (tampering caught)
+Deliberate wrong assertion (expected NON_EXISTENT_DECISION vs actual HUB_IN_MEMORY) correctly detected: PASS
+
+============================================================
+Final Validation Status: ALL CHECKS PASSED

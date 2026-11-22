@@ -20,3 +20,43 @@ But this is just scratching the surface of what 🤗 Datasets can do! In this ch
 * How can you create your own dataset and push it to the Hub?
 
 The techniques you learn here will prepare you for the advanced tokenization and fine-tuning tasks in [Chapter 6](/course/chapter6) and [Chapter 7](/course/chapter7) -- so grab a coffee and let's get started!
+
+## Applied Lab: Worked Decision Example — Invariant and State Trace[[applied-lab-worked-decision-example]]
+
+### Related Concept: Dataset Architecture Decisions and Invariants
+
+Selecting the proper dataset ingestion pipeline requires systematically evaluating dataset hosting locations, local RAM limits, and schema completeness.
+
+The applied lab in [`applied-labs/r16-t044/example.py`](applied-labs/r16-t044/example.py) (with unit tests in [`applied-labs/r16-t044/test_example.py`](applied-labs/r16-t044/test_example.py) and documentation in [`applied-labs/r16-t044/README.md`](applied-labs/r16-t044/README.md)) implements a deterministic decision model with state traces and invariant checking.
+
+### Invocation, Decision Table, and Invariants
+
+```python
+from example import check_decision_table, evaluate_dataset_strategy
+
+# Normal scenario: fits in RAM -> in-memory loading with Arrow
+res_normal = evaluate_dataset_strategy(
+    "normal", {"dataset_source": "hub", "size_gb": 0.5, "available_ram_gb": 16}
+)
+# res_normal.decision -> 'HUB_IN_MEMORY'
+
+# Boundary scenario: huge dataset (825 GB >= 16 GB RAM) -> streaming
+res_boundary = evaluate_dataset_strategy(
+    "boundary", {"dataset_source": "hub", "size_gb": 825.0, "available_ram_gb": 16}
+)
+# res_boundary.decision -> 'STREAM_FROM_DISK_OR_URL'
+
+# Missing-information scenario: missing size -> request info
+res_missing = evaluate_dataset_strategy(
+    "missing", {"dataset_source": "local", "size_gb": None}
+)
+# res_missing.decision -> 'REQUEST_MISSING_INFO'
+
+# Run published decision table checker
+all_passed, audit_log = check_decision_table()
+# all_passed -> True
+```
+
+### Simulation Scope & Simplifications
+> [!NOTE]
+> **Simulation Scope**: This lab illustrates decision rules and state traces symbolically using Python standard library structures. It does not download datasets or connect to live cloud endpoints.
